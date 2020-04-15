@@ -1,3 +1,19 @@
-export function createRoute(...args: any): any {}
+import { Constructor } from '../types';
 
-export function includeRoutes(...args: any): any {}
+export interface RouteDefinition {
+  path: string;
+  Route: Constructor;
+  children: Array<RouteDefinition>;
+}
+
+export function createRoute(
+  path: string,
+  Route: Constructor,
+  children: Array<RouteDefinition> = [],
+): RouteDefinition {
+  return { path, Route, children };
+}
+
+export function includeRoutes(...args: any): any {
+  console.log(args);
+}

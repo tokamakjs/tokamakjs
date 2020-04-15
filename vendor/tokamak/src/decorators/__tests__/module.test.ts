@@ -1,15 +1,15 @@
 import { Module } from '../module';
 
 describe('@Module', () => {
-  it('should enhance class with expected module metadata', () => {
-    @Module({
-      routing: ['Test'],
-      providers: ['Test'],
-      imports: ['Test'],
-      exports: ['Test'],
-    })
-    class TestModule {}
+  @Module({
+    routing: ['Test'],
+    providers: ['Test'],
+    imports: ['Test'],
+    exports: ['Test'],
+  })
+  class TestModule {}
 
+  it('should enhance class with expected module metadata', () => {
     const routing = Reflect.getMetadata('routing', TestModule);
     const providers = Reflect.getMetadata('providers', TestModule);
     const imports = Reflect.getMetadata('imports', TestModule);
