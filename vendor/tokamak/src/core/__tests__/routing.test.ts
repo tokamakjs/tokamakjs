@@ -1,14 +1,25 @@
 import { createRoute } from '../routing';
 
 describe('createRoute', () => {
-  class Route {}
+  class HomeRoute {}
+  class LoginRoute {}
 
   it('should create a valid route', () => {
-    const result = createRoute('/path', Route);
+    const result = createRoute('/home', HomeRoute);
     expect(result).toMatchObject({
-      path: '/path',
-      Route,
+      path: '/home',
+      Route: HomeRoute,
       children: [],
+    });
+  });
+
+  it('should correctly create children routes', () => {
+    const result = createRoute('/home', HomeRoute, [createRoute('/login', LoginRoute)]);
+
+    expect(result).toMatchObject({
+      path: '/home',
+      Route: HomeRoute,
+      children: [{ path: '/login', Route: LoginRoute }],
     });
   });
 });
