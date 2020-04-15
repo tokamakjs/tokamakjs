@@ -1,5 +1,14 @@
+import { RouteDefinition } from '../core';
+
+export enum ModuleMetadataKey {
+  ROUTING = 'routing',
+  PROVIDERS = 'providers',
+  IMPORTS = 'imports',
+  EXPORTS = 'exports',
+}
+
 export interface ModuleMetadata {
-  routing?: Array<any>;
+  routing?: Array<RouteDefinition>;
   providers?: Array<any>;
   imports?: Array<any>;
   exports?: Array<any>;

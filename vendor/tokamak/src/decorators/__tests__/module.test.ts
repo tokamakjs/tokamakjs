@@ -2,7 +2,7 @@ import { Module } from '../module';
 
 describe('@Module', () => {
   @Module({
-    routing: ['Test'],
+    routing: ['Test' as any],
     providers: ['Test'],
     imports: ['Test'],
     exports: ['Test'],
