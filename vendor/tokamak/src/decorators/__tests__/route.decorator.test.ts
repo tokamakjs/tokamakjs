@@ -1,4 +1,5 @@
-import { RouteMetadata, route } from '../route.decorator';
+import { Reflector } from '../../reflection';
+import { route } from '../route.decorator';
 
 describe('@route', () => {
   const RouteView = () => null;
@@ -11,8 +12,7 @@ describe('@route', () => {
   class Route {}
 
   it('should add route metadata to the class', () => {
-    const view = Reflect.getMetadata<RouteMetadata, 'view'>('view', Route);
-    const controller = Reflect.getMetadata<RouteMetadata, 'controller'>('controller', Route);
+    const { view, controller } = Reflector.getRouteMetadata(Route);
 
     expect(view).toBe(RouteView);
     expect(controller).toBe(RouteController);

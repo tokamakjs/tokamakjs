@@ -1,11 +1,11 @@
 import join from 'url-join';
 
-import { ModuleMetadata } from '../decorators';
+import { Reflector } from '../reflection';
 import { Constructor } from '../types';
 
 export interface RouteDefinition {
   path: string;
-  Route: Constructor;
+  Route: Function;
   children: Array<RouteDefinition>;
 }
 
@@ -25,8 +25,8 @@ export function createRoute(
   return { path, Route, children };
 }
 
-export function includeRoutes(basepath: string, Module: Constructor): Array<RouteDefinition> {
-  const routing = Reflect.getMetadata<ModuleMetadata, 'routing'>('routing', Module);
+export function includeRoutes(basepath: string, Module: Function): Array<RouteDefinition> {
+  const { routing } = Reflector.getModuleMetadata(Module);
 
   if (routing == null) {
     throw new Error('Invalid');
