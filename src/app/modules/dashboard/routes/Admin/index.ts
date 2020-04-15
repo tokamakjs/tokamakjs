@@ -1,6 +1,6 @@
 import { route } from 'vendor/tokamak';
 
-import { AdminView } from './Admin.controller';
+import { AdminView } from './Admin.view';
 
 @route({
   view: AdminView,

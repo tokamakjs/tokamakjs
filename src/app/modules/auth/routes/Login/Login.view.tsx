@@ -1,3 +1,3 @@
 export const LoginView = () => {
-  return null;
+  return 'Login';
 };

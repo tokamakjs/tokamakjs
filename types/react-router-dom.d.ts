@@ -59,6 +59,12 @@ declare module 'react-router-dom' {
   export interface ObjectRoute {
     path: string;
     element: ReactNode;
-    children: Array<ObjectRoute>;
+    children?: Array<ObjectRoute>;
   }
+
+  export function useRoutes(routes: Array<ObjectRoute>): ReactElement;
+
+  interface OutletProps {}
+
+  export const Outlet: FunctionComponent<OutletProps>;
 }

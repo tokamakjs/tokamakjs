@@ -1,6 +1,9 @@
-import { module } from 'vendor/tokamak';
+import { createRoute, includeRoutes, module } from 'vendor/tokamak';
 
-import { routing } from './routing';
+import { AuthModule } from './modules/auth/Auth.module';
+import { DashboardModule } from './modules/dashboard/Dashboard.module';
+import { About } from './routes/About';
+import { Root } from './routes/Root';
 
 @module({
   /**
@@ -12,6 +15,29 @@ import { routing } from './routing';
    * However, the app would render normally in this case since we don't need
    * any of the exported providers from AuthModule or DashboardModule.
    */
-  routing,
+  routing: [
+    createRoute('*', Root, [
+      includeRoutes('/auth', AuthModule),
+      includeRoutes('/', DashboardModule),
+    ]),
+    createRoute('/about', About),
+    /**
+     * It's also possible to nest createRoutes
+     *
+     * Either without root view (just prefixes the children):
+     *
+     * createRoute('/admin', [
+     *   createRoute('/', AdminHome),
+     *   createRoute('/users', AdminUsers),
+     * ]),
+     *
+     * Or having a root view (necessary to use <Outlet />)
+     *
+     * createRoute('/admin', Admin, [
+     *   createRoute('/', AdminHome),
+     *   createRoute('/users', AdminUsers),
+     * ]);
+     */
+  ],
 })
 export class AppModule {}

@@ -1,3 +1,2 @@
-export const AdminView = () => {
-  return null;
-};
+// @usePipe(AuthPipe())
+class AdminController {}
