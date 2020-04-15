@@ -1,0 +1,9 @@
+{
+  ".js, .jsx": {
+    "style": "local"
+  },
+  ".ts, .tsx": {
+    "parser": "typescript",
+    "style": "local"
+  }
+}
