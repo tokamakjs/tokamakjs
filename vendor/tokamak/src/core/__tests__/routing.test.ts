@@ -8,7 +8,7 @@ describe('createRoute', () => {
 
   it('should create a valid route', () => {
     const result = createRoute('/home', HomeRoute);
-    expect(result).toMatchObject({
+    expect(result).toEqual({
       path: '/home',
       Route: HomeRoute,
       children: [],
@@ -18,10 +18,10 @@ describe('createRoute', () => {
   it('should create children routes', () => {
     const result = createRoute('/home', HomeRoute, [createRoute('/login', LoginRoute)]);
 
-    expect(result).toMatchObject({
+    expect(result).toEqual({
       path: '/home',
       Route: HomeRoute,
-      children: [{ path: '/login', Route: LoginRoute }],
+      children: [{ path: '/login', Route: LoginRoute, children: [] }],
     });
   });
 
@@ -31,7 +31,7 @@ describe('createRoute', () => {
       [createRoute('/sign-up', SignUpRoute)],
     ]);
 
-    expect(result).toMatchObject({
+    expect(result).toEqual({
       path: '/home',
       Route: HomeRoute,
       children: [
@@ -65,7 +65,7 @@ describe('includeRoutes', () => {
     const result = includeRoutes('/auth', AuthModule);
 
     expect(result).toHaveLength(2);
-    expect(result[0]).toMatchObject({ ...loginRoute, path: '/auth/login' });
-    expect(result[1]).toMatchObject({ ...signUpRoute, path: '/auth/sign-up' });
+    expect(result[0]).toEqual({ ...loginRoute, path: '/auth/login' });
+    expect(result[1]).toEqual({ ...signUpRoute, path: '/auth/sign-up' });
   });
 });

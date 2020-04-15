@@ -55,4 +55,10 @@ declare module 'react-router-dom' {
   type navigate = (to: string) => void;
 
   export function useNavigate(): navigate;
+
+  export interface ObjectRoute {
+    path: string;
+    element: ReactNode;
+    children: Array<ObjectRoute>;
+  }
 }
