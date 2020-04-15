@@ -1,7 +1,7 @@
-import { Module } from '../module';
+import { module } from '../module.decorator';
 
 describe('@Module', () => {
-  @Module({
+  @module({
     routing: ['Test' as any],
     providers: ['Test'],
     imports: ['Test'],
@@ -9,7 +9,7 @@ describe('@Module', () => {
   })
   class TestModule {}
 
-  it('should enhance class with expected module metadata', () => {
+  it('should add module metadata to the class', () => {
     const routing = Reflect.getMetadata('routing', TestModule);
     const providers = Reflect.getMetadata('providers', TestModule);
     const imports = Reflect.getMetadata('imports', TestModule);

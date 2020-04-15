@@ -1,9 +1,9 @@
-import { Route } from 'vendor/tokamak';
+import { route } from 'vendor/tokamak';
 
 import { HomeController } from './Home.controller';
 import { HomeView } from './Home.view';
 
-@Route({
+@route({
   controller: HomeController,
   view: HomeView,
 })

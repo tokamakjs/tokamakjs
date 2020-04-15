@@ -1,2 +1,2 @@
-export * from './module';
-export * from './route';
+export * from './module.decorator';
+export * from './route.decorator';

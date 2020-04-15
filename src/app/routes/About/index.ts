@@ -1,8 +1,8 @@
-import { Route } from 'vendor/tokamak';
+import { route } from 'vendor/tokamak';
 
 import { AboutView } from './About.view';
 
-@Route({
+@route({
   view: AboutView,
   // A controller is not required for "dumb" views
 })

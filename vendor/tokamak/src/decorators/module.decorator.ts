@@ -1,12 +1,5 @@
 import { RouteDefinition } from '../core';
 
-export enum ModuleMetadataKey {
-  ROUTING = 'routing',
-  PROVIDERS = 'providers',
-  IMPORTS = 'imports',
-  EXPORTS = 'exports',
-}
-
 export interface ModuleMetadata {
   routing?: Array<RouteDefinition>;
   providers?: Array<any>;
@@ -14,7 +7,7 @@ export interface ModuleMetadata {
   exports?: Array<any>;
 }
 
-export function Module(metadata: ModuleMetadata): ClassDecorator {
+export function module(metadata: ModuleMetadata): ClassDecorator {
   return (target: Function): void => {
     Reflect.ownKeys(metadata).forEach((key) => {
       Reflect.defineMetadata(key, metadata[key as keyof ModuleMetadata], target);

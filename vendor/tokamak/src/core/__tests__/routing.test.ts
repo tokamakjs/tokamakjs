@@ -1,4 +1,4 @@
-import { ModuleMetadataKey } from '../../decorators';
+import { ModuleMetadata } from '../../decorators';
 import { RouteDefinition, createRoute, includeRoutes } from '../routing';
 
 describe('createRoute', () => {
@@ -58,7 +58,7 @@ describe('includeRoutes', () => {
   };
 
   beforeEach(() => {
-    Reflect.defineMetadata(ModuleMetadataKey.ROUTING, [loginRoute, signUpRoute], AuthModule);
+    Reflect.defineMetadata<ModuleMetadata>('routing', [loginRoute, signUpRoute], AuthModule);
   });
 
   it('should generate a prefixed array of routes', () => {

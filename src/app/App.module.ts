@@ -1,8 +1,8 @@
-import { Module } from 'vendor/tokamak';
+import { module } from 'vendor/tokamak';
 
 import { routing } from './routing';
 
-@Module({
+@module({
   /**
    * It's not the same as importing a module, as import/export is not related
    * with routes. In this case, even if you tried to use one of the exports

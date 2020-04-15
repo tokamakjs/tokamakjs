@@ -1,6 +1,6 @@
 import join from 'url-join';
 
-import { ModuleMetadataKey } from '../decorators';
+import { ModuleMetadata } from '../decorators';
 import { Constructor } from '../types';
 
 export interface RouteDefinition {
@@ -9,7 +9,7 @@ export interface RouteDefinition {
   children: Array<RouteDefinition>;
 }
 
-function _isArrayOfArrays(value: Array<any>): value is Array<Array<RouteDefinition>> {
+function _isArrayOfArrays<T>(value: Array<any>): value is Array<Array<T>> {
   return value.length > 0 && Array.isArray(value[0]);
 }
 
@@ -26,7 +26,7 @@ export function createRoute(
 }
 
 export function includeRoutes(basepath: string, Module: Constructor): Array<RouteDefinition> {
-  const routing: Array<RouteDefinition> = Reflect.getMetadata(ModuleMetadataKey.ROUTING, Module);
+  const routing = Reflect.getMetadata<ModuleMetadata, 'routing'>('routing', Module);
 
   if (routing == null) {
     throw new Error('Invalid');
