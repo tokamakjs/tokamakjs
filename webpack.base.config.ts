@@ -21,14 +21,14 @@ const baseConfig: Configuration = {
     plugins: [new TsconfigPathsPlugin()],
     modules: ['node_modules', 'vendor'],
   },
-  entry: { app: ['./app/index.ts'] },
+  entry: { app: ['./src/index.ts'] },
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'js/[name].js',
     publicPath: '/',
   },
   plugins: [
-    new HtmlPlugin({ filename: 'index.html', template: 'public/index.html' }),
+    new HtmlPlugin({ filename: 'index.html', template: 'src/index.html' }),
     new EnvironmentPlugin(['NODE_ENV', 'APP_ENV', 'AUTH_HOST']),
     new InterpolateHtmlPlugin(HtmlPlugin, { PUBLIC_URL: '' }),
   ],

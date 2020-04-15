@@ -7,4 +7,5 @@ module.exports = {
       tsConfig: { module: 'ESNext' },
     },
   },
+  setupFilesAfterEnv: ['./jest.setup.ts'],
 };
