@@ -2,7 +2,7 @@ import { createElement } from 'react';
 
 import { ModuleMetadata, RouteMetadata } from '../../decorators';
 import { buildRoutes } from '../build-routes';
-import { RouteDefinition } from '../routing';
+import { RouteDefinition } from '../utils';
 
 describe('buildRoutes', () => {
   const div = createElement('div');

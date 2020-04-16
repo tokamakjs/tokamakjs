@@ -1,5 +1,5 @@
 import { ModuleMetadata } from '../../decorators';
-import { RouteDefinition, createRoute, includeRoutes } from '../routing';
+import { RouteDefinition, createRoute, includeRoutes } from '../utils';
 
 describe('createRoute', () => {
   class HomeRoute {}

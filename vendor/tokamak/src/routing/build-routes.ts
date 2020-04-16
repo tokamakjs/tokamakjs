@@ -3,7 +3,7 @@ import { ObjectRoute } from 'react-router-dom';
 
 import { Reflector } from '../reflection';
 import { instantiateController } from './instantiate-controller';
-import { RouteDefinition } from './routing';
+import { RouteDefinition } from './utils';
 
 function _transformRoutes(routing: Array<RouteDefinition>): Array<ObjectRoute> {
   return routing.map(
