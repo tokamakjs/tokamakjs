@@ -5,4 +5,4 @@ import { SignUpView } from './SignUp.view';
 @route({
   view: SignUpView,
 })
-export class SignUp {}
+export class SignUpRoute {}

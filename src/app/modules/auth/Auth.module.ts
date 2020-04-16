@@ -1,12 +1,12 @@
 import { createRoute, module } from 'vendor/tokamak';
 
 import { AuthApi } from './api/Auth.api';
-import { Login } from './routes/Login';
-import { SignUp } from './routes/SignUp';
+import { LoginRoute } from './routes/Login';
+import { SignUpRoute } from './routes/SignUp';
 import { AuthStore } from './stores/Auth.store';
 
 @module({
-  routing: [createRoute('/login', Login), createRoute('/sign-up', SignUp)],
+  routing: [createRoute('/login', LoginRoute), createRoute('/sign-up', SignUpRoute)],
   providers: [AuthStore, AuthApi],
   imports: [],
   exports: [AuthStore],
