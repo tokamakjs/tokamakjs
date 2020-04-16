@@ -2,6 +2,7 @@ import { createElement } from 'react';
 import { ObjectRoute } from 'react-router-dom';
 
 import { Reflector } from '../reflection';
+import { instantiateController } from './instantiate-controller';
 import { RouteDefinition } from './routing';
 
 function _transformRoutes(routing: Array<RouteDefinition>): Array<ObjectRoute> {
@@ -9,7 +10,7 @@ function _transformRoutes(routing: Array<RouteDefinition>): Array<ObjectRoute> {
     ({ path, Route, children }): ObjectRoute => {
       const { view, controller } = Reflector.getRouteMetadata(Route);
 
-      const Component = () => view(controller);
+      const Component = () => view(instantiateController(Route.name, controller));
       Component.displayName = Route.name;
 
       return {

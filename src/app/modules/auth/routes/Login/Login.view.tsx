@@ -1,6 +1,8 @@
 import { css } from 'emotion';
 import React from 'react';
 
+import { LoginController } from './Login.controller';
+
 const styles = {
   login: css`
     display: flex;
@@ -21,7 +23,11 @@ const styles = {
   `,
 };
 
-export const LoginView = () => {
+export const LoginView = (ctrl: LoginController) => {
+  if (ctrl.isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className={styles.login}>
       <div className={styles.container}>
