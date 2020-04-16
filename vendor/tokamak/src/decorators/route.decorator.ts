@@ -1,8 +1,8 @@
-import { Constructor } from '../types';
+import { Type } from '../types';
 
 export interface RouteMetadata {
   view: any; // TODO: Correct typing
-  controller?: Constructor;
+  controller?: Type;
 }
 
 export function route(metadata: RouteMetadata): ClassDecorator {

@@ -1,4 +1,4 @@
-import { Constructor } from '../types';
+import { Type } from '../types';
 
 export function createFakeController(routeName: string): {} {
   return new Proxy(
@@ -18,7 +18,7 @@ export function createFakeController(routeName: string): {} {
   );
 }
 
-export function instantiateController(routeName: string, Controller?: Constructor) {
+export function instantiateController(routeName: string, Controller?: Type) {
   if (Controller == null) {
     return createFakeController(routeName);
   }

@@ -1,7 +1,7 @@
 import join from 'url-join';
 
 import { Reflector } from '../reflection';
-import { Constructor } from '../types';
+import { Type } from '../types';
 
 export interface RouteDefinition {
   path: string;
@@ -15,7 +15,7 @@ function _isArrayOfArrays<T>(value: Array<any>): value is Array<Array<T>> {
 
 export function createRoute(
   path: string,
-  Route: Constructor,
+  Route: Type,
   children: Array<RouteDefinition> | Array<Array<RouteDefinition>> = [],
 ): RouteDefinition {
   if (_isArrayOfArrays(children)) {
