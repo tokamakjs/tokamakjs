@@ -34,15 +34,25 @@ describe('buildRoutes', () => {
   it('should return a react-router routes config', () => {
     const result = buildRoutes(AppModule);
 
-    expect(result).toEqual([
-      {
-        path: '/',
-        element: div,
-        children: [
-          { path: '/login', element: div, children: [] },
-          { path: '/sign-up', element: div, children: [] },
-        ],
-      },
-    ]);
+    expect(result).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [],
+              "element": <LoginRoute />,
+              "path": "/login",
+            },
+            Object {
+              "children": Array [],
+              "element": <SignUpRoute />,
+              "path": "/sign-up",
+            },
+          ],
+          "element": <RootRoute />,
+          "path": "/",
+        },
+      ]
+    `);
   });
 });

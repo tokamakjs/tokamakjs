@@ -5,4 +5,4 @@ import { RootView } from './Root.view';
 @route({
   view: RootView,
 })
-export class Root {}
+export class RootRoute {}
