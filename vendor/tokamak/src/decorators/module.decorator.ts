@@ -1,4 +1,4 @@
-import { RouteDefinition } from '../core';
+import { RouteDefinition } from '../routing';
 
 export interface ModuleMetadata {
   routing?: Array<RouteDefinition>;
