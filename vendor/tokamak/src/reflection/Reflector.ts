@@ -1,5 +1,5 @@
 import { ModuleMetadata, RouteMetadata } from '../decorators';
-import { Type } from '../types';
+import { Provide, Type } from '../types';
 
 export class Reflector {
   static getRouteMetadata(metatype: Type): RouteMetadata {
@@ -22,7 +22,32 @@ export class Reflector {
     return { routing, providers, imports, exports };
   }
 
-  static getConstructorParameters(metatype: Type): Array<Type> {
-    return Reflect.getMetadata('design:paramtypes', metatype);
+  static getConstructorDependencies(metatype?: Object): Array<Provide> {
+    if (metatype == null) {
+      return [];
+    }
+
+    const dependencies = Reflect.getMetadata('design:paramtypes', metatype) ?? [];
+    const manualDependencies = Reflector.getManuallyInjectedDeps(metatype);
+
+    manualDependencies.forEach((dep) => (dependencies[dep.index] = dep.token));
+
+    return dependencies;
+  }
+
+  static getTypeOfProperty(target: Object, key: string | symbol): any {
+    return Reflect.getMetadata('design:type', target, key);
+  }
+
+  static getManuallyInjectedDeps(target: Object): Array<{ index: number; token: any }> {
+    return Reflect.getMetadata('self:paramtypes', target) ?? [];
+  }
+
+  static addManuallyInjectedDeps(
+    target: Object,
+    dependencies: Array<{ index: number; token: any }>,
+  ): void {
+    const existing = Reflector.getManuallyInjectedDeps(target);
+    Reflect.defineMetadata('self:paramtypes', [...existing, ...dependencies], target);
   }
 }

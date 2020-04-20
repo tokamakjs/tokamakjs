@@ -4,3 +4,8 @@ export enum ModuleMetadataKeys {
   ROUTING = 'routing',
   EXPORTS = 'exports',
 }
+
+export enum Scope {
+  SINGLETON = 'SINGLETON',
+  TRANSIENT = 'TRANSIENT',
+}

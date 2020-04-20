@@ -7,7 +7,7 @@ export class LoginController {
   constructor(private readonly authStore: AuthStore) {}
 
   get isLoading() {
-    return false;
+    return this.authStore.isLoginIn;
   }
 
   async login(username: string, password: string): Promise<string> {

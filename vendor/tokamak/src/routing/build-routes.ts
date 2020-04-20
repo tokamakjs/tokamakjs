@@ -1,7 +1,7 @@
 import { ComponentType, createElement } from 'react';
 import { ObjectRoute } from 'react-router-dom';
 
-import { Context } from '../core';
+import { AppContext } from '../core';
 import { Reflector } from '../reflection';
 import { Type } from '../types';
 import { createFakeController } from './fake-controller';
@@ -10,7 +10,7 @@ import { RouteDefinition } from './utils';
 function _transformRoutes(
   Module: Type,
   routing: Array<RouteDefinition>,
-  context: Context,
+  context: AppContext,
 ): Array<ObjectRoute> {
   return routing.map(
     ({ path, Route, children }): ObjectRoute => {
@@ -20,7 +20,7 @@ function _transformRoutes(
       if (controller == null) {
         Component = () => view(createFakeController(Route.name));
       } else {
-        const instance = context.select(Module).get(controller);
+        const instance = context.get(controller);
         Component = () => view(instance);
       }
 
@@ -35,7 +35,7 @@ function _transformRoutes(
   );
 }
 
-export function buildRoutes(Module: Type, context: Context): Array<ObjectRoute> {
+export function buildRoutes(Module: Type, context: AppContext): Array<ObjectRoute> {
   const { routing } = Reflector.getModuleMetadata(Module);
 
   if (routing == null) {

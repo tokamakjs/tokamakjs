@@ -1,3 +1,5 @@
+import 'reflect-metadata';
+
 import { renderModule } from 'vendor/tokamak';
 
 import { AppModule } from './app/App.module';
