@@ -1,5 +1,8 @@
 // import { AuthApi } from '../api/Auth.api';
 
+import { injectable } from 'vendor/tokamak';
+
+@injectable()
 export class AuthStore {
   // constructor(private readonly api: AuthApi) {}
 

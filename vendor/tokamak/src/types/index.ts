@@ -4,3 +4,4 @@ export * from './Token';
 export * from './Provider';
 export * from './Node';
 export * from './Injectable';
+export * from './Scope';

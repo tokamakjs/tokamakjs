@@ -7,11 +7,11 @@ import { ModuleWrapper } from './ModuleWrapper';
 export class Container {
   private readonly _tokenFactory = new ModuleTokenFactory();
   public readonly modules = new Map<string, ModuleWrapper>();
-
   private _initialized = false;
 
   public async initialize() {
     await this.addDependencies();
+    await this.instantiateDependencies();
     this._initialized = true;
   }
 
@@ -49,9 +49,9 @@ export class Container {
   private async addDependencies(): Promise<void> {
     for (const [, module] of this.modules) {
       this.addImports(module);
-      this.addExports(module);
       this.addProviders(module);
       this.addControllers(module);
+      this.addExports(module);
     }
   }
 
@@ -65,7 +65,7 @@ export class Container {
 
       const relatedToken = this._tokenFactory.getToken(imported);
       const importedModule = this.modules.get(relatedToken);
-      console.log(this.modules, relatedToken, imported);
+
       if (importedModule == null) {
         throw new UnknownModuleException(module.metatype.name);
       }
@@ -111,6 +111,12 @@ export class Container {
       const { Route } = route;
       addControllersFromRoute(Route);
       route.children.forEach((route) => addControllersFromRoute(route.Route));
+    });
+  }
+
+  private async instantiateDependencies(): Promise<void> {
+    this.modules.forEach((module) => {
+      module.createInstances();
     });
   }
 }

@@ -25,7 +25,7 @@ export function createRoute(
   return { path, Route, children };
 }
 
-export function includeRoutes(basepath: string, Module: Function): Array<RouteDefinition> {
+export function includeRoutes(basepath: string, Module: Type): Array<RouteDefinition> {
   const { routing } = Reflector.getModuleMetadata(Module);
 
   if (routing == null) {

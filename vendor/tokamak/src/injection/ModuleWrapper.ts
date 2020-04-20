@@ -7,10 +7,9 @@ import { InstanceWrapper } from './InstanceWrapper';
 export class ModuleWrapper {
   public readonly name: string;
   public readonly id: string;
-  private readonly _imports = new Set<ModuleWrapper>();
-  // Map => providerName: InstanceWrapper(Provider)
-  private readonly _providers = new Map<string, InstanceWrapper<Injectable>>();
-  private readonly _exports = new Set<string>();
+  public readonly imports = new Set<ModuleWrapper>();
+  public readonly providers = new Map<string, InstanceWrapper<Injectable>>();
+  public readonly exports = new Set<string>();
 
   constructor(public readonly metatype: Type, public readonly scope: Array<Type>) {
     this.id = v4();
@@ -18,23 +17,22 @@ export class ModuleWrapper {
   }
 
   public addRelatedModule(module: ModuleWrapper): void {
-    this._imports.add(module);
+    this.imports.add(module);
   }
 
   public addProvider(provider: Provider): void {
     // TODO:
-    this._providers.set(provider.name, new InstanceWrapper());
+    this.providers.set(provider.name, new InstanceWrapper(provider, this));
   }
 
   public addExportedProviderOrModule(provider: Provider | Type): void {
-    // TODO:
     // Are we exporting a provider?
-    if (this._providers.has(provider.name)) {
-      this._exports.add(provider.name);
+    if (this.providers.has(provider.name)) {
+      this.exports.add(provider.name);
     }
     // Are we exporting an imported module?
     else if (this.isImportedModule(provider)) {
-      this._exports.add(provider.name);
+      this.exports.add(provider.name);
     }
     // We're exporting something that is not in the context
     else {
@@ -42,8 +40,14 @@ export class ModuleWrapper {
     }
   }
 
+  public async createInstances(): Promise<void> {
+    this.providers.forEach((provider) => {
+      provider.createInstance(this.providers);
+    });
+  }
+
   private isImportedModule(metatype: Type): boolean {
-    const names = Array.from(this._imports.values()).map((m) => m.metatype.name);
+    const names = Array.from(this.imports.values()).map((m) => m.metatype.name);
     return names.includes(metatype.name);
   }
 }

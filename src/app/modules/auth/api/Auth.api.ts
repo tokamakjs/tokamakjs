@@ -1,3 +1,6 @@
+import { injectable } from 'vendor/tokamak';
+
+@injectable()
 export class AuthApi {
   async login(username: string, password: string): Promise<string> {
     console.log(username);
