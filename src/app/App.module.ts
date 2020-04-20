@@ -13,5 +13,6 @@ import { RootRoute } from './routes/Root';
     ]),
     createRoute('/about', About),
   ],
+  imports: [AuthModule, DashboardModule],
 })
 export class AppModule {}

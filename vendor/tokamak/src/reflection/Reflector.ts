@@ -12,11 +12,11 @@ export class Reflector {
     return { view, controller };
   }
 
-  static getModuleMetadata(Module: Function): ModuleMetadata {
-    const routing = Reflect.getMetadata<ModuleMetadata, 'routing'>('routing', Module);
-    const providers = Reflect.getMetadata<ModuleMetadata, 'providers'>('providers', Module);
-    const imports = Reflect.getMetadata<ModuleMetadata, 'imports'>('imports', Module);
-    const exports = Reflect.getMetadata<ModuleMetadata, 'exports'>('exports', Module);
+  static getModuleMetadata(Module: Function): Required<ModuleMetadata> {
+    const routing = Reflect.getMetadata<ModuleMetadata, 'routing'>('routing', Module) ?? [];
+    const providers = Reflect.getMetadata<ModuleMetadata, 'providers'>('providers', Module) ?? [];
+    const imports = Reflect.getMetadata<ModuleMetadata, 'imports'>('imports', Module) ?? [];
+    const exports = Reflect.getMetadata<ModuleMetadata, 'exports'>('exports', Module) ?? [];
 
     return { routing, providers, imports, exports };
   }

@@ -1,33 +1,46 @@
-import { createElement } from 'react';
+import { ComponentType, createElement } from 'react';
 import { ObjectRoute } from 'react-router-dom';
 
+import { Context } from '../core';
 import { Reflector } from '../reflection';
-import { instantiateController } from './instantiate-controller';
+import { Type } from '../types';
+import { createFakeController } from './fake-controller';
 import { RouteDefinition } from './utils';
 
-function _transformRoutes(routing: Array<RouteDefinition>): Array<ObjectRoute> {
+function _transformRoutes(
+  Module: Type,
+  routing: Array<RouteDefinition>,
+  context: Context,
+): Array<ObjectRoute> {
   return routing.map(
     ({ path, Route, children }): ObjectRoute => {
       const { view, controller } = Reflector.getRouteMetadata(Route);
 
-      const Component = () => view(instantiateController(Route.name, controller));
+      let Component: ComponentType;
+      if (controller == null) {
+        Component = () => view(createFakeController(Route.name));
+      } else {
+        const instance = context.select(Module).get(controller);
+        Component = () => view(instance);
+      }
+
       Component.displayName = Route.name;
 
       return {
         path,
         element: createElement(Component),
-        children: _transformRoutes(children),
+        children: _transformRoutes(Module, children, context),
       };
     },
   );
 }
 
-export function buildRoutes(Module: Function): Array<ObjectRoute> {
+export function buildRoutes(Module: Type, context: Context): Array<ObjectRoute> {
   const { routing } = Reflector.getModuleMetadata(Module);
 
   if (routing == null) {
     throw new Error('Invalid');
   }
 
-  return _transformRoutes(routing);
+  return _transformRoutes(Module, routing, context);
 }

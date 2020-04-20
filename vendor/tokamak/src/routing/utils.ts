@@ -5,7 +5,7 @@ import { Type } from '../types';
 
 export interface RouteDefinition {
   path: string;
-  Route: Function;
+  Route: Type;
   children: Array<RouteDefinition>;
 }
 
