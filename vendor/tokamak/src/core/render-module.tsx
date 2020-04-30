@@ -1,3 +1,5 @@
+import 'mobx-react/batchingForReactDom';
+
 import React from 'react';
 import { render } from 'react-dom';
 import { BrowserRouter as Router, useRoutes } from 'react-router-dom';

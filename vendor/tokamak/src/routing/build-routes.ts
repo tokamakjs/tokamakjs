@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react';
 import { ComponentType, createElement } from 'react';
 import { ObjectRoute } from 'react-router-dom';
 
@@ -18,10 +19,10 @@ function _transformRoutes(
 
       let Component: ComponentType;
       if (controller == null) {
-        Component = () => view(createFakeController(Route.name));
+        Component = observer(() => view(createFakeController(Route.name)));
       } else {
         const instance = context.get(controller);
-        Component = () => view(instance);
+        Component = observer(() => view(instance));
       }
 
       Component.displayName = Route.name;

@@ -1,3 +1,4 @@
+import { action, observable } from 'mobx';
 import { OnDidInit, OnInit, injectable } from 'vendor/tokamak';
 
 import { AuthApi } from '../api/Auth.api';
@@ -5,8 +6,7 @@ import { LocalStorageService } from '../services';
 
 @injectable()
 export class AuthStore implements OnInit, OnDidInit {
-  public isLoginIn = false;
-  private _authToken?: string;
+  @observable public isLoginIn = false;
 
   constructor(
     private readonly api: AuthApi,
@@ -15,18 +15,19 @@ export class AuthStore implements OnInit, OnDidInit {
 
   onInit() {
     console.log('On init AuthStore');
-    this._authToken = this.storageService.getAuthToken();
   }
 
   onDidInit() {
     console.log('On did init AuthStore');
   }
 
+  @action.bound
   async login(username: string, password: string): Promise<string> {
     this.isLoginIn = true;
     const token = await this.api.login(username, password);
-    this._authToken = token;
-    this.isLoginIn = true;
+    console.log('AuthToken', token);
+    this.storageService.saveAuthToken(token);
+    this.isLoginIn = false;
     return token;
   }
 }
