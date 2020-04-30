@@ -1,7 +1,7 @@
 import { computed } from 'mobx';
 import { controller } from 'vendor/tokamak';
 
-import { AuthStore } from '../../stores/Auth.store';
+import { AuthStore } from '~/modules/auth/stores';
 
 @controller()
 export class LoginController {

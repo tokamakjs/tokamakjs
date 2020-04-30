@@ -31,6 +31,7 @@ interface LoginForm {
 
 export const LoginView = (ctrl: LoginController) => {
   const loginForm = useForm<LoginForm>({});
+  // const navigate = useNavigate();
 
   if (ctrl.isLoading) {
     return <div>Loading...</div>;
@@ -63,7 +64,11 @@ export const LoginView = (ctrl: LoginController) => {
         </p>
         <p>
           <button
-            onClick={() => ctrl.login(loginForm.values.username!, loginForm.values.password!)}>
+            onClick={() => {
+              ctrl.login(loginForm.values.username!, loginForm.values.password!);
+              // view routing alternative:
+              // navigate('/');
+            }}>
             Login
           </button>
         </p>

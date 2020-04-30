@@ -1,3 +1,5 @@
 export class UndefinedDependencyException extends Error {
-  // TODO: More helpful message error
+  constructor(name?: string, context?: string) {
+    super(`Cannot find ${name} dependency in ${context} context.`);
+  }
 }

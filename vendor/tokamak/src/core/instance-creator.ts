@@ -23,7 +23,7 @@ export class InstanceCreator<T = any> {
   private async resolveDependencies(ctx: Context): Promise<Array<any>> {
     const { inject, metatype } = this.wrapper;
 
-    // If inject != null is a factory provider, so no class to instantiate
+    // If inject != null we have a factory provider, so no class to instantiate
     const dependencies = inject != null ? inject : Reflector.getConstructorDependencies(metatype);
 
     // TODO: Add support for params marked with the @optional decorator
@@ -58,7 +58,7 @@ export class InstanceCreator<T = any> {
       const wrapper = await this.resolveFromImports(ctx, name);
 
       if (wrapper == null) {
-        throw new UndefinedDependencyException();
+        throw new UndefinedDependencyException(name, this.wrapper.name);
       }
 
       await wrapper.createInstance(ctx);
