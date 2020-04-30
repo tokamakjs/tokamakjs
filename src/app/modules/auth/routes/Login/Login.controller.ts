@@ -1,3 +1,4 @@
+import { computed } from 'mobx';
 import { controller } from 'vendor/tokamak';
 
 import { AuthStore } from '../../stores/Auth.store';
@@ -6,6 +7,7 @@ import { AuthStore } from '../../stores/Auth.store';
 export class LoginController {
   constructor(private readonly authStore: AuthStore) {}
 
+  @computed
   get isLoading() {
     return this.authStore.isLoginIn;
   }
