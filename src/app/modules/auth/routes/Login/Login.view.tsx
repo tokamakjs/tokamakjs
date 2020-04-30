@@ -1,5 +1,6 @@
 import { css } from 'emotion';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'vendor/tokamak';
 
 import { LoginController } from './Login.controller';
@@ -31,7 +32,7 @@ interface LoginForm {
 
 export const LoginView = (ctrl: LoginController) => {
   const loginForm = useForm<LoginForm>({});
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   if (ctrl.isLoading) {
     return <div>Loading...</div>;
@@ -64,10 +65,13 @@ export const LoginView = (ctrl: LoginController) => {
         </p>
         <p>
           <button
-            onClick={() => {
-              ctrl.login(loginForm.values.username!, loginForm.values.password!);
-              // view routing alternative:
-              // navigate('/');
+            onClick={async () => {
+              const token = await ctrl.login(
+                loginForm.values.username!,
+                loginForm.values.password!,
+              );
+
+              if (token != null) navigate('/');
             }}>
             Login
           </button>
