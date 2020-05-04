@@ -1,0 +1,2 @@
+// @usePipe(AuthPipe())
+class AdminController {}
