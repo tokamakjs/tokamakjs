@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { UserCard } from '../../components';
 import { HomeController } from './Home.controller';
 
 export const HomeView = (ctrl: HomeController) => {
@@ -19,11 +20,8 @@ export const HomeView = (ctrl: HomeController) => {
   return (
     <div>
       <h1>Home</h1>
-      <h2>Welcome back:</h2>
-      <ul>
-        <li>First Name: {ctrl.currentUser.firstName}</li>
-        <li>Last Name: {ctrl.currentUser.lastName}</li>
-      </ul>
+      <h2>Welcome back</h2>
+      <UserCard firstName={ctrl.currentUser.firstName} lastName={ctrl.currentUser.lastName} />
       <button onClick={() => ctrl.logout()}>Log out</button>
     </div>
   );
