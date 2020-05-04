@@ -11,4 +11,8 @@ export class LocalStorageService {
   public getAuthToken(): string | undefined {
     return localStorage.getItem(LocalStorageService.LS_TOKEN_KEY) ?? undefined;
   }
+
+  public deleteAuthToken(): void {
+    localStorage.removeItem(LocalStorageService.LS_TOKEN_KEY);
+  }
 }

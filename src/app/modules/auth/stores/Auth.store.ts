@@ -6,6 +6,7 @@ import { LocalStorageService } from '../services';
 
 @injectable()
 export class AuthStore implements OnInit, OnDidInit {
+  @observable public authToken?: string;
   @observable public isLoginIn = false;
 
   constructor(
@@ -15,6 +16,7 @@ export class AuthStore implements OnInit, OnDidInit {
 
   onInit() {
     console.log('On init AuthStore');
+    this.authToken = this.storageService.getAuthToken();
   }
 
   onDidInit() {
@@ -22,12 +24,18 @@ export class AuthStore implements OnInit, OnDidInit {
   }
 
   @action.bound
-  async login(username: string, password: string): Promise<string> {
+  public async login(username: string, password: string): Promise<string> {
     this.isLoginIn = true;
     const token = await this.api.login(username, password);
     console.log('AuthToken', token);
     this.storageService.saveAuthToken(token);
+    this.authToken = token;
     this.isLoginIn = false;
     return token;
+  }
+
+  public logout(): void {
+    this.storageService.deleteAuthToken();
+    this.authToken = undefined;
   }
 }

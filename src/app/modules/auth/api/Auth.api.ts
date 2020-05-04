@@ -6,7 +6,10 @@ export class AuthApi {
     console.log(username);
     console.log(password);
     return new Promise((resolve) => {
-      setTimeout(() => resolve('token'), 2000);
+      setTimeout(
+        () => resolve(btoa(JSON.stringify({ firstName: username, lastName: 'Smith' }))),
+        2000,
+      );
     });
   }
 }
