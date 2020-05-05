@@ -1,5 +1,4 @@
 import { ControllerMetadata, ModuleMetadata } from '../decorators';
-import { CanActivate } from '../interfaces';
 import { ProviderToken, Type } from '../types';
 
 export class Reflector {
