@@ -1,21 +1,21 @@
 import { Scope } from '../core/enums';
-import { Type } from './Type';
+import { Type } from './type';
 
-export type Provide = string | symbol | Type<any> | Function;
+export type ProviderToken = string | symbol | Type<any> | Function;
 
 export interface ClassProvider<T = any> {
-  provide: Provide;
+  provide: ProviderToken;
   useClass: Type<T>;
   scope?: Scope;
 }
 
 export interface ValueProvider<T = any> {
-  provide: Provide;
+  provide: ProviderToken;
   useValue: T;
 }
 
 export interface FactoryProvider<T = any> {
-  provide: Provide;
+  provide: ProviderToken;
   useFactory: (...args: any[]) => T;
   inject?: Array<Type<any> | string | symbol | Function>;
   scope?: Scope;

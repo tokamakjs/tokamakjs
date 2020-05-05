@@ -1,4 +1,4 @@
-import { Provide, Type } from '../types';
+import { ProviderToken, Type } from '../types';
 import { Context, DEFAULT_CONTEXT } from './constants';
 import { Scope } from './enums';
 import { InstanceCreator } from './instance-creator';
@@ -10,7 +10,7 @@ interface InstanceWrapperKwargs<T> {
   instance?: T;
   scope?: Scope;
   isAsync?: boolean;
-  inject?: Array<Provide>;
+  inject?: Array<ProviderToken>;
 }
 
 export interface Instance<T> {
@@ -24,7 +24,7 @@ export class InstanceWrapper<T = any> {
   public readonly scope: Scope;
   public readonly isAsync: boolean;
   public readonly metatype?: Type<T> | Function;
-  public inject?: Array<Provide>;
+  public inject?: Array<ProviderToken>;
   private readonly instances = new WeakMap<Context, Instance<T>>();
   private readonly creator: InstanceCreator<T>;
 

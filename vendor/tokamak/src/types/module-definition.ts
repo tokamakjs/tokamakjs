@@ -1,6 +1,6 @@
 import { ForwardReference } from '../core/forward-ref';
-import { DynamicModule } from '../types/DynamicModule';
-import { Type } from '../types/Type';
+import { DynamicModule } from './dynamic-module';
+import { Type } from './type';
 
 export type ModuleDefinition = Type | DynamicModule | Promise<DynamicModule> | ForwardReference;
 

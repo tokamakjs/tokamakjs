@@ -1,4 +1,4 @@
-import { ModuleDefinition } from '../interfaces/module-definition';
+import { ModuleDefinition } from '../types';
 import { flatten } from './flatten';
 import { Module } from './module';
 

@@ -1,7 +1,6 @@
 import { UndefinedDependencyException } from '../exceptions';
-import { isForwardReference } from '../interfaces/module-definition';
 import { Reflector } from '../reflection';
-import { Provide, Type, isFunction } from '../types';
+import { ProviderToken, Type, isForwardReference, isFunction } from '../types';
 import { Context } from './constants';
 import { Instance, InstanceWrapper } from './instance-wrapper';
 import { Module } from './module';
@@ -38,7 +37,7 @@ export class InstanceCreator<T = any> {
     );
   }
 
-  private async resolveDependency(ctx: Context, dep?: Provide): Promise<InstanceWrapper> {
+  private async resolveDependency(ctx: Context, dep?: ProviderToken): Promise<InstanceWrapper> {
     if (dep == null) {
       throw new UndefinedDependencyException();
     }

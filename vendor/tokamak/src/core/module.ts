@@ -3,19 +3,17 @@ import { v4 } from 'uuid';
 import { ModuleMetadata } from '../decorators';
 import { CircularDependencyException, UnknownExportException } from '../exceptions';
 import { hasOnDidInit, hasOnInit } from '../interfaces';
-import {
-  ModuleDefinition,
-  isDynamicModule,
-  isForwardReference,
-} from '../interfaces/module-definition';
 import { Reflector } from '../reflection';
 import {
   CustomProvider,
   Injectable,
+  ModuleDefinition,
   Provider,
   Type,
   isClassProvider,
   isCustomProvider,
+  isDynamicModule,
+  isForwardReference,
   isFunction,
   isValueProvider,
 } from '../types';

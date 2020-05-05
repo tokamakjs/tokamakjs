@@ -1,9 +1,8 @@
-export * from './Type';
-export * from './Route';
-export * from './Token';
-export * from './Provider';
-export * from './GraphNode';
-export * from './Injectable';
+export * from './type';
+export * from './provider';
+export * from './injectable';
+export * from './dynamic-module';
+export * from './module-definition';
 
 export function isFunction(value: any): value is Function {
   return value != null && typeof value === 'function';

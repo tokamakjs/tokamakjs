@@ -1,5 +1,5 @@
 import { ModuleMetadata, RouteMetadata } from '../decorators';
-import { Provide, Type } from '../types';
+import { ProviderToken, Type } from '../types';
 
 export class Reflector {
   static getRouteMetadata(metatype: Type): RouteMetadata {
@@ -22,7 +22,7 @@ export class Reflector {
     return { routing, providers, imports, exports };
   }
 
-  static getConstructorDependencies(metatype?: Object): Array<Provide> {
+  static getConstructorDependencies(metatype?: Object): Array<ProviderToken> {
     if (metatype == null) {
       return [];
     }

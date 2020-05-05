@@ -1,5 +1,5 @@
-import { ModuleDefinition } from '../interfaces/module-definition';
 import { RouteDefinition } from '../routing';
+import { ModuleDefinition } from '../types';
 
 export interface ModuleMetadata {
   routing?: Array<RouteDefinition>;
