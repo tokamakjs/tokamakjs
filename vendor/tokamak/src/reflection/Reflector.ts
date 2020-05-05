@@ -1,19 +1,8 @@
-import { ModuleMetadata, RouteMetadata } from '../decorators';
+import { ControllerMetadata, ModuleMetadata } from '../decorators';
 import { CanActivate } from '../interfaces';
 import { ProviderToken, Type } from '../types';
 
 export class Reflector {
-  static getRouteMetadata(metatype: Type): RouteMetadata {
-    const view = Reflect.getMetadata<RouteMetadata, 'view'>('view', metatype);
-    const controller = Reflect.getMetadata<RouteMetadata, 'controller'>('controller', metatype);
-
-    if (view == null) {
-      throw new Error(`Invalid Route ${metatype.name}`);
-    }
-
-    return { view, controller };
-  }
-
   static getModuleMetadata(metatype: Type): Required<ModuleMetadata> {
     const routing = Reflect.getMetadata<ModuleMetadata, 'routing'>('routing', metatype) ?? [];
     const providers = Reflect.getMetadata<ModuleMetadata, 'providers'>('providers', metatype) ?? [];
@@ -52,12 +41,15 @@ export class Reflector {
     Reflect.defineMetadata('self:paramtypes', [...existing, ...dependencies], target);
   }
 
-  static getGuards(target: Object): Array<CanActivate> {
-    return Reflect.getMetadata('self:guards', target) ?? [];
+  static addControllerMetadata(target: Object, metadata: ControllerMetadata): void {
+    Reflect.defineMetadata('self:controller', metadata, target);
   }
 
-  static addGuards(target: Object, guards: Array<CanActivate | Type<CanActivate>>): void {
-    const existing = Reflector.getGuards(target);
-    Reflect.defineMetadata('self:guards', [...existing, ...guards], target);
+  static getControllerMetadata(target: Object): ControllerMetadata {
+    return Reflect.getMetadata('self:controller', target);
+  }
+
+  static isController(target: Object): target is Type {
+    return Reflect.getMetadata('self:controller', target) != null;
   }
 }

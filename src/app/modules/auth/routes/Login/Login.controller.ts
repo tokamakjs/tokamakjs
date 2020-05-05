@@ -3,7 +3,9 @@ import { controller } from 'vendor/tokamak';
 
 import { AuthStore } from '~/modules/auth/stores';
 
-@controller()
+import { LoginView } from './Login.view';
+
+@controller({ view: LoginView })
 export class LoginController {
   constructor(private readonly authStore: AuthStore) {}
 

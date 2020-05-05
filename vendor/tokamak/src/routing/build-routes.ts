@@ -4,9 +4,20 @@ import { ObjectRoute } from 'react-router-dom';
 
 import { AppContext } from '../core';
 import { Reflector } from '../reflection';
-import { Type } from '../types';
-import { createFakeController } from './fake-controller';
+import { Type, View } from '../types';
 import { RouteDefinition } from './utils';
+
+function _createComponent(view: View, controller: any): ComponentType {
+  // Since observer() doesn't let us set displayName, we have to create
+  // a named function for the component to have the right name in the devtools
+  function Component() {
+    return view(controller);
+  }
+
+  Object.defineProperty(Component, 'name', { value: view.name });
+
+  return Component;
+}
 
 function _transformRoutes(
   Module: Type,
@@ -14,22 +25,15 @@ function _transformRoutes(
   context: AppContext,
 ): Array<ObjectRoute> {
   return routing.map(
-    ({ path, Route, children }): ObjectRoute => {
-      const { view, controller } = Reflector.getRouteMetadata(Route);
+    ({ path, controller, children }): ObjectRoute => {
+      const { view } = Reflector.getControllerMetadata(controller);
 
-      let Component: ComponentType;
-      if (controller == null) {
-        Component = observer(() => view(createFakeController(Route.name)));
-      } else {
-        const instance = context.get(controller);
-        Component = observer(() => view(instance));
-      }
-
-      Component.displayName = Route.name;
+      const instance = context.get(controller);
+      const Component = _createComponent(view, instance);
 
       return {
         path,
-        element: createElement(Component),
+        element: createElement(observer(Component)),
         children: _transformRoutes(Module, children, context),
       };
     },

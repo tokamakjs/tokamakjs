@@ -1,8 +1,1 @@
-import { route } from 'vendor/tokamak';
-
-import { SignUpView } from './SignUp.view';
-
-@route({
-  view: SignUpView,
-})
-export class SignUpRoute {}
+export { SignUpView as SignUpRoute } from './SignUp.view';

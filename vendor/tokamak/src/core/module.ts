@@ -4,6 +4,7 @@ import { ModuleMetadata } from '../decorators';
 import { CircularDependencyException, UnknownExportException } from '../exceptions';
 import { hasOnDidInit, hasOnInit } from '../interfaces';
 import { Reflector } from '../reflection';
+import { RouteDefinition } from '../routing';
 import {
   CustomProvider,
   Injectable,
@@ -108,16 +109,14 @@ export class Module {
   private setControllers(): void {
     const { routing = [] } = this.metadata;
 
-    const addControllersFromRoute = (Route: Type) => {
-      const { controller } = Reflector.getRouteMetadata(Route);
-      if (controller == null) return;
+    const addControllersFromRoute = (route: RouteDefinition) => {
+      const { controller } = route;
       this.addProvider(controller);
     };
 
     routing.forEach((route) => {
-      const { Route } = route;
-      addControllersFromRoute(Route);
-      route.children.forEach((route) => addControllersFromRoute(route.Route));
+      addControllersFromRoute(route);
+      route.children.forEach((route) => addControllersFromRoute(route));
     });
   }
 

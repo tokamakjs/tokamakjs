@@ -2,7 +2,7 @@ import { createRoute, includeRoutes, module } from 'vendor/tokamak';
 
 import { AuthModule } from './modules/auth/Auth.module';
 import { DashboardModule } from './modules/dashboard/Dashboard.module';
-import { About } from './routes/About';
+import { AboutRoute } from './routes/About';
 import { RootRoute } from './routes/Root';
 
 @module({
@@ -11,7 +11,7 @@ import { RootRoute } from './routes/Root';
       includeRoutes('/auth', AuthModule),
       includeRoutes('/', DashboardModule),
     ]),
-    createRoute('/about', About),
+    createRoute('/about', AboutRoute),
   ],
   imports: [AuthModule, DashboardModule],
 })
