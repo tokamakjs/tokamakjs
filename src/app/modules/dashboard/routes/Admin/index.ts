@@ -6,5 +6,5 @@ import { IsAdminGuard } from '../../guards';
 import { AdminView } from './Admin.view';
 
 @route({ view: AdminView })
-@useGuards([AuthGuard, IsAdminGuard])
-export class Admin {}
+@useGuards(AuthGuard, IsAdminGuard)
+export class AdminRoute {}

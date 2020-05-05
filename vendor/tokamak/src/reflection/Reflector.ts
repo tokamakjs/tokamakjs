@@ -1,4 +1,5 @@
 import { ModuleMetadata, RouteMetadata } from '../decorators';
+import { CanActivate } from '../interfaces';
 import { ProviderToken, Type } from '../types';
 
 export class Reflector {
@@ -49,5 +50,14 @@ export class Reflector {
   ): void {
     const existing = Reflector.getManuallyInjectedDeps(target);
     Reflect.defineMetadata('self:paramtypes', [...existing, ...dependencies], target);
+  }
+
+  static getGuards(target: Object): Array<CanActivate> {
+    return Reflect.getMetadata('self:guards', target) ?? [];
+  }
+
+  static addGuards(target: Object, guards: Array<CanActivate | Type<CanActivate>>): void {
+    const existing = Reflector.getGuards(target);
+    Reflect.defineMetadata('self:guards', [...existing, ...guards], target);
   }
 }
