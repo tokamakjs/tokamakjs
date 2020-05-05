@@ -1,6 +1,4 @@
-export interface ForwardReference<T = any> {
-  forwardRef: T;
-}
+import { ForwardReference } from '../types';
 
 export function forwardRef(forwardRef: () => any): ForwardReference {
   return { forwardRef };
