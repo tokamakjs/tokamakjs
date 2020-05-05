@@ -19,16 +19,16 @@ function _genControllerName(view: View): string {
   if (name.includes('View')) {
     name = name.replace('View', '');
   }
-  return `${name[0].toUpperCase()}${name.slice(1)}`;
+  return `${name[0].toUpperCase()}${name.slice(1)}Controller`;
 }
 
-function _createFakeController(view: View): Type {
+function _createEmptyController(view: View): Type {
   @controller({ view })
-  class Controller {}
+  class EmptyController {}
 
-  Object.defineProperty(Controller, 'name', { value: _genControllerName(view) });
+  Object.defineProperty(EmptyController, 'name', { value: _genControllerName(view) });
 
-  return Controller;
+  return EmptyController;
 }
 
 export function createRoute(
@@ -38,7 +38,7 @@ export function createRoute(
 ): RouteDefinition {
   const controller = Reflector.isController(controllerOrView)
     ? controllerOrView
-    : _createFakeController(controllerOrView);
+    : _createEmptyController(controllerOrView);
 
   if (_isArrayOfArrays(children)) {
     return { path, controller, children: children.flat() };
