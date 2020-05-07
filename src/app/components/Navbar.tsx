@@ -1,6 +1,6 @@
 import { css } from 'emotion';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'vendor/tokamak';
 
 const styles = {
   navbar: css`
@@ -29,7 +29,7 @@ export const Navbar = () => {
   return (
     <div className={styles.navbar}>
       <div className={styles.action}>
-        <Link to="/about">About</Link>
+        <Link href="/about">About</Link>
       </div>
     </div>
   );

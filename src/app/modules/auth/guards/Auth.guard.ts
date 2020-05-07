@@ -1,12 +1,9 @@
-import { CanActivate, RouterService, RouterState } from 'vendor/tokamak';
+import { CanActivate, RouterState } from 'vendor/tokamak';
 
 import { LocalStorageService } from '../services';
 
 export class AuthGuard implements CanActivate {
-  constructor(
-    private readonly localStorage: LocalStorageService,
-    private readonly router: RouterService,
-  ) {}
+  constructor(private readonly localStorage: LocalStorageService) {}
 
   public canActivate(state: RouterState): boolean | Promise<boolean> {
     const token = this.localStorage.getAuthToken();
@@ -15,7 +12,7 @@ export class AuthGuard implements CanActivate {
       return true;
     }
 
-    this.router.push('/login', { query: { return: state.url } });
+    // this.router.push('/login', { query: { return: state.url } });
     return false;
   }
 }

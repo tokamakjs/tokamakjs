@@ -1,51 +1,54 @@
-import { observer } from 'mobx-react';
-import { ComponentType, createElement } from 'react';
-import { ObjectRoute } from 'react-router-dom';
+import { createElement } from 'react';
 
+import { delay } from '../common';
 import { AppContext } from '../core';
 import { Reflector } from '../reflection';
-import { Type, View } from '../types';
+import { Type } from '../types';
+import { createRouteComponent } from './create-route-component';
+import { RouteObject } from './router';
 import { RouteDefinition } from './utils';
+import { wrapPromise } from './wrap-promise';
 
-function _createComponent(view: View, controller: any): ComponentType {
-  // Since observer() doesn't let us set displayName, we have to create
-  // a named function for the component to have the right name in the devtools
-  function Component() {
-    return view(controller);
+class TestGuard {
+  async canActivate(): Promise<boolean> {
+    await delay(2000);
+    return false;
   }
-
-  Object.defineProperty(Component, 'name', { value: view.name });
-
-  return Component;
 }
 
 function _transformRoutes(
-  Module: Type,
   routing: Array<RouteDefinition>,
   context: AppContext,
-): Array<ObjectRoute> {
+): Array<RouteObject> {
   return routing.map(
-    ({ path, controller, children }): ObjectRoute => {
+    ({ path, controller, children }): RouteObject => {
       const { view } = Reflector.getControllerMetadata(controller);
 
       const instance = context.get(controller);
-      const Component = _createComponent(view, instance);
+      const guards = view.name === 'HomeView' ? [new TestGuard()] : ([] as any);
+      const Route = createRouteComponent(view, instance, guards);
 
       return {
         path,
-        element: createElement(observer(Component)),
-        children: _transformRoutes(Module, children, context),
+        element: (/* state: RouteContext */) => {
+          const canActivate =
+            guards[0] != null
+              ? wrapPromise<boolean>(guards[0].canActivate())
+              : { read: () => true };
+          return createElement(Route, { canActivate });
+        },
+        children: _transformRoutes(children, context),
       };
     },
   );
 }
 
-export function buildRoutes(Module: Type, context: AppContext): Array<ObjectRoute> {
+export function buildRoutes(Module: Type, context: AppContext): Array<RouteObject> {
   const { routing } = Reflector.getModuleMetadata(Module);
 
   if (routing == null) {
     throw new Error('Invalid');
   }
 
-  return _transformRoutes(Module, routing, context);
+  return _transformRoutes(routing, context);
 }

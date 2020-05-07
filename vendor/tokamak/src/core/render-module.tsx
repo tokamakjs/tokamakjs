@@ -1,22 +1,28 @@
 import 'mobx-react/batchingForReactDom';
 
-import React from 'react';
+import { createBrowserHistory } from 'history';
+import React, { Suspense } from 'react';
 import { render } from 'react-dom';
-import { BrowserRouter as Router, useRoutes } from 'react-router-dom';
 
-import { buildRoutes } from '../routing';
+import { Router, buildRoutes, useRoutes } from '../routing';
 import { Type } from '../types';
 import { AppContext } from './app-context';
 
 export async function renderModule(metatype: Type, selector: string) {
   const appContext = await AppContext.create(metatype);
 
+  const history = createBrowserHistory({ window });
   const routes = buildRoutes(metatype, appContext);
   const RootNode = () => useRoutes(routes);
 
+  // TODO: Create an appContext provider to access it
+  // inside React
+
   render(
-    <Router>
-      <RootNode />
+    <Router history={history}>
+      <Suspense fallback={<div>Root loading...</div>}>
+        <RootNode />
+      </Suspense>
     </Router>,
     document.querySelector(selector),
   );
