@@ -14,7 +14,6 @@ export class AppContext {
   static async create(metatype: Type): Promise<AppContext> {
     const container = await Container.scan(metatype);
     const context = new AppContext(container);
-    await context.init();
     return context;
   }
 
@@ -22,7 +21,7 @@ export class AppContext {
     return this._isInitialized;
   }
 
-  private async init(): Promise<void> {
+  public async init(): Promise<void> {
     if (this._isInitialized) return;
 
     await this.callOnInit();
@@ -47,10 +46,6 @@ export class AppContext {
     // Then we can just use resolve to get a transient instance or use get to
     // get a transient instance based on the scope. Both seem redundant.
     throw new NotImplementedException('This functionality is still not available.');
-  }
-
-  public addProvider(provider: Provider): void {
-    this._container.addGlobalProvider(provider);
   }
 
   private async callOnInit() {

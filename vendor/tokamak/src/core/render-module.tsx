@@ -13,13 +13,11 @@ export async function renderModule(metatype: Type, selector: string) {
   const appContext = await AppContext.create(metatype);
 
   const history = createBrowserHistory({ window });
-  appContext.addProvider({ provide: HISTORY, useValue: history });
+
+  await appContext.init();
 
   const routes = buildRoutes(metatype, appContext);
   const RootNode = () => useRoutes(routes);
-
-  // TODO: Create an appContext provider to access it
-  // inside React
 
   render(
     <Router history={history}>

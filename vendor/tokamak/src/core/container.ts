@@ -1,5 +1,6 @@
-import { ModuleDefinition, Provider } from '../types';
+import { Injectable, ModuleDefinition, Provider } from '../types';
 import { flatten } from './flatten';
+import { InstanceWrapper } from './instance-wrapper';
 import { Module } from './module';
 
 async function _traverse(
@@ -31,6 +32,8 @@ async function _traverse(
 }
 
 export class Container {
+  public readonly globalProviders = new Map<string, InstanceWrapper<Injectable>>();
+
   private constructor(public readonly modules: Map<string, Module>) {
     modules.forEach((module) => (module.container = this));
   }
@@ -53,6 +56,4 @@ export class Container {
 
     return new Container(modulesMap);
   }
-
-  public addGlobalProvider(provider: Provider): void {}
 }
