@@ -1,11 +1,16 @@
 import { observer } from 'mobx-react';
 
 import { View } from '../types';
+import { Readable } from './wrap-promise';
 
-export function createRouteComponent(view: View, controller: any, guards: any) {
-  function RouteComponent({ canActivate }: any) {
+interface RouteComponentProps {
+  canActivate: Readable<boolean>;
+}
+
+export function createRouteComponent(view: View, controller: any) {
+  function RouteComponent({ canActivate }: RouteComponentProps) {
     if (!canActivate.read()) {
-      return 'Nope';
+      return null;
     }
 
     return view(controller);

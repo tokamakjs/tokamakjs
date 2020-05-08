@@ -4,7 +4,7 @@ import { Type, View } from '../types';
 
 export interface ControllerMetadata {
   view: View;
-  guards?: Array<CanActivate | Type<CanActivate>>;
+  guards?: Array<Type<CanActivate>>;
 }
 
 export function controller(metadata: ControllerMetadata): ClassDecorator {

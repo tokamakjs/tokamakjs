@@ -109,9 +109,15 @@ export class Module {
   private setControllers(): void {
     const { routing = [] } = this.metadata;
 
+    const addControllerEnhancers = (controller: Type<unknown>) => {
+      const { guards = [] } = Reflector.getControllerMetadata(controller);
+      guards.forEach((guard) => this.addProvider(guard));
+    };
+
     const addControllersFromRoute = (route: RouteDefinition) => {
       const { controller } = route;
       this.addProvider(controller);
+      addControllerEnhancers(controller);
     };
 
     routing.forEach((route) => {
