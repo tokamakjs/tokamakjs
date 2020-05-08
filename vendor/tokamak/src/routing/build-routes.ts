@@ -1,6 +1,7 @@
 import { createElement } from 'react';
 
 import { AppContext } from '../core';
+import { RouterState } from '../interfaces';
 import { Reflector } from '../reflection';
 import { Type } from '../types';
 import { createCanActivate } from './can-activate';
@@ -23,9 +24,7 @@ function _transformRoutes(
 
       return {
         path,
-        element: (state: any) => {
-          return createElement(Route, { canActivate: canActivate(state) });
-        },
+        element: (state: RouterState) => createElement(Route, { canActivate: canActivate(state) }),
         children: _transformRoutes(children, context),
       };
     },

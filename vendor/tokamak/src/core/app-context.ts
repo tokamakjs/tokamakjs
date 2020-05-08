@@ -1,5 +1,5 @@
 import { NotImplementedException } from '../exceptions';
-import { Type } from '../types';
+import { Provider, Type } from '../types';
 import { Container } from './container';
 import { ContainerScanner } from './container-scanner';
 
@@ -47,6 +47,10 @@ export class AppContext {
     // Then we can just use resolve to get a transient instance or use get to
     // get a transient instance based on the scope. Both seem redundant.
     throw new NotImplementedException('This functionality is still not available.');
+  }
+
+  public addProvider(provider: Provider): void {
+    this._container.addGlobalProvider(provider);
   }
 
   private async callOnInit() {

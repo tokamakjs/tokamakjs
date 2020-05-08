@@ -1,7 +1,9 @@
 import { Location } from 'history';
 import { ReactNode } from 'react';
 
-export type NodeRenderer = () => ReactNode;
+import { RouterState } from '../../interfaces';
+
+export type NodeRenderer = (state: RouterState) => ReactNode;
 
 export interface RouteObject {
   caseSensitive?: boolean;

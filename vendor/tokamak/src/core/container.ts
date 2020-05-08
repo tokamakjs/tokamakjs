@@ -1,4 +1,4 @@
-import { ModuleDefinition } from '../types';
+import { ModuleDefinition, Provider } from '../types';
 import { flatten } from './flatten';
 import { Module } from './module';
 
@@ -53,4 +53,6 @@ export class Container {
 
     return new Container(modulesMap);
   }
+
+  public addGlobalProvider(provider: Provider): void {}
 }
