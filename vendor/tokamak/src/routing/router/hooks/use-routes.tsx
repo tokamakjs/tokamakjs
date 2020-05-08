@@ -28,8 +28,6 @@ export function useRoutes(routes: Array<RouteObject>, basename = ''): ReactEleme
 
   return matches.reduceRight((outlet, match) => {
     const { route, params, pathname } = match;
-    // @ts-ignore
-    console.log(route.element());
     return (
       <RouteContext.Provider
         value={{

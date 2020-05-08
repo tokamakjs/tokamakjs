@@ -20,7 +20,7 @@ interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
 }
 
 export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
-  ({ href, onClick, target, replace: replaceProp = false, ...rest }, ref) => {
+  ({ href, onClick, target, replace: replaceProp = false, state, ...rest }, ref) => {
     const history = useHistory();
     const location = useLocation();
 
@@ -40,7 +40,7 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
       ) {
         e.preventDefault();
         const replace = replaceProp != null || _locationPathsAreSame(location, toLocation);
-        // navigate(to, { replace, state });
+        replace ? history.replace(toLocation, state) : history.push(toLocation, state);
       }
     };
 

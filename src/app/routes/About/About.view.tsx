@@ -1,11 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'vendor/tokamak';
 
 export const AboutView = () => {
   return (
     <div>
       <p>About</p>
-      <Link to="/">Go back to home</Link>
+      <Link href="/">Go back to home</Link>
     </div>
   );
 };

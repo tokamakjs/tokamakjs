@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet } from 'vendor/tokamak';
 
 import { Navbar } from '~/components/Navbar';
 

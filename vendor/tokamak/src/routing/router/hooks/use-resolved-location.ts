@@ -1,12 +1,15 @@
 import { To, parsePath } from 'history';
 import { useContext, useMemo } from 'react';
-import join from 'url-join';
 
 import { RouteContext } from '../route-context';
 import { ResolvedLocation } from '../types';
 
+function _removeExtraSlashes(path: string): string {
+  return path.replace(/\/\/+/g, '/');
+}
+
 function _resolvePathname(toPathname: string, fromPathname: string): string {
-  const segments = fromPathname.replace(/\/+$/, '').split('/');
+  const segments = _removeExtraSlashes(fromPathname.replace(/\/+$/, '')).split('/');
   const relativeSegments = toPathname.split('/');
 
   relativeSegments.forEach((segment) => {
@@ -17,7 +20,7 @@ function _resolvePathname(toPathname: string, fromPathname: string): string {
     }
   });
 
-  return segments.length > 1 ? join(...segments) : '/';
+  return segments.length > 1 ? _removeExtraSlashes(segments.join('/')) : '/';
 }
 
 function _resolveLocation(to: To, fromPathname = '/'): ResolvedLocation {
