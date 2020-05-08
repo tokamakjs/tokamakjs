@@ -125,7 +125,7 @@ export class Module {
     exports.forEach((provider) => this.addExportedProviderOrModule(provider));
   }
 
-  private addProvider(provider: Provider): void {
+  public addProvider(provider: Provider): void {
     if (provider === undefined) throw new CircularDependencyException();
     if (isCustomProvider(provider)) {
       this.addCustomProvider(provider);

@@ -13,6 +13,7 @@ export async function renderModule(metatype: Type, selector: string) {
   const appContext = await AppContext.create(metatype);
 
   const history = createBrowserHistory({ window });
+  appContext.addGlobalProvider({ provide: HISTORY, useValue: history });
 
   await appContext.init();
 

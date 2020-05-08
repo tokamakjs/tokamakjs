@@ -31,14 +31,16 @@ async function _traverse(
   return [module, children];
 }
 
+class GlobalModule {}
+
 export class Container {
-  public readonly globalProviders = new Map<string, InstanceWrapper<Injectable>>();
+  public readonly globalModule = new Module(GlobalModule, {});
 
   private constructor(public readonly modules: Map<string, Module>) {
     modules.forEach((module) => (module.container = this));
   }
 
-  static async scan(moduleDef: ModuleDefinition): Promise<Container> {
+  static async from(moduleDef: ModuleDefinition): Promise<Container> {
     const modules = flatten<Module>(await _traverse(moduleDef));
 
     const modulesMap = modules.reduce(
@@ -46,14 +48,23 @@ export class Container {
       new Map<string, Module>(),
     );
 
-    for (const module of modules) {
+    return new Container(modulesMap);
+  }
+
+  public async init(): Promise<void> {
+    await this.globalModule.init();
+    await this.globalModule.createInstances();
+
+    for (const module of this.modules.values()) {
       await module.init();
     }
 
-    for (const module of modules) {
+    for (const module of this.modules.values()) {
       await module.createInstances();
     }
+  }
 
-    return new Container(modulesMap);
+  public addGlobalProvider(provider: Provider): void {
+    this.globalModule.addProvider(provider);
   }
 }

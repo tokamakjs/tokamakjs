@@ -1,4 +1,4 @@
-import { createRoute, module } from 'vendor/tokamak';
+import { RouterModule, createRoute, module } from 'vendor/tokamak';
 
 import { AuthApi } from './api/Auth.api';
 import { AuthGuard } from './guards';
@@ -11,7 +11,7 @@ import { CurrentUserStore } from './stores/CurrentUser.store';
 @module({
   routing: [createRoute('/login', LoginRoute), createRoute('/sign-up', SignUpRoute)],
   providers: [AuthStore, AuthApi, LocalStorageService, CurrentUserStore, AuthGuard],
-  imports: [],
+  imports: [RouterModule],
   exports: [AuthStore, CurrentUserStore, AuthGuard],
 })
 export class AuthModule {}

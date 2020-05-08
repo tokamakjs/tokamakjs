@@ -6,3 +6,4 @@ export * from './src/common';
 export * from './src/routing';
 export * from './src/interfaces';
 export * from './src/routing/router';
+export * from './src/modules';

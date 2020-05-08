@@ -46,23 +46,30 @@ export class InstanceCreator<T = any> {
     const name = isFunction(token) ? token.name : token;
     const { providers } = this.wrapper.host;
 
+    let wrapper: InstanceWrapper<unknown> | undefined;
+
     // It's a direct provider
     if (providers.has(name)) {
-      const wrapper = providers.get(name)!;
-      await wrapper.createInstance(ctx);
-      return wrapper;
+      wrapper = providers.get(name);
     }
-    // It's a provider from an imported module
-    else {
-      const wrapper = await this.resolveFromImports(ctx, name);
 
-      if (wrapper == null) {
-        throw new UndefinedDependencyException(name, this.wrapper.name);
-      }
-
-      await wrapper.createInstance(ctx);
-      return wrapper;
+    // Try to resolve from the imported modules
+    if (wrapper == null) {
+      wrapper = await this.resolveFromImports(ctx, name);
     }
+
+    // If wrapper is still null, try to resolve from the global module
+    if (wrapper == null) {
+      wrapper = this.wrapper.host.container?.globalModule.providers.get(name);
+    }
+
+    // At this point, we tried to resolve from any possible place
+    if (wrapper == null) {
+      throw new UndefinedDependencyException(name, this.wrapper.name);
+    }
+
+    await wrapper.createInstance(ctx);
+    return wrapper;
   }
 
   private async resolveFromImports(

@@ -9,9 +9,9 @@ interface FlatContainer {
 }
 
 export class ContainerScanner {
-  private readonly _flatContainer: FlatContainer;
+  private _flatContainer: FlatContainer;
 
-  constructor(_container: Container) {
+  constructor(private readonly _container: Container) {
     this._flatContainer = this.flattenContainer(_container);
   }
 
@@ -28,6 +28,10 @@ export class ContainerScanner {
     }
 
     return (instanceWrapper.defaultValue as unknown) as R;
+  }
+
+  public rescan(): void {
+    this._flatContainer = this.flattenContainer(this._container);
   }
 
   private flattenContainer(container: Container): FlatContainer {

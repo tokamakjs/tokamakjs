@@ -1,0 +1,13 @@
+import { History } from 'history';
+
+import { HISTORY } from '../../core/constants';
+import { inject, injectable } from '../../decorators';
+
+@injectable()
+export class RouterService {
+  constructor(@inject(HISTORY) private readonly history: History) {}
+
+  public push(...args: Parameters<History['push']>) {
+    this.history.push(...args);
+  }
+}
