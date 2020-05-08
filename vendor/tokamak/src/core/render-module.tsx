@@ -22,7 +22,7 @@ export async function renderModule(metatype: Type, selector: string) {
 
   render(
     <Router history={history}>
-      <Suspense fallback={<div>Root loading...</div>}>
+      <Suspense fallback={<div></div>}>
         <RootNode />
       </Suspense>
     </Router>,

@@ -17,7 +17,7 @@ export class AuthGuard implements CanActivate {
       return true;
     }
 
-    // this.router.push('/auth/login', { query: { return: state.location.pathname } });
+    this.router.replace(`/auth/login?return=${state.location.pathname}`);
     return false;
   }
 }
