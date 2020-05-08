@@ -5,7 +5,7 @@ import { inject, injectable } from '../../decorators';
 
 @injectable()
 export class RouterService {
-  constructor(@inject(HISTORY) public readonly history: History) {}
+  constructor(@inject(HISTORY) private readonly history: History) {}
 
   public push(...args: Parameters<History['push']>): void {
     setTimeout(() => this.history.push(...args));
