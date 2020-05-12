@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 
 import { hasOnDidMount, hasOnDidRender, hasOnDidUnmount } from '../interfaces';
 import { View } from '../types';
+import { useMountLifeCycle, useRenderLifeCycle } from './life-cycle-hooks';
 import { Readable } from './wrap-promise';
 
 interface RouteComponentProps {
@@ -11,29 +12,18 @@ interface RouteComponentProps {
 
 export function createRouteComponent(view: View, controller: any) {
   function RouteComponent({ canActivate }: RouteComponentProps) {
-    useEffect(() => {
-      if (hasOnDidMount(controller)) {
-        controller.onDidMount();
-      }
-
-      return () => {
-        if (hasOnDidUnmount(controller)) {
-          controller.onDidUnmount();
-        }
-      };
-    }, []);
-
-    useEffect(() => {
-      if (hasOnDidRender(controller)) {
-        controller.onDidRender();
-      }
-    });
+    useMountLifeCycle(controller);
+    useRenderLifeCycle(controller);
 
     if (!canActivate.read()) {
       return null;
     }
 
-    return view(controller);
+    try {
+      return view(controller);
+    } catch {
+      return 'Error';
+    }
   }
 
   Object.defineProperty(RouteComponent, 'name', { value: view.name });
