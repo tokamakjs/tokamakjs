@@ -15,25 +15,22 @@ export class AuthStore implements OnInit, OnDidInit {
   ) {}
 
   onInit() {
-    console.log('On init AuthStore');
     this.authToken = this.storageService.getAuthToken();
   }
 
-  onDidInit() {
-    console.log('On did init AuthStore');
-  }
+  onDidInit() {}
 
   @action.bound
   public async login(username: string, password: string): Promise<string> {
     this.isLoginIn = true;
     const token = await this.api.login(username, password);
-    console.log('AuthToken', token);
     this.storageService.saveAuthToken(token);
     this.authToken = token;
     this.isLoginIn = false;
     return token;
   }
 
+  @action.bound
   public logout(): void {
     this.storageService.deleteAuthToken();
     this.authToken = undefined;

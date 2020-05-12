@@ -1,5 +1,7 @@
 import { observer } from 'mobx-react';
+import { useEffect } from 'react';
 
+import { hasOnDidMount, hasOnDidRender, hasOnDidUnmount } from '../interfaces';
 import { View } from '../types';
 import { Readable } from './wrap-promise';
 
@@ -9,6 +11,24 @@ interface RouteComponentProps {
 
 export function createRouteComponent(view: View, controller: any) {
   function RouteComponent({ canActivate }: RouteComponentProps) {
+    useEffect(() => {
+      if (hasOnDidMount(controller)) {
+        controller.onDidMount();
+      }
+
+      return () => {
+        if (hasOnDidUnmount(controller)) {
+          controller.onDidUnmount();
+        }
+      };
+    }, []);
+
+    useEffect(() => {
+      if (hasOnDidRender(controller)) {
+        controller.onDidRender();
+      }
+    });
+
     if (!canActivate.read()) {
       return null;
     }

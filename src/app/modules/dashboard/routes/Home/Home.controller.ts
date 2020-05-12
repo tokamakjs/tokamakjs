@@ -1,26 +1,42 @@
 import { computed } from 'mobx';
-import { controller } from 'vendor/tokamak';
+import { OnDidMount, OnDidRender, OnDidUnmount, controller } from 'vendor/tokamak';
 
 import { AuthGuard } from '~/modules/auth/guards';
 import { AuthStore } from '~/modules/auth/stores';
 import { CurrentUserStore } from '~/modules/auth/stores/CurrentUser.store';
 
 import { ProjectsStore } from '../../stores';
-import { HomeView } from './Home.view';
+import { HomeView, HomeViewError, HomeViewLoading } from './Home.view';
 
-@controller({ view: HomeView, guards: [AuthGuard] })
-export class HomeController {
+@controller({
+  view: HomeView,
+  // states: {
+  //   loading: HomeViewLoading,
+  //   error: HomeViewError,
+  // },
+  guards: [AuthGuard],
+})
+export class HomeController implements OnDidMount, OnDidUnmount, OnDidRender {
   constructor(
     private readonly currentUserStore: CurrentUserStore,
     private readonly authStore: AuthStore,
     private readonly projectsStore: ProjectsStore,
-  ) {
-    // TODO: We need an onRender callback on controllers since
-    // they're gonna be instantiated before any route is visible
+  ) {}
+
+  public onDidMount(): void {
+    this.projectsStore.loadProjects();
+  }
+
+  public onDidUnmount(): void {
+    console.log('Unmounted HomeController');
+  }
+
+  public onDidRender(): void {
+    console.log('Render HomeController');
   }
 
   @computed
-  get isLoading() {
+  get isLoadingProjects() {
     return this.projectsStore.isLoading;
   }
 
@@ -36,12 +52,5 @@ export class HomeController {
 
   public logout(): void {
     return this.authStore.logout();
-  }
-
-  // TODO: replace by an onRender/onMounted/onVisible callback
-  public loadProjects(): void {
-    if (!this.isLoading) {
-      this.projectsStore.loadProjects();
-    }
   }
 }

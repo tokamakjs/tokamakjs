@@ -136,7 +136,6 @@ export class Module {
       this.addCustomProvider(provider);
     } else {
       const name = this.getProviderName(provider);
-      console.log('Add provider', name, 'to module', this.name);
       this.providers.set(
         provider.name,
         new InstanceWrapper(name, this, {
