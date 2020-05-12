@@ -79,8 +79,9 @@ export class Module {
       throw new Error('This module has not been initialized.');
     }
 
-    const wrappers = Array.from(this.providers.values());
-    await Promise.all(wrappers.map(async (wrapper) => await wrapper.createInstance()));
+    for (const wrapper of this.providers.values()) {
+      await wrapper.createInstance();
+    }
   }
 
   public async callOnInit(): Promise<void> {
@@ -114,10 +115,14 @@ export class Module {
       this.addProvider(controller);
     };
 
-    routing.forEach((route) => {
-      addControllersFromRoute(route);
-      route.children.forEach((route) => addControllersFromRoute(route));
-    });
+    routing
+      .filter((r) => !r.isIncluded)
+      .forEach((route) => {
+        addControllersFromRoute(route);
+        route.children
+          .filter((r) => !r.isIncluded)
+          .forEach((route) => addControllersFromRoute(route));
+      });
   }
 
   private setExports(): void {
@@ -131,6 +136,7 @@ export class Module {
       this.addCustomProvider(provider);
     } else {
       const name = this.getProviderName(provider);
+      console.log('Add provider', name, 'to module', this.name);
       this.providers.set(
         provider.name,
         new InstanceWrapper(name, this, {

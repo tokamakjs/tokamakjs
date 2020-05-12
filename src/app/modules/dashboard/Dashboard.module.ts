@@ -4,12 +4,12 @@ import { AuthModule } from '../auth/Auth.module';
 import { DashboardApi } from './api/Dashboard.api';
 import { AdminRoute } from './routes/Admin';
 import { HomeRoute } from './routes/Home';
-import { UserStore } from './stores/User.store';
+import { ProjectsStore } from './stores';
 
 @module({
   routing: [createRoute('/', HomeRoute), createRoute('/admin', AdminRoute)],
-  providers: [UserStore, DashboardApi],
+  providers: [DashboardApi, ProjectsStore],
   imports: [AuthModule],
-  exports: [UserStore],
+  exports: [],
 })
 export class DashboardModule {}

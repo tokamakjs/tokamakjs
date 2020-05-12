@@ -27,14 +27,16 @@ export class InstanceCreator<T = any> {
 
     // TODO: Add support for params marked with the @optional decorator
     // @ts-ignore
-    const optionalDependencies = [];
+    const optionalDependencies = [] as Array<any>;
 
-    return await Promise.all(
-      dependencies.map(async (dep) => {
-        const wrapper = await this.resolveDependency(ctx, dep);
-        return wrapper.getInstance(ctx).value;
-      }),
-    );
+    const resolvedDependencies = [] as Array<any>;
+
+    for (const dep of [...dependencies, ...optionalDependencies]) {
+      const wrapper = await this.resolveDependency(ctx, dep);
+      resolvedDependencies.push(wrapper.getInstance(ctx).value);
+    }
+
+    return resolvedDependencies;
   }
 
   private async resolveDependency(ctx: Context, dep?: ProviderToken): Promise<InstanceWrapper> {
@@ -65,6 +67,7 @@ export class InstanceCreator<T = any> {
 
     // At this point, we tried to resolve from any possible place
     if (wrapper == null) {
+      console.log(name, this.wrapper.host);
       throw new UndefinedDependencyException(name, this.wrapper.name);
     }
 
@@ -93,9 +96,9 @@ export class InstanceCreator<T = any> {
           if (searchedWrapper != null) {
             return searchedWrapper;
           }
+        } else {
+          return providers.get(name);
         }
-
-        return providers.get(name);
       }
     }
 

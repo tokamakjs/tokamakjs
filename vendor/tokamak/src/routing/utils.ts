@@ -8,6 +8,7 @@ export interface RouteDefinition {
   path: string;
   controller: Type;
   children: Array<RouteDefinition>;
+  isIncluded: boolean;
 }
 
 function _isArrayOfArrays<T>(value: Array<any>): value is Array<Array<T>> {
@@ -41,10 +42,10 @@ export function createRoute(
     : _createEmptyController(controllerOrView);
 
   if (_isArrayOfArrays(children)) {
-    return { path, controller, children: children.flat() };
+    return { path, controller, children: children.flat(), isIncluded: false };
   }
 
-  return { path, controller, children };
+  return { path, controller, children, isIncluded: false };
 }
 
 export function includeRoutes(basepath: string, Module: Type): Array<RouteDefinition> {
@@ -55,6 +56,6 @@ export function includeRoutes(basepath: string, Module: Type): Array<RouteDefini
   }
 
   return routing.map((route) => {
-    return { ...route, path: join(basepath, route.path) };
+    return { ...route, path: join(basepath, route.path), isIncluded: true };
   });
 }
