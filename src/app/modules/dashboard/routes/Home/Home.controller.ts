@@ -1,5 +1,5 @@
 import { computed } from 'mobx';
-import { OnDidMount, OnDidRender, OnDidUnmount, controller } from 'vendor/tokamak';
+import { OnDidMount, OnDidRender, OnDidUnmount, controller, tracked } from 'vendor/tokamak';
 
 import { AuthGuard } from '~/modules/auth/guards';
 import { AuthStore } from '~/modules/auth/stores';
@@ -11,8 +11,8 @@ import { HomeView, HomeViewError, HomeViewLoading } from './Home.view';
 @controller({
   view: HomeView,
   states: {
-    // loading: HomeViewLoading,
-    // error: HomeViewError,
+    loading: HomeViewLoading,
+    error: HomeViewError,
   },
   guards: [AuthGuard],
 })
@@ -23,8 +23,9 @@ export class HomeController implements OnDidMount, OnDidUnmount, OnDidRender {
     private readonly projectsStore: ProjectsStore,
   ) {}
 
-  public onDidMount(): void {
-    this.projectsStore.loadProjects();
+  @tracked
+  public async onDidMount(): Promise<void> {
+    await this.projectsStore.loadProjects();
   }
 
   public onDidUnmount(): void {

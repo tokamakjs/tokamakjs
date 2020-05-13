@@ -106,6 +106,7 @@
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "reflect-metadata": "^0.1.13",
+    "rxjs": "^6.5.5",
     "url-join": "^4.0.1",
     "uuid": "^7.0.3"
   }

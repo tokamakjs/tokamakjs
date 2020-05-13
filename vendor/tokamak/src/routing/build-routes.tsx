@@ -21,19 +21,20 @@ function _transformRoutes(
       const instance = context.get(controller);
       const guardInstances = guards.map((guard) => context.get(guard));
       const canActivate = createCanActivate(guardInstances);
-      const Route = createRouteComponent(view, instance);
-      const ErrorElement = states?.error != null ? createElement(states?.error) : undefined;
+      const Route = createRouteComponent(view, instance, states?.loading);
+      const ErrorElement = states?.error != null ? createElement(states.error) : undefined;
 
       return {
         path,
-        element: (routerState: RouterState) =>
-          ErrorElement != null ? (
+        element: (routerState: RouterState) => {
+          return ErrorElement != null ? (
             <HandleError errorView={ErrorElement}>
               <Route canActivate={canActivate} routerState={routerState} />
             </HandleError>
           ) : (
             <Route canActivate={canActivate} routerState={routerState} />
-          ),
+          );
+        },
         children: _transformRoutes(children, context),
       };
     },
