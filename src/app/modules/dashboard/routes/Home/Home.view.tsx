@@ -21,15 +21,11 @@ export const HomeView = (ctrl: HomeController) => {
       <h1>Home</h1>
       <h2>Welcome back</h2>
       <UserCard firstName={ctrl.currentUser.firstName} lastName={ctrl.currentUser.lastName} />
-      {ctrl.isLoadingProjects ? (
-        <div>Loading...</div>
-      ) : (
-        <ul>
-          {ctrl.projects.map((project) => (
-            <li key={project.name}>{project.name}</li>
-          ))}
-        </ul>
-      )}
+      <ul>
+        {ctrl.projects.map((project) => (
+          <li key={project.name}>{project.name}</li>
+        ))}
+      </ul>
       <button onClick={() => ctrl.logout()}>Log out</button>
     </div>
   );

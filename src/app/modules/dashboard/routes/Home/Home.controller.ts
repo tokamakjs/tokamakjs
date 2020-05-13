@@ -37,13 +37,8 @@ export class HomeController implements OnDidMount, OnDidUnmount, OnDidRender {
   }
 
   @computed
-  get isLoadingProjects() {
-    return this.projectsStore.isLoading;
-  }
-
-  @computed
   get currentUser() {
-    return this.currentUserStore.currentUser;
+    return this.currentUserStore.currentUser!;
   }
 
   @computed
