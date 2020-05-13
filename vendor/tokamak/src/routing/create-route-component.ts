@@ -1,4 +1,5 @@
 import { observer } from 'mobx-react';
+import { createElement } from 'react';
 
 import { RouterState } from '../interfaces';
 import { View } from '../types';
@@ -22,10 +23,10 @@ export function createRouteComponent(view: View, controller: any, loadingView?: 
     }
 
     if (loadingView != null && isLoading) {
-      return loadingView();
+      return createElement(() => loadingView());
     }
 
-    return view(controller);
+    return createElement(() => view(controller));
   }
 
   Object.defineProperty(RouteComponent, 'name', { value: view.name });
