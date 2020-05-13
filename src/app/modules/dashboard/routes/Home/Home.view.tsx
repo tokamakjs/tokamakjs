@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { UserCard } from '../../components';
 import { HomeController } from './Home.controller';

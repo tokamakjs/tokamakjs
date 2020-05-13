@@ -4,6 +4,10 @@ import { Type, View } from '../types';
 
 export interface ControllerMetadata {
   view: View;
+  states?: {
+    error?: View;
+    loading?: View;
+  };
   guards?: Array<Type<CanActivate>>;
 }
 

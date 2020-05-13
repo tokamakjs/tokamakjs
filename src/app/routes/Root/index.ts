@@ -1,1 +1,1 @@
-export { RootView as RootRoute } from './Root.view';
+export { RootController as RootRoute } from './Root.controller';

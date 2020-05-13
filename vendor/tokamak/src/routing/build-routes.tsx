@@ -1,4 +1,4 @@
-import { createElement } from 'react';
+import React, { createElement } from 'react';
 
 import { AppContext } from '../core';
 import { RouterState } from '../interfaces';
@@ -6,6 +6,7 @@ import { Reflector } from '../reflection';
 import { Type } from '../types';
 import { createCanActivate } from './can-activate';
 import { createRouteComponent } from './create-route-component';
+import { HandleError } from './HandleError';
 import { RouteObject } from './router';
 import { RouteDefinition } from './utils';
 
@@ -15,16 +16,24 @@ function _transformRoutes(
 ): Array<RouteObject> {
   return routing.map(
     ({ path, controller, children }): RouteObject => {
-      const { view, guards = [] } = Reflector.getControllerMetadata(controller);
+      const { view, guards = [], states } = Reflector.getControllerMetadata(controller);
 
       const instance = context.get(controller);
       const guardInstances = guards.map((guard) => context.get(guard));
       const canActivate = createCanActivate(guardInstances);
       const Route = createRouteComponent(view, instance);
+      const ErrorElement = states?.error != null ? createElement(states?.error) : undefined;
 
       return {
         path,
-        element: (routerState: RouterState) => createElement(Route, { canActivate, routerState }),
+        element: (routerState: RouterState) =>
+          ErrorElement != null ? (
+            <HandleError errorView={ErrorElement}>
+              <Route canActivate={canActivate} routerState={routerState} />
+            </HandleError>
+          ) : (
+            <Route canActivate={canActivate} routerState={routerState} />
+          ),
         children: _transformRoutes(children, context),
       };
     },

@@ -10,10 +10,10 @@ import { HomeView, HomeViewError, HomeViewLoading } from './Home.view';
 
 @controller({
   view: HomeView,
-  // states: {
-  //   loading: HomeViewLoading,
-  //   error: HomeViewError,
-  // },
+  states: {
+    // loading: HomeViewLoading,
+    // error: HomeViewError,
+  },
   guards: [AuthGuard],
 })
 export class HomeController implements OnDidMount, OnDidUnmount, OnDidRender {
