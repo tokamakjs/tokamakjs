@@ -1,7 +1,7 @@
 import 'mobx-react/batchingForReactDom';
 
 import { createBrowserHistory } from 'history';
-import React, { Suspense } from 'react';
+import React from 'react';
 import { render } from 'react-dom';
 
 import { Router, buildRoutes, useRoutes } from '../routing';
