@@ -22,9 +22,7 @@ export async function renderModule(metatype: Type, selector: string) {
 
   render(
     <Router history={history}>
-      <Suspense fallback={<div></div>}>
-        <RootNode />
-      </Suspense>
+      <RootNode />
     </Router>,
     document.querySelector(selector),
   );

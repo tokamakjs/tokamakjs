@@ -1,19 +1,20 @@
 import { observer } from 'mobx-react';
 
+import { RouterState } from '../interfaces';
 import { View } from '../types';
 import { useMountLifeCycle, useRenderLifeCycle } from './life-cycle-hooks';
-import { Readable } from './wrap-promise';
 
 interface RouteComponentProps {
-  canActivate: Readable<boolean>;
+  canActivate: (state: RouterState) => boolean;
+  routerState: RouterState;
 }
 
 export function createRouteComponent(view: View, controller: any) {
-  function RouteComponent({ canActivate }: RouteComponentProps) {
+  function RouteComponent({ canActivate, routerState }: RouteComponentProps) {
     useMountLifeCycle(controller);
     useRenderLifeCycle(controller);
 
-    if (!canActivate.read()) {
+    if (!canActivate(routerState)) {
       return null;
     }
 
@@ -22,6 +23,5 @@ export function createRouteComponent(view: View, controller: any) {
 
   Object.defineProperty(RouteComponent, 'name', { value: view.name });
 
-  // @ts-ignore
   return observer(RouteComponent);
 }

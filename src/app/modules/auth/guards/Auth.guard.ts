@@ -10,7 +10,7 @@ export class AuthGuard implements CanActivate {
     private readonly router: RouterService,
   ) {}
 
-  public async canActivate(state: RouterState): Promise<boolean> {
+  public canActivate(state: RouterState): boolean {
     const token = this.localStorage.getAuthToken();
 
     if (token != null) {

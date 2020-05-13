@@ -24,7 +24,7 @@ function _transformRoutes(
 
       return {
         path,
-        element: (state: RouterState) => createElement(Route, { canActivate: canActivate(state) }),
+        element: (routerState: RouterState) => createElement(Route, { canActivate, routerState }),
         children: _transformRoutes(children, context),
       };
     },
