@@ -1,7 +1,5 @@
 import { observer } from 'mobx-react';
-import { useEffect } from 'react';
 
-import { hasOnDidMount, hasOnDidRender, hasOnDidUnmount } from '../interfaces';
 import { View } from '../types';
 import { useMountLifeCycle, useRenderLifeCycle } from './life-cycle-hooks';
 import { Readable } from './wrap-promise';
@@ -19,11 +17,7 @@ export function createRouteComponent(view: View, controller: any) {
       return null;
     }
 
-    try {
-      return view(controller);
-    } catch {
-      return 'Error';
-    }
+    return view(controller);
   }
 
   Object.defineProperty(RouteComponent, 'name', { value: view.name });
