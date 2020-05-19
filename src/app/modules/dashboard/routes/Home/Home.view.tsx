@@ -4,7 +4,7 @@ import { UserCard } from '../../components';
 import { HomeController } from './Home.controller';
 
 export const HomeViewLoading = () => {
-  return <div>Loading...</div>;
+  return <div>Loading home...</div>;
 };
 
 export const HomeViewError = () => {

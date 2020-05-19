@@ -10,6 +10,7 @@ export interface RouteObject {
   element: ReactNode | NodeRenderer;
   path: string;
   children?: Array<RouteObject>;
+  canActivate: (state: RouterState) => boolean;
 }
 
 export type Params = Record<string, string>;

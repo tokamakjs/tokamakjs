@@ -38,7 +38,7 @@ export class HomeController implements OnDidMount, OnDidUnmount, OnDidRender {
 
   @computed
   get currentUser() {
-    return this.currentUserStore.currentUser!;
+    return this.currentUserStore.currentUser;
   }
 
   @computed

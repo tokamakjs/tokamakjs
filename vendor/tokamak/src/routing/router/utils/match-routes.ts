@@ -30,10 +30,7 @@ export function matchRoutes(
   let matches;
   while (branches.length > 0) {
     matches = matchRouteBranch(branches.shift()!, pathname);
-
-    if (matches != null) {
-      break;
-    }
+    if (matches != null) break;
   }
 
   return matches;
