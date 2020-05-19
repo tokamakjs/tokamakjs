@@ -10,7 +10,7 @@ export class AuthGuard implements CanActivate {
     private readonly router: RouterService,
   ) {}
 
-  public canActivate(state: RouterState): boolean {
+  canActivate(state: RouterState, schedule: (fn: Function) => void): boolean {
     const token = this.localStorage.getAuthToken();
 
     if (token != null) {
@@ -18,7 +18,7 @@ export class AuthGuard implements CanActivate {
     }
 
     // this.router.replace(`/auth/login?return=${state.location.pathname}`);
-    this.router.replace(`/auth/login`);
+    schedule(() => this.router.replace(`/auth/login`));
     return false;
   }
 }

@@ -32,28 +32,16 @@ export function createRouteComponent(context: AppContext, controller: Type<any>)
       defaultView = useView(instance);
     } catch (err) {
       if (!isLoading && canActivate) {
-        if (errorElement != null) {
-          return errorElement;
-        }
-
+        if (errorElement != null) return errorElement;
         throw err;
       }
 
-      if (!canActivate) {
-        return null;
-      }
-
+      if (!canActivate) return null;
       return loadingView ?? null;
     }
 
-    if (!canActivate) {
-      return null;
-    }
-
-    if (isLoading && loadingView != null) {
-      return loadingView;
-    }
-
+    if (!canActivate) return null;
+    if (isLoading && loadingView != null) return loadingView;
     return defaultView;
   }
 
