@@ -1,5 +1,5 @@
 import { css } from 'emotion';
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm } from 'vendor/tokamak';
 
 import { LoginController } from './Login.controller';

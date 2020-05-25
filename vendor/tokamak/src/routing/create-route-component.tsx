@@ -18,31 +18,34 @@ export function createRouteComponent(context: AppContext, controller: Type<any>)
   const loadingView = states?.loading != null ? createElement(states.loading) : undefined;
 
   function ViewHolder() {
-    const routerState = useRouterState();
-    const checkCanActivate = createCanActivate(guardInstances);
-    const canActivate = checkCanActivate(routerState);
+    // const routerState = useRouterState();
+    // const checkCanActivate = createCanActivate(guardInstances);
+    // const canActivate = checkCanActivate(routerState);
+    const canActivate = true;
 
     useMountLifeCycle(instance, !canActivate);
     useRenderLifeCycle(instance, !canActivate);
 
-    const isLoading = useTrackLoading(instance);
+    // const isLoading = useTrackLoading(instance);
 
-    let defaultView;
-    try {
-      defaultView = useView(instance);
-    } catch (err) {
-      if (!isLoading && canActivate) {
-        if (errorElement != null) return errorElement;
-        throw err;
-      }
+    // let defaultView;
+    // try {
+    //   defaultView = useView(instance);
+    // } catch (err) {
+    //   if (!isLoading && canActivate) {
+    //     if (errorElement != null) return errorElement;
+    //     throw err;
+    //   }
 
-      if (!canActivate) return null;
-      return loadingView ?? null;
-    }
+    //   if (!canActivate) return null;
+    //   return loadingView ?? null;
+    // }
 
-    if (!canActivate) return null;
-    if (isLoading && loadingView != null) return loadingView;
-    return defaultView;
+    // if (!canActivate) return null;
+    // if (isLoading && loadingView != null) return loadingView;
+    // return defaultView;
+
+    return useView(instance);
   }
 
   Object.defineProperty(ViewHolder, 'name', { value: useView.name });
