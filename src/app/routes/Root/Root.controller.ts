@@ -1,4 +1,4 @@
-import { controller } from 'vendor/tokamak';
+import { OnDidMount, controller } from 'vendor/tokamak';
 
 import { TestQuery, TestService } from '~/Test.store';
 
@@ -14,6 +14,10 @@ function observable(target: Object, propertyKey: string | symbol): void {
       return propertyContainer[propertyKey];
     },
     set(value: any) {
+      if (value === propertyContainer[propertyKey]) {
+        return;
+      }
+
       propertyContainer[propertyKey] = value;
       (target as any).render();
     },
@@ -26,12 +30,15 @@ function observable(target: Object, propertyKey: string | symbol): void {
     error: RootViewError,
   },
 })
-export class RootController {
+export class RootController implements OnDidMount {
   @observable public isLoading = false;
 
-  constructor(testQuery: TestQuery, private readonly testService: TestService) {
-    testQuery.isLoading$.subscribe((isLoading) => (this.isLoading = isLoading));
+  constructor(private readonly testQuery: TestQuery, private readonly testService: TestService) {
     // testQuery.isLoading$.subscribe(console.log);
+  }
+
+  onDidMount() {
+    this.testQuery.isLoading$.subscribe((isLoading) => (this.isLoading = isLoading ?? false));
   }
 
   login() {
