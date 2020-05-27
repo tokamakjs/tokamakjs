@@ -3,21 +3,18 @@ import { Subject } from 'rxjs';
 
 import { hasOnDidMount, hasOnDidRender, hasOnDidUnmount } from '../interfaces';
 
-export function useMountLifeCycle(controller: any, skip: boolean): void {
+export function useMountLifeCycle(controller: any): void {
   useEffect(() => {
-    if (skip) return;
     if (hasOnDidMount(controller)) controller.onDidMount();
 
     return () => {
-      if (skip) return;
       if (hasOnDidUnmount(controller)) controller.onDidUnmount();
     };
   }, []);
 }
 
-export function useRenderLifeCycle(controller: any, skip: boolean): void {
+export function useRenderLifeCycle(controller: any): void {
   useLayoutEffect(() => {
-    if (skip) return;
     if (hasOnDidRender(controller)) controller.onDidRender();
   });
 }

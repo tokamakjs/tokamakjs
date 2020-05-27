@@ -1,4 +1,4 @@
-import { OnDidMount, controller } from 'vendor/tokamak';
+import { ControllerWrapper, OnDidMount, controller } from 'vendor/tokamak';
 
 import { TestQuery, TestService } from '~/Test.store';
 
@@ -19,7 +19,7 @@ function observable(target: Object, propertyKey: string | symbol): void {
       }
 
       propertyContainer[propertyKey] = value;
-      (target as any).render();
+      (this as any).wrapper?.refresh();
     },
   } as PropertyDescriptor);
 }
@@ -32,10 +32,9 @@ function observable(target: Object, propertyKey: string | symbol): void {
 })
 export class RootController implements OnDidMount {
   @observable public isLoading = false;
+  public wrapper: any = 'asdfa';
 
-  constructor(private readonly testQuery: TestQuery, private readonly testService: TestService) {
-    // testQuery.isLoading$.subscribe(console.log);
-  }
+  constructor(private readonly testQuery: TestQuery, private readonly testService: TestService) {}
 
   onDidMount() {
     this.testQuery.isLoading$.subscribe((isLoading) => (this.isLoading = isLoading ?? false));
@@ -45,7 +44,7 @@ export class RootController implements OnDidMount {
     this.testService.login();
   }
 
-  render() {
-    console.log('RENDER', this.isLoading);
+  getWrapper() {
+    return this;
   }
 }
