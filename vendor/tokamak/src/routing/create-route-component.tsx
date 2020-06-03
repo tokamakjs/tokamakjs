@@ -3,7 +3,8 @@ import React, { Fragment, createElement } from 'react';
 import { useForceUpdate, usePromise } from '../common';
 import { AppContext } from '../core';
 import { Reflector } from '../reflection';
-import { ControllerWrapper, Type } from '../types';
+import { Type } from '../types';
+import { ControllerWrapper } from './controller-wrapper';
 import { useMountLifeCycle, useRenderLifeCycle } from './hooks';
 
 export function createRouteComponent(context: AppContext, controller: Type<any>) {
