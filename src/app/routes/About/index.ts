@@ -1,1 +1,1 @@
-export { AboutView as AboutRoute } from './About.view';
+export { AboutView as AboutRoute } from './about.view';

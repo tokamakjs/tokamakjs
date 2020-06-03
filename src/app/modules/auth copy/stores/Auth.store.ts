@@ -1,11 +1,11 @@
 import { action, observable } from 'mobx';
-import { OnInit, injectable } from 'vendor/tokamak';
+import { OnModuleInit, injectable } from 'vendor/tokamak';
 
 import { AuthApi } from '../api/Auth.api';
 import { LocalStorageService } from '../services';
 
 @injectable()
-export class AuthStore implements OnInit {
+export class AuthStore implements OnModuleInit {
   @observable public authToken?: string;
   @observable public isLoginIn = false;
 

@@ -1,1 +1,1 @@
-export { HomeController as HomeRoute } from './Home.controller';
+export { HomeView as HomeRoute } from './home.view';

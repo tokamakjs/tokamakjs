@@ -1,15 +1,15 @@
-export interface OnInit {
+export interface OnModuleInit {
   onModuleInit(): void | Promise<void>;
 }
 
-export interface OnDidInit {
+export interface OnModuleDidInit {
   onModuleDidInit(): void | Promise<void>;
 }
 
-export function hasOnInit(value: any): value is OnInit {
-  return value != null && (value as OnInit).onModuleInit != null;
+export function hasOnInit(value: any): value is OnModuleInit {
+  return value != null && (value as OnModuleInit).onModuleInit != null;
 }
 
-export function hasOnDidInit(value: any): value is OnDidInit {
-  return value != null && (value as OnDidInit).onModuleDidInit != null;
+export function hasOnDidInit(value: any): value is OnModuleDidInit {
+  return value != null && (value as OnModuleDidInit).onModuleDidInit != null;
 }
