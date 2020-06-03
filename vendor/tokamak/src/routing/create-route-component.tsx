@@ -4,46 +4,43 @@ import { useForceUpdate, usePromise } from '../common';
 import { AppContext } from '../core';
 import { Reflector } from '../reflection';
 import { ControllerWrapper, Type } from '../types';
-import { createCanActivate } from './can-activate';
-import { useMountLifeCycle, useRenderLifeCycle, useTrackLoading } from './hooks';
-import { useRouterState } from './router';
+import { useMountLifeCycle, useRenderLifeCycle } from './hooks';
 
 export function createRouteComponent(context: AppContext, controller: Type<any>) {
   const { view: useView, guards = [], states } = Reflector.getControllerMetadata(controller);
 
   const controllerInstance = context.get(controller);
   const guardInstances = guards.map((guard) => context.get(guard));
-  const wrapper = new ControllerWrapper(controllerInstance);
+  const wrapper = new ControllerWrapper(controllerInstance, guardInstances);
 
-  const errorElement = states?.error != null ? createElement(states.error) : undefined;
-  const loadingView = states?.loading != null ? createElement(states.loading) : undefined;
+  const errorElement = states?.error != null ? createElement(states.error) : null;
+  const loadingView = states?.loading != null ? createElement(states.loading) : null;
 
-  function ViewHolder() {
+  const ViewHolder = () => {
     useMountLifeCycle(controllerInstance);
     useRenderLifeCycle(controllerInstance);
     return useView(controllerInstance);
-  }
+  };
 
-  Object.defineProperty(ViewHolder, 'name', { value: useView.name });
+  ViewHolder.displayName = useView.name;
 
   wrapper.setViewHolder(ViewHolder);
 
-  function Route() {
+  const Route = () => {
     const forceUpdate = useForceUpdate();
     wrapper.setRefreshFunction(forceUpdate);
 
-    const [render, isPending, result] = usePromise(wrapper.render.bind(wrapper));
+    const [triggerRender, isPending, result] = usePromise(wrapper.render.bind(wrapper));
+    if (wrapper.shouldRefresh) triggerRender();
 
-    if (wrapper.needsRefresh) {
-      render();
-    }
-
-    if (isPending || result == null || wrapper.needsRefresh) {
-      return <Fragment>Loading...</Fragment>;
+    if (isPending || result == null || wrapper.shouldRefresh) {
+      return <Fragment>{loadingView}</Fragment>;
     }
 
     return result as any;
-  }
+  };
+
+  Route.displayName = `${useView.name.replace('View', '').replace('view', '')}Route`;
 
   return Route;
 }

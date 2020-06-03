@@ -1,47 +1,50 @@
 import { ComponentType, ReactElement, createElement } from 'react';
 
-import { delay } from '../common';
+import { CanActivate, OnDidMount, OnDidUnmount } from '../interfaces';
 
-export class ControllerWrapper<T = any> {
+export const WRAPPER_KEY = Symbol('ControllerWrapper');
+
+export class ControllerWrapper<T = any> implements OnDidMount, OnDidUnmount {
   private _viewHolder?: ComponentType;
-  private _refreshFunction?: () => void;
+  private _triggerRender?: () => void;
   private _isDirty = true;
+  private _isFirstRender = true;
 
-  constructor(private readonly controller: T) {
-    Object.defineProperty(controller, 'wrapper', {
-      configurable: true,
-      enumerable: true,
-      get: () => this,
-    });
-
-    console.log(controller);
+  constructor(controller: T, private readonly _guards: Array<CanActivate>) {
+    Object.defineProperty(controller, WRAPPER_KEY, { get: () => this });
   }
 
-  setViewHolder(viewHolder: ComponentType): void {
-    this._viewHolder = viewHolder;
-  }
-
-  setRefreshFunction(refresh: () => void): void {
-    this._refreshFunction = refresh;
-  }
-
-  get needsRefresh() {
+  get shouldRefresh() {
     return this._isDirty;
   }
 
-  refresh(): void {
-    if (this._refreshFunction == null) {
-      throw new Error('No refresh function set.');
-    }
-    console.log('is dirty again');
-    this._isDirty = true;
-    return this._refreshFunction();
+  public onDidMount(): void {
+    this._isFirstRender = false;
   }
 
-  async render() {
+  public onDidUnmount(): void {
+    this._isFirstRender = true;
+  }
+
+  public setViewHolder(viewHolder: ComponentType): void {
+    this._viewHolder = viewHolder;
+  }
+
+  public setRefreshFunction(refresh: () => void): void {
+    this._triggerRender = refresh;
+  }
+
+  public refresh(): void {
+    if (this._triggerRender == null) {
+      throw new Error('No refresh function set.');
+    }
+
+    this._isDirty = true;
+    this._triggerRender();
+  }
+
+  public async render(): Promise<ReactElement> {
     this._isDirty = false;
-    console.log('Render');
-    await delay(2000);
     return createElement(this._viewHolder!);
   }
 }
