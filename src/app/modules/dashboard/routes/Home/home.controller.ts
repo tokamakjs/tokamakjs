@@ -1,17 +1,30 @@
 import { OnDidMount, controller, observable } from 'vendor/tokamak';
 
 import { AuthQuery } from '~/modules/auth/queries';
+import { CurrentUserQuery } from '~/modules/auth/queries/current-user.query';
 
 import { HomeView } from './home.view';
 
 @controller({ view: HomeView })
 export class HomeController implements OnDidMount {
   @observable authToken?: string;
+  @observable currentUser?: { firstName: string; lastName: string };
 
-  constructor(private readonly authQuery: AuthQuery) {}
+  constructor(
+    private readonly authQuery: AuthQuery,
+    private readonly currentUserQuery: CurrentUserQuery,
+  ) {}
 
   onDidMount() {
-    this.authQuery.authToken$.subscribe((v) => (this.authToken = v));
+    const authTokenSub = this.authQuery.authToken$.subscribe((v) => (this.authToken = v));
+    const currentUserSub = this.currentUserQuery.currentUser$.subscribe(
+      (v) => (this.currentUser = v),
+    );
+
+    return () => {
+      authTokenSub.unsubscribe();
+      currentUserSub.unsubscribe();
+    };
   }
 
   logout() {
