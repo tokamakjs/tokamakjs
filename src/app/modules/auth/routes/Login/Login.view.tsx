@@ -2,6 +2,8 @@ import { css } from 'emotion';
 import React from 'react';
 import { Link, useForm } from 'vendor/tokamak';
 
+import { LoginController } from './login.controller';
+
 const styles = {
   login: css`
     display: flex;
@@ -27,7 +29,7 @@ interface LoginForm {
   password?: string;
 }
 
-export const LoginView = () => {
+export const LoginView = (ctrl: LoginController) => {
   const loginForm = useForm<LoginForm>({});
 
   return (
@@ -56,7 +58,11 @@ export const LoginView = () => {
           />
         </p>
         <p>
-          <button>Login</button>
+          <button
+            disabled={ctrl.isLoading}
+            onClick={() => ctrl.login(loginForm.values.username!, loginForm.values.password!)}>
+            Login
+          </button>
         </p>
         <p>
           <Link href="/">Home</Link>

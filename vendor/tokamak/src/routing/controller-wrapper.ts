@@ -6,21 +6,23 @@ export const WRAPPER_KEY = Symbol('ControllerWrapper');
 
 export class ControllerWrapper<T = any> implements OnDidMount, OnDidUnmount {
   private _viewHolder?: ComponentType;
-  private _triggerRender?: () => void;
-  private _isDirty = true;
+  private _refresh?: () => void;
+  private _hasRendered = false;
 
   constructor(controller: T, private readonly _guards: Array<CanActivate>) {
     Object.defineProperty(controller, WRAPPER_KEY, { get: () => this });
   }
 
-  get shouldRefresh() {
-    return this._isDirty;
+  get shouldRender() {
+    return !this._hasRendered;
   }
 
-  public onDidMount(): void {}
+  public onDidMount(): void {
+    this._hasRendered = true;
+  }
 
   public onDidUnmount(): void {
-    this._isDirty = true;
+    this._hasRendered = false;
   }
 
   public setViewHolder(viewHolder: ComponentType): void {
@@ -28,20 +30,20 @@ export class ControllerWrapper<T = any> implements OnDidMount, OnDidUnmount {
   }
 
   public setRefreshFunction(refresh: () => void): void {
-    this._triggerRender = refresh;
+    this._refresh = refresh;
   }
 
   public refresh(): void {
-    if (this._triggerRender == null) {
+    if (this._refresh == null) {
       throw new Error('No refresh function set.');
     }
 
-    this._isDirty = true;
-    this._triggerRender();
+    this._refresh();
   }
 
   public async render(): Promise<ReactElement> {
-    this._isDirty = false;
-    return createElement(this._viewHolder!);
+    const element = createElement(this._viewHolder!);
+    this._hasRendered = true;
+    return element;
   }
 }

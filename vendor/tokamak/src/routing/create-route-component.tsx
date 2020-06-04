@@ -14,7 +14,7 @@ export function createRouteComponent(context: AppContext, controller: Type<any>)
   const guardInstances = guards.map((guard) => context.get(guard));
   const wrapper = new ControllerWrapper(controllerInstance, guardInstances);
 
-  const errorElement = states?.error != null ? createElement(states.error) : null;
+  // const errorElement = states?.error != null ? createElement(states.error) : null;
   const loadingView = states?.loading != null ? createElement(states.loading) : null;
 
   const ViewHolder = () => {
@@ -33,13 +33,13 @@ export function createRouteComponent(context: AppContext, controller: Type<any>)
     wrapper.setRefreshFunction(forceUpdate);
 
     const [triggerRender, isPending, result] = usePromise(wrapper.render.bind(wrapper));
-    if (wrapper.shouldRefresh) triggerRender();
+    if (wrapper.shouldRender) triggerRender();
 
-    if (isPending || result == null || wrapper.shouldRefresh) {
+    if (isPending || result == null || wrapper.shouldRender) {
       return <Fragment>{loadingView}</Fragment>;
     }
 
-    return result as any;
+    return <ViewHolder />;
   };
 
   Route.displayName = `${useView.name.replace('View', '').replace('view', '')}Route`;

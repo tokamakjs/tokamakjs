@@ -1,1 +1,1 @@
-export { LoginView as LoginRoute } from './login.view';
+export { LoginController as LoginRoute } from './login.controller';
