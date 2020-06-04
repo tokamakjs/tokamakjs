@@ -8,7 +8,6 @@ export class ControllerWrapper<T = any> implements OnDidMount, OnDidUnmount {
   private _viewHolder?: ComponentType;
   private _triggerRender?: () => void;
   private _isDirty = true;
-  private _isFirstRender = true;
 
   constructor(controller: T, private readonly _guards: Array<CanActivate>) {
     Object.defineProperty(controller, WRAPPER_KEY, { get: () => this });
@@ -18,12 +17,10 @@ export class ControllerWrapper<T = any> implements OnDidMount, OnDidUnmount {
     return this._isDirty;
   }
 
-  public onDidMount(): void {
-    this._isFirstRender = false;
-  }
+  public onDidMount(): void {}
 
   public onDidUnmount(): void {
-    this._isFirstRender = true;
+    this._isDirty = true;
   }
 
   public setViewHolder(viewHolder: ComponentType): void {

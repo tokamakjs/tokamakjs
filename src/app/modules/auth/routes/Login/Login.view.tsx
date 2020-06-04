@@ -1,6 +1,6 @@
 import { css } from 'emotion';
 import React from 'react';
-import { useForm } from 'vendor/tokamak';
+import { Link, useForm } from 'vendor/tokamak';
 
 const styles = {
   login: css`
@@ -57,6 +57,9 @@ export const LoginView = () => {
         </p>
         <p>
           <button>Login</button>
+        </p>
+        <p>
+          <Link href="/">Home</Link>
         </p>
       </div>
     </div>

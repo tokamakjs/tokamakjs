@@ -28,6 +28,7 @@ export function createRouteComponent(context: AppContext, controller: Type<any>)
   wrapper.setViewHolder(ViewHolder);
 
   const Route = () => {
+    useMountLifeCycle(wrapper);
     const forceUpdate = useForceUpdate();
     wrapper.setRefreshFunction(forceUpdate);
 
