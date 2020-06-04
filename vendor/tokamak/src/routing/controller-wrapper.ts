@@ -1,10 +1,10 @@
 import { ComponentType, ReactElement, createElement } from 'react';
 
-import { CanActivate, OnDidMount, OnDidUnmount } from '../interfaces';
+import { CanActivate, OnDidMount, OnWillUnmount } from '../interfaces';
 
 export const WRAPPER_KEY = Symbol('ControllerWrapper');
 
-export class ControllerWrapper<T = any> implements OnDidMount, OnDidUnmount {
+export class ControllerWrapper<T = any> implements OnDidMount, OnWillUnmount {
   private _viewHolder?: ComponentType;
   private _refresh?: () => void;
   private _hasRendered = false;
@@ -21,7 +21,7 @@ export class ControllerWrapper<T = any> implements OnDidMount, OnDidUnmount {
     this._hasRendered = true;
   }
 
-  public onDidUnmount(): void {
+  public onWillUnmount(): void {
     this._hasRendered = false;
   }
 

@@ -1,5 +1,5 @@
 import { computed } from 'mobx';
-import { OnDidMount, OnDidRender, OnDidUnmount, controller, tracked } from 'vendor/tokamak';
+import { OnDidMount, OnDidRender, OnWillUnmount, controller, tracked } from 'vendor/tokamak';
 
 import { AuthGuard } from '~/modules/auth/guards';
 import { AuthStore } from '~/modules/auth/stores';
@@ -16,7 +16,7 @@ import { HomeView, HomeViewError, HomeViewLoading } from './Home.view';
   },
   guards: [AuthGuard],
 })
-export class HomeController implements OnDidMount, OnDidUnmount, OnDidRender {
+export class HomeController implements OnDidMount, OnWillUnmount, OnDidRender {
   constructor(
     private readonly currentUserStore: CurrentUserStore,
     private readonly authStore: AuthStore,
@@ -28,7 +28,7 @@ export class HomeController implements OnDidMount, OnDidUnmount, OnDidRender {
     await this.projectsStore.loadProjects();
   }
 
-  public onDidUnmount(): void {
+  public onWillUnmount(): void {
     console.log('Unmounted HomeController');
   }
 

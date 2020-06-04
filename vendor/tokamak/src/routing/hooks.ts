@@ -5,10 +5,15 @@ import { hasOnDidMount, hasOnDidRender, hasOnDidUnmount } from '../interfaces';
 
 export function useMountLifeCycle(controller: any): void {
   useEffect(() => {
-    if (hasOnDidMount(controller)) controller.onDidMount();
+    let onDidMountCb: any;
+
+    if (hasOnDidMount(controller)) {
+      onDidMountCb = controller.onDidMount();
+    }
 
     return () => {
-      if (hasOnDidUnmount(controller)) controller.onDidUnmount();
+      if (onDidMountCb != null && typeof onDidMountCb === 'function') onDidMountCb();
+      if (hasOnDidUnmount(controller)) controller.onWillUnmount();
     };
   }, []);
 }
