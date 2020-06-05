@@ -1,6 +1,6 @@
 import { delay, injectable } from 'vendor/tokamak';
 
-import { Project } from '../types/project';
+import { Project } from '../types';
 
 @injectable()
 export class DashboardApi {
