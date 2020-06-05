@@ -7,6 +7,9 @@ import { Project } from '../types';
 
 @injectable()
 export class ProjectsQuery extends Query<ProjectsState> {
+  public readonly isLoading$ = this.selectLoading();
+  public readonly projects$ = this.select('projects');
+
   constructor(protected readonly store: ProjectsStore, private readonly api: DashboardApi) {
     super(store);
   }
