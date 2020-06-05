@@ -15,6 +15,10 @@ export class ProjectsQuery extends Query<ProjectsState> {
   }
 
   public async loadProjects(): Promise<Array<Project>> {
+    if (this.getValue().projects.length > 0) {
+      return this.getValue().projects;
+    }
+
     this.store.setLoading(true);
     const projects = await this.api.getProjects();
     this.store.update({ projects });

@@ -1,8 +1,7 @@
 import { OnDidMount, RouterService, controller, observable } from 'vendor/tokamak';
 
 import { AuthGuard } from '~/modules/auth/guards';
-import { AuthQuery } from '~/modules/auth/queries';
-import { CurrentUserQuery } from '~/modules/auth/queries/current-user.query';
+import { AuthQuery, CurrentUserQuery } from '~/modules/auth/queries';
 
 import { ProjectsQuery } from '../../queries';
 import { Project } from '../../types';
