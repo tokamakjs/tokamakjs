@@ -1,6 +1,6 @@
-import React, { Fragment, createElement } from 'react';
+import React from 'react';
 
-import { useForceUpdate, usePromise } from '../common';
+import { useForceUpdate } from '../common';
 import { AppContext } from '../core';
 import { Reflector } from '../reflection';
 import { Type } from '../types';
@@ -15,7 +15,7 @@ export function createRouteComponent(context: AppContext, controller: Type<any>)
   const wrapper = new ControllerWrapper(controllerInstance, guardInstances);
 
   // const errorElement = states?.error != null ? createElement(states.error) : null;
-  const loadingView = states?.loading != null ? createElement(states.loading) : null;
+  // const loadingView = states?.loading != null ? createElement(states.loading) : null;
 
   const ViewHolder = () => {
     useMountLifeCycle(controllerInstance);
@@ -25,19 +25,11 @@ export function createRouteComponent(context: AppContext, controller: Type<any>)
 
   ViewHolder.displayName = useView.name;
 
-  wrapper.setViewHolder(ViewHolder);
-
   const Route = () => {
     useMountLifeCycle(wrapper);
+
     const forceUpdate = useForceUpdate();
     wrapper.setRefreshFunction(forceUpdate);
-
-    const [triggerRender, isPending, result] = usePromise(wrapper.render.bind(wrapper));
-    if (wrapper.shouldRender) triggerRender();
-
-    if (isPending || result == null || wrapper.shouldRender) {
-      return <Fragment>{loadingView}</Fragment>;
-    }
 
     return <ViewHolder />;
   };
