@@ -34,7 +34,7 @@ export function createRouteComponent(context: AppContext, controller: Type<any>)
     const { isPending, forbidden } = useGuards(guardInstances);
 
     if (isPending) {
-      return <Fragment>{loadingView ?? 'Loading...'}</Fragment>;
+      return <Fragment>{loadingView}</Fragment>;
     }
 
     if (forbidden) {
