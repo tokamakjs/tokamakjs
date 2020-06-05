@@ -1,4 +1,4 @@
-import { CanActivate, OnDidMount, OnWillUnmount } from '../interfaces';
+import { OnDidMount, OnWillUnmount } from '../interfaces';
 
 export const WRAPPER_KEY = Symbol('ControllerWrapper');
 
@@ -6,7 +6,7 @@ export class ControllerWrapper<T = any> implements OnDidMount, OnWillUnmount {
   private _refresh?: () => void;
   private _hasRendered = false;
 
-  constructor(controller: T, private readonly _guards: Array<CanActivate>) {
+  constructor(controller: T) {
     Object.defineProperty(controller, WRAPPER_KEY, { get: () => this });
   }
 

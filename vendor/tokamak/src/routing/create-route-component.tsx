@@ -6,14 +6,13 @@ import { Reflector } from '../reflection';
 import { Type } from '../types';
 import { ControllerWrapper } from './controller-wrapper';
 import { useGuards, useMountLifeCycle, useRenderLifeCycle } from './hooks';
-import { useRouterState } from './router';
 
 export function createRouteComponent(context: AppContext, controller: Type<any>) {
   const { view: useView, guards = [], states } = Reflector.getControllerMetadata(controller);
 
   const controllerInstance = context.get(controller);
   const guardInstances = guards.map((guard) => context.get(guard));
-  const wrapper = new ControllerWrapper(controllerInstance, guardInstances);
+  const wrapper = new ControllerWrapper(controllerInstance);
 
   // const errorElement = states?.error != null ? createElement(states.error) : null;
   const loadingView = states?.loading != null ? createElement(states.loading) : null;

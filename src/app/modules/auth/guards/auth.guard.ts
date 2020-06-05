@@ -17,8 +17,7 @@ export class AuthGuard implements CanActivate {
       return true;
     }
 
-    // this.router.replace(`/auth/login?return=${state.location.pathname}`);
-    schedule(() => this.router.replace(`/auth/login`));
+    schedule(() => this.router.replace(`/auth/login?return=${state.location.pathname}`));
     return false;
   }
 }
