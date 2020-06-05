@@ -1,4 +1,4 @@
-import { OnDidMount, controller, observable } from 'vendor/tokamak';
+import { OnDidMount, RouterService, controller, observable } from 'vendor/tokamak';
 
 import { AuthGuard } from '~/modules/auth/guards';
 import { AuthQuery } from '~/modules/auth/queries';
@@ -14,6 +14,7 @@ export class HomeController implements OnDidMount {
   constructor(
     private readonly authQuery: AuthQuery,
     private readonly currentUserQuery: CurrentUserQuery,
+    private readonly router: RouterService,
   ) {}
 
   onDidMount() {
@@ -30,5 +31,6 @@ export class HomeController implements OnDidMount {
 
   logout() {
     this.authQuery.logout();
+    this.router.push('/auth/login');
   }
 }
