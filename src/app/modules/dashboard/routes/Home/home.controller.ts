@@ -1,11 +1,12 @@
 import { OnDidMount, controller, observable } from 'vendor/tokamak';
 
+import { AuthGuard } from '~/modules/auth/guards';
 import { AuthQuery } from '~/modules/auth/queries';
 import { CurrentUserQuery } from '~/modules/auth/queries/current-user.query';
 
 import { HomeView } from './home.view';
 
-@controller({ view: HomeView })
+@controller({ view: HomeView, guards: [AuthGuard] })
 export class HomeController implements OnDidMount {
   @observable authToken?: string;
   @observable currentUser?: { firstName: string; lastName: string };

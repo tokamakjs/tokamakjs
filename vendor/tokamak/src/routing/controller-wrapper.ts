@@ -22,7 +22,7 @@ export class ControllerWrapper<T = any> implements OnDidMount, OnWillUnmount {
     this._hasRendered = false;
   }
 
-  public setRefreshFunction(refresh: () => void): void {
+  public setRefreshViewFunction(refresh: () => void): void {
     this._refresh = refresh;
   }
 
