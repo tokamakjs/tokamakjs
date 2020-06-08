@@ -1,4 +1,4 @@
-import 'mobx-react/batchingForReactDom';
+import 'reflect-metadata';
 
 import { createBrowserHistory } from 'history';
 import React from 'react';

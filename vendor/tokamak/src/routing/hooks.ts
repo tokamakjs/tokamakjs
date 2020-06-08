@@ -1,23 +1,26 @@
 import { useEffect, useLayoutEffect, useState } from 'react';
 import { Subject } from 'rxjs';
 
-import { hasOnDidMount, hasOnDidRender, hasOnDidUnmount } from '../interfaces';
+import { CanActivate, hasOnDidMount, hasOnDidRender, hasOnDidUnmount } from '../interfaces';
+import { useRouterState } from './router';
 
-export function useMountLifeCycle(controller: any, skip: boolean): void {
+export function useMountLifeCycle(controller: any): void {
   useEffect(() => {
-    if (skip) return;
-    if (hasOnDidMount(controller)) controller.onDidMount();
+    let onDidMountCb: any;
+
+    if (hasOnDidMount(controller)) {
+      onDidMountCb = controller.onDidMount();
+    }
 
     return () => {
-      if (skip) return;
-      if (hasOnDidUnmount(controller)) controller.onDidUnmount();
+      if (onDidMountCb != null && typeof onDidMountCb === 'function') onDidMountCb();
+      if (hasOnDidUnmount(controller)) controller.onWillUnmount();
     };
   }, []);
 }
 
-export function useRenderLifeCycle(controller: any, skip: boolean): void {
+export function useRenderLifeCycle(controller: any): void {
   useLayoutEffect(() => {
-    if (skip) return;
     if (hasOnDidRender(controller)) controller.onDidRender();
   });
 }
@@ -41,4 +44,29 @@ export function useTrackLoading(controller: any): boolean {
   });
 
   return isLoading;
+}
+
+export function useGuards(guards: Array<CanActivate>): { isPending: boolean; forbidden: boolean } {
+  const [state, setState] = useState({ isPending: true, forbidden: true });
+  const routerState = useRouterState();
+
+  const scheduler = (cb: Function) => setTimeout(cb);
+  const results = guards.map((g) => g.canActivate(routerState, scheduler));
+  const isAsync = results.some((r) => r instanceof Promise);
+
+  useLayoutEffect(() => {
+    if (!isAsync) return;
+
+    Promise.all(results).then((results) => {
+      const forbidden = results.some((canActivate) => !canActivate);
+      setState({ isPending: false, forbidden });
+    });
+  }, []);
+
+  if (!isAsync) {
+    const forbidden = results.some((canActivate) => !canActivate);
+    return { isPending: false, forbidden };
+  }
+
+  return state;
 }

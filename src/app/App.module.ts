@@ -1,9 +1,9 @@
 import { createRoute, includeRoutes, module } from 'vendor/tokamak';
 
-import { AuthModule } from './modules/auth/Auth.module';
-import { DashboardModule } from './modules/dashboard/Dashboard.module';
-import { AboutRoute } from './routes/About';
-import { RootRoute } from './routes/Root';
+import { AuthModule } from './modules/auth/auth.module';
+import { DashboardModule } from './modules/dashboard/dashboard.module';
+import { AboutRoute } from './routes/about';
+import { RootRoute } from './routes/root';
 
 @module({
   routing: [
@@ -13,6 +13,7 @@ import { RootRoute } from './routes/Root';
     ]),
     createRoute('/about', AboutRoute),
   ],
+  providers: [],
   imports: [AuthModule, DashboardModule],
 })
 export class AppModule {}

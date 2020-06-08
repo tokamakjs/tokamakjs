@@ -1,1 +1,1 @@
-export * from './Dashboard.api';
+export * from './dashboard.api';

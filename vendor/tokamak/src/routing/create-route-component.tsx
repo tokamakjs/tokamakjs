@@ -1,51 +1,49 @@
-import { observer } from 'mobx-react';
-import { createElement } from 'react';
+import React, { Fragment, createElement } from 'react';
 
+import { useForceUpdate } from '../common';
 import { AppContext } from '../core';
 import { Reflector } from '../reflection';
 import { Type } from '../types';
-import { createCanActivate } from './can-activate';
-import { useMountLifeCycle, useRenderLifeCycle, useTrackLoading } from './hooks';
-import { useRouterState } from './router';
+import { ControllerWrapper } from './controller-wrapper';
+import { useGuards, useMountLifeCycle, useRenderLifeCycle } from './hooks';
 
 export function createRouteComponent(context: AppContext, controller: Type<any>) {
   const { view: useView, guards = [], states } = Reflector.getControllerMetadata(controller);
 
-  const instance = context.get(controller);
+  const controllerInstance = context.get(controller);
   const guardInstances = guards.map((guard) => context.get(guard));
+  const wrapper = new ControllerWrapper(controllerInstance);
 
-  const errorElement = states?.error != null ? createElement(states.error) : undefined;
-  const loadingView = states?.loading != null ? createElement(states.loading) : undefined;
+  // const errorElement = states?.error != null ? createElement(states.error) : null;
+  const loadingView = states?.loading != null ? createElement(states.loading) : null;
 
-  function ViewHolder() {
-    const routerState = useRouterState();
-    const checkCanActivate = createCanActivate(guardInstances);
-    const canActivate = checkCanActivate(routerState);
+  const ViewHolder = () => {
+    const forceUpdate = useForceUpdate();
+    wrapper.setRefreshViewFunction(forceUpdate);
 
-    useMountLifeCycle(instance, !canActivate);
-    useRenderLifeCycle(instance, !canActivate);
+    useMountLifeCycle(controllerInstance);
+    useRenderLifeCycle(controllerInstance);
+    return useView(controllerInstance);
+  };
 
-    const isLoading = useTrackLoading(instance);
+  ViewHolder.displayName = useView.name;
 
-    let defaultView;
-    try {
-      defaultView = useView(instance);
-    } catch (err) {
-      if (!isLoading && canActivate) {
-        if (errorElement != null) return errorElement;
-        throw err;
-      }
+  const Route = () => {
+    useMountLifeCycle(wrapper);
+    const { isPending, forbidden } = useGuards(guardInstances);
 
-      if (!canActivate) return null;
-      return loadingView ?? null;
+    if (isPending) {
+      return <Fragment>{loadingView}</Fragment>;
     }
 
-    if (!canActivate) return null;
-    if (isLoading && loadingView != null) return loadingView;
-    return defaultView;
-  }
+    if (forbidden) {
+      return null;
+    }
 
-  Object.defineProperty(ViewHolder, 'name', { value: useView.name });
+    return <ViewHolder />;
+  };
 
-  return observer(ViewHolder);
+  Route.displayName = `${useView.name.replace('View', '').replace('view', '')}Route`;
+
+  return Route;
 }

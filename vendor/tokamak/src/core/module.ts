@@ -88,7 +88,7 @@ export class Module {
     for (const [, provider] of this.providers) {
       const { defaultValue: value } = provider;
       if (hasOnInit(value)) {
-        await value.onInit();
+        await value.onModuleInit();
       }
     }
   }
@@ -97,7 +97,7 @@ export class Module {
     for (const [, provider] of this.providers) {
       const { defaultValue: value } = provider;
       if (hasOnDidInit(value)) {
-        await value.onDidInit();
+        await value.onModuleDidInit();
       }
     }
   }

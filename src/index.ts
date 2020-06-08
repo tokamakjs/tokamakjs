@@ -1,8 +1,6 @@
-import 'reflect-metadata';
-
 import { renderModule } from 'vendor/tokamak';
 
-import { AppModule } from './app/App.module';
+import { AppModule } from './app/app.module';
 
 async function bootstrap() {
   renderModule(AppModule, '#root');

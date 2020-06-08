@@ -1,21 +1,22 @@
-import { action, observable } from 'mobx';
+import { Store, StoreConfig } from '@datorama/akita';
 import { injectable } from 'vendor/tokamak';
 
-import { DashboardApi } from '../api';
-import { Project } from '../types/project';
+import { Project } from '../types';
+
+export interface ProjectsState {
+  projects: Array<Project>;
+}
+
+function getInitialState(): ProjectsState {
+  return {
+    projects: [],
+  };
+}
 
 @injectable()
-export class ProjectsStore {
-  @observable public isLoading = false;
-  @observable public projects = [] as Array<Project>;
-
-  constructor(private readonly dashboardApi: DashboardApi) {}
-
-  @action.bound
-  public async loadProjects(): Promise<Array<Project>> {
-    this.isLoading = true;
-    this.projects = await this.dashboardApi.getProjects();
-    this.isLoading = false;
-    return this.projects;
+@StoreConfig({ name: 'projects' })
+export class ProjectsStore extends Store<ProjectsState> {
+  constructor() {
+    super(getInitialState());
   }
 }

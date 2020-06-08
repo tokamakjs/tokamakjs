@@ -1,8 +1,8 @@
 import { css } from 'emotion';
 import React from 'react';
-import { useForm } from 'vendor/tokamak';
+import { Link, useForm } from 'vendor/tokamak';
 
-import { LoginController } from './Login.controller';
+import { LoginController } from './login.controller';
 
 const styles = {
   login: css`
@@ -32,10 +32,6 @@ interface LoginForm {
 export const LoginView = (ctrl: LoginController) => {
   const loginForm = useForm<LoginForm>({});
 
-  if (ctrl.isLoading) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <div className={styles.login}>
       <div className={styles.container}>
@@ -63,11 +59,13 @@ export const LoginView = (ctrl: LoginController) => {
         </p>
         <p>
           <button
-            onClick={async () => {
-              await ctrl.login(loginForm.values.username!, loginForm.values.password!);
-            }}>
+            disabled={ctrl.isLoading}
+            onClick={() => ctrl.login(loginForm.values.username!, loginForm.values.password!)}>
             Login
           </button>
+        </p>
+        <p>
+          <Link href="/">Home</Link>
         </p>
       </div>
     </div>

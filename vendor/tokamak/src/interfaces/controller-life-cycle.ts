@@ -1,16 +1,16 @@
 export interface OnDidMount {
-  onDidMount(): void | Promise<void>;
+  onDidMount(): void | Promise<void> | VoidFunction;
 }
 
 export function hasOnDidMount(value: any): value is OnDidMount {
   return value?.onDidMount != null;
 }
 
-export interface OnDidUnmount {
-  onDidUnmount(): void;
+export interface OnWillUnmount {
+  onWillUnmount(): void;
 }
 
-export function hasOnDidUnmount(value: any): value is OnDidUnmount {
+export function hasOnDidUnmount(value: any): value is OnWillUnmount {
   return value?.onDidUnmount != null;
 }
 

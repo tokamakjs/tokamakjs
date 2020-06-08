@@ -1,32 +1,30 @@
-import React from 'react';
+import React, { Fragment } from 'react';
+import { Link } from 'vendor/tokamak';
 
 import { UserCard } from '../../components';
-import { HomeController } from './Home.controller';
-
-export const HomeViewLoading = () => {
-  return <div>Loading home...</div>;
-};
-
-export const HomeViewError = () => {
-  return <div>There was an error trying to render.</div>;
-};
+import { HomeController } from './home.controller';
 
 export const HomeView = (ctrl: HomeController) => {
-  if (ctrl.currentUser == null) {
-    return null;
+  if (ctrl.isLoading) {
+    return <h1>Loading...</h1>;
   }
 
   return (
-    <div>
+    <Fragment>
       <h1>Home</h1>
-      <h2>Welcome back</h2>
-      <UserCard firstName={ctrl.currentUser.firstName} lastName={ctrl.currentUser.lastName} />
+      {ctrl.authToken != null ? <h2>Auth Token: {ctrl.authToken}</h2> : null}
+      {ctrl.currentUser != null ? (
+        <UserCard firstName={ctrl.currentUser.firstName} lastName={ctrl.currentUser.lastName} />
+      ) : null}
       <ul>
         {ctrl.projects.map((project) => (
           <li key={project.name}>{project.name}</li>
         ))}
       </ul>
-      <button onClick={() => ctrl.logout()}>Log out</button>
-    </div>
+      <Link href="/auth/login">Login</Link>
+      <p>
+        <button onClick={() => ctrl.logout()}>Logout</button>
+      </p>
+    </Fragment>
   );
 };

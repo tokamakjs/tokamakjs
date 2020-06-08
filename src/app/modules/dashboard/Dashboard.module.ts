@@ -1,15 +1,15 @@
 import { createRoute, module } from 'vendor/tokamak';
 
-import { AuthModule } from '../auth/Auth.module';
-import { DashboardApi } from './api/Dashboard.api';
-import { AdminRoute } from './routes/Admin';
-import { HomeRoute } from './routes/Home';
+import { AuthModule } from '../auth/auth.module';
+import { DashboardApi } from './api';
+import { ProjectsQuery } from './queries';
+import { HomeRoute } from './routes/home';
 import { ProjectsStore } from './stores';
 
 @module({
-  routing: [createRoute('/', HomeRoute), createRoute('/admin', AdminRoute)],
-  providers: [DashboardApi, ProjectsStore],
+  routing: [createRoute('/', HomeRoute)],
+  providers: [ProjectsQuery, ProjectsStore, DashboardApi],
   imports: [AuthModule],
-  exports: [],
+  exports: [ProjectsQuery],
 })
 export class DashboardModule {}

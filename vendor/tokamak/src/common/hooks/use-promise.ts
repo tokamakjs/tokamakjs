@@ -11,20 +11,26 @@ interface EnhancedPromiser<A extends Array<any>, R> {
 
 export function usePromise<A extends Array<any>, R>(
   promiser: Promiser<A, R>,
-): EnhancedPromiser<A, R> {
-  const [isPending, setIsPending] = useState(false);
+): [EnhancedPromiser<A, R>, boolean, R | undefined] {
+  const [status, setStatus] = useState<{ isPending: boolean; result?: R }>({ isPending: false });
+
+  const setIsPending = () => setStatus({ isPending: true });
 
   const proxy = new Proxy(promiser, {
     apply(target, thisArg, ...args) {
-      setIsPending(true);
+      setIsPending();
       const promise = (target as any).apply(thisArg, args);
-      promise.then(() => setIsPending(false));
+
+      promise.then((result: R) => {
+        setStatus({ isPending: false, result });
+      });
+
       return promise;
     },
     get(target, key) {
-      return key === 'isPending' ? isPending : (target as any)[key];
+      return key === 'isPending' ? status.isPending : (target as any)[key];
     },
   });
 
-  return (proxy as unknown) as EnhancedPromiser<A, R>;
+  return [(proxy as unknown) as EnhancedPromiser<A, R>, status.isPending, status.result];
 }
