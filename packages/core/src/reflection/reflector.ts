@@ -37,10 +37,6 @@ export class Reflector {
     return dependencies;
   }
 
-  static getTypeOfProperty(target: Object, key: string | symbol): any {
-    return Reflect.getMetadata('design:type', target, key);
-  }
-
   static addControllerMetadata(target: Object, metadata: ControllerMetadata): void {
     Reflect.defineMetadata('self:controller', metadata, target);
   }
