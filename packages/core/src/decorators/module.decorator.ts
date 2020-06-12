@@ -1,5 +1,6 @@
+import { ModuleDefinition } from '../injection';
+import { Reflector } from '../reflection';
 import { RouteDefinition } from '../routing';
-import { ModuleDefinition } from '../types';
 
 export interface ModuleMetadata {
   routing?: Array<RouteDefinition>;
@@ -10,8 +11,6 @@ export interface ModuleMetadata {
 
 export function module(metadata: ModuleMetadata): ClassDecorator {
   return (target: Function): void => {
-    Reflect.ownKeys(metadata).forEach((key) => {
-      Reflect.defineMetadata(key, metadata[key as keyof ModuleMetadata], target);
-    });
+    Reflector.addModuleMetadata(target, metadata);
   };
 }

@@ -1,14 +1,15 @@
 import { ControllerMetadata, ModuleMetadata } from '../decorators';
-import { ProviderToken, Type } from '../types';
+import { ProviderToken } from '../injection';
+import { Type } from '../utils';
 
 export class Reflector {
-  static getModuleMetadata(metatype: Type): Required<ModuleMetadata> {
-    const routing = Reflect.getMetadata<ModuleMetadata, 'routing'>('routing', metatype) ?? [];
-    const providers = Reflect.getMetadata<ModuleMetadata, 'providers'>('providers', metatype) ?? [];
-    const imports = Reflect.getMetadata<ModuleMetadata, 'imports'>('imports', metatype) ?? [];
-    const exports = Reflect.getMetadata<ModuleMetadata, 'exports'>('exports', metatype) ?? [];
+  static addModuleMetadata(target: Object, metadata: ModuleMetadata): void {
+    const withDefaults = { routing: [], providers: [], imports: [], exports: [], ...metadata };
+    Reflect.defineMetadata('self:module', withDefaults, target);
+  }
 
-    return { routing, providers, imports, exports };
+  static getModuleMetadata(metatype: Type): Required<ModuleMetadata> {
+    return Reflect.getMetadata('self:module', metatype);
   }
 
   static getConstructorDependencies(metatype?: Object): Array<ProviderToken> {

@@ -1,8 +1,10 @@
 import React, { Fragment, createElement } from 'react';
 
-import { useForceUpdate } from '../common';
+// import { useForceUpdate } from '../common';
+// @ts-ignore
 import { AppContext } from '../core';
 import { Reflector } from '../reflection';
+// @ts-ignore
 import { Type } from '../types';
 import { ControllerWrapper } from './controller-wrapper';
 import { useGuards, useMountLifeCycle, useRenderLifeCycle } from './hooks';
@@ -18,6 +20,7 @@ export function createRouteComponent(context: AppContext, controller: Type<any>)
   const loadingView = states?.loading != null ? createElement(states.loading) : null;
 
   const ViewHolder = () => {
+    // @ts-ignore
     const forceUpdate = useForceUpdate();
     wrapper.setRefreshViewFunction(forceUpdate);
 

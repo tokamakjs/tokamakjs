@@ -1,10 +1,8 @@
 import join from 'url-join';
 
-import { controller } from '../decorators';
+import { View, controller } from '../decorators';
 import { Reflector } from '../reflection';
 import { Type } from '../utils';
-
-export type View = (ctrl?: any) => JSX.Element | null;
 
 export interface RouteDefinition {
   path: string;

@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { AppContext } from '../core';
+import { AppContext } from '../injection';
 import { Reflector } from '../reflection';
-import { Type } from '../types';
+import { Type } from '../utils';
 import { createRouteComponent } from './create-route-component';
 import { RouteObject } from './router';
 import { RouteDefinition } from './utils';

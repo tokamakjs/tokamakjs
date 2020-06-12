@@ -1,3 +1,3 @@
 export * from './flatten';
-export * from './type';
+export * from './constructor';
 export * from './is-function';

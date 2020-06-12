@@ -1,7 +1,8 @@
 import { NotImplementedException } from '../exceptions';
-import { Provider, Type } from '../types';
+import { Type } from '../utils';
 import { Container } from './container';
 import { ContainerScanner } from './container-scanner';
+import { Provider } from './provider';
 
 export class AppContext {
   private _scanner!: ContainerScanner;

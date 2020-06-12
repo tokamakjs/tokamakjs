@@ -1,6 +1,8 @@
 import { CanActivate } from '../interfaces';
 import { Reflector } from '../reflection';
-import { Type, View } from '../types';
+import { Type } from '../utils';
+
+export type View = (ctrl?: any) => JSX.Element | null;
 
 export interface ControllerMetadata {
   view: View;

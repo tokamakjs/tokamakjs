@@ -1,5 +1,5 @@
 import { Reflector } from '../reflection';
-import { isFunction } from '../types';
+import { isFunction } from '../utils';
 
 function _consolidateToken(target: Object, key: string | symbol, token?: any): any {
   if (token == null) {

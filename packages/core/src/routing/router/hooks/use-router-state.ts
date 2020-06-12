@@ -1,5 +1,4 @@
-import { RouterState } from 'vendor/tokamak/src/interfaces';
-
+import { RouterState } from '../../../interfaces';
 import { useLocation } from './use-location';
 import { useParams } from './use-params';
 

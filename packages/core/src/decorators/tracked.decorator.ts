@@ -2,6 +2,10 @@ import { BehaviorSubject, Subject } from 'rxjs';
 
 type Promiser = (...args: any) => Promise<any>;
 
+export type Tracked<T> = T & {
+  __isLoading$__: Subject<boolean>;
+};
+
 export function tracked(
   target: Object,
   key: string | symbol,
