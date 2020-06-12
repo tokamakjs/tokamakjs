@@ -1,6 +1,6 @@
 import { ControllerMetadata, ModuleMetadata } from '../decorators';
 import { ProviderToken } from '../injection';
-import { Type } from '../utils';
+import { Constructor } from '../utils';
 
 export class Reflector {
   static addModuleMetadata(target: Object, metadata: ModuleMetadata): void {
@@ -8,7 +8,7 @@ export class Reflector {
     Reflect.defineMetadata('self:module', withDefaults, target);
   }
 
-  static getModuleMetadata(metatype: Type): Required<ModuleMetadata> {
+  static getModuleMetadata(metatype: Constructor): Required<ModuleMetadata> {
     return Reflect.getMetadata('self:module', metatype);
   }
 
@@ -45,7 +45,7 @@ export class Reflector {
     return Reflect.getMetadata('self:controller', target);
   }
 
-  static isController(target: Object): target is Type {
+  static isController(target: Object): target is Constructor {
     return Reflect.getMetadata('self:controller', target) != null;
   }
 }

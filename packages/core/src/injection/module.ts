@@ -5,7 +5,7 @@ import { CircularDependencyException, UnknownExportException } from '../exceptio
 import { hasOnDidInit, hasOnInit } from '../interfaces';
 import { Reflector } from '../reflection';
 import { RouteDefinition } from '../routing';
-import { Type, isFunction } from '../utils';
+import { Constructor, isFunction } from '../utils';
 import { Container } from './container';
 import { Scope } from './enums';
 import { ForwardReference, isForwardReference } from './forward-ref';
@@ -21,12 +21,12 @@ import {
 export type Injectable = unknown;
 
 export interface DynamicModule<T = any> extends ModuleMetadata {
-  module: Type<T>;
+  module: Constructor<T>;
   global?: boolean;
 }
 
 export type ModuleDefinition<T = any> =
-  | Type<T>
+  | Constructor<T>
   | DynamicModule<T>
   | Promise<DynamicModule<T>>
   | ForwardReference<T>;
@@ -45,7 +45,7 @@ export class Module {
   public container?: Container;
   private _isInitialized: boolean = false;
 
-  constructor(public readonly metatype: Type, public readonly metadata: ModuleMetadata) {
+  constructor(public readonly metatype: Constructor, public readonly metadata: ModuleMetadata) {
     this.id = v4();
     this.name = metatype.name;
     this.host = new InstanceWrapper(this.name, this, {
@@ -199,7 +199,7 @@ export class Module {
     }
   }
 
-  private addExportedProviderOrModule(provider: Provider | Type): void {
+  private addExportedProviderOrModule(provider: Provider | Constructor): void {
     const name = this.getProviderName(provider);
 
     if (this.providers.has(name)) {

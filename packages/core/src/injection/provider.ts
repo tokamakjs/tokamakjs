@@ -1,11 +1,11 @@
-import { Type } from '../utils';
+import { Constructor } from '../utils';
 import { Scope } from './enums';
 
-export type ProviderToken = string | symbol | Type<any> | Function;
+export type ProviderToken = string | symbol | Constructor<any> | Function;
 
 export interface ClassProvider<T = any> {
   provide: ProviderToken;
-  useClass: Type<T>;
+  useClass: Constructor<T>;
   scope?: Scope;
 }
 
@@ -17,11 +17,15 @@ export interface ValueProvider<T = any> {
 export interface FactoryProvider<T = any> {
   provide: ProviderToken;
   useFactory: (...args: any[]) => T;
-  inject?: Array<Type<any> | string | symbol | Function>;
+  inject?: Array<Constructor<any> | string | symbol | Function>;
   scope?: Scope;
 }
 
-export type Provider<T = any> = Type<T> | ClassProvider<T> | ValueProvider<T> | FactoryProvider<T>;
+export type Provider<T = any> =
+  | Constructor<T>
+  | ClassProvider<T>
+  | ValueProvider<T>
+  | FactoryProvider<T>;
 
 export type CustomProvider<T = any> = ClassProvider<T> | ValueProvider<T> | FactoryProvider<T>;
 

@@ -1,6 +1,6 @@
 import { UndefinedDependencyException } from '../exceptions';
 import { Reflector } from '../reflection';
-import { Type, isFunction } from '../utils';
+import { Constructor, isFunction } from '../utils';
 import { Context } from './constants';
 import { isForwardReference } from './forward-ref';
 import { Instance, InstanceWrapper } from './instance-wrapper';
@@ -119,7 +119,7 @@ export class InstanceCreator<T = any> {
       return ctxInstance;
     } else {
       // We have a class to instantiate
-      const instance = new (Metatype as Type<T>)(...dependencies);
+      const instance = new (Metatype as Constructor<T>)(...dependencies);
       ctxInstance.value = instance;
       ctxInstance.isResolved = true;
       return ctxInstance;

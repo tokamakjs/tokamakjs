@@ -6,9 +6,9 @@ import { render } from 'react-dom';
 
 import { AppContext } from '../injection';
 import { HISTORY, Router, buildRoutes, useRoutes } from '../routing';
-import { Type } from '../utils';
+import { Constructor } from '../utils';
 
-export async function renderModule(metatype: Type, selector: string) {
+export async function renderModule(metatype: Constructor, selector: string) {
   const appContext = await AppContext.create(metatype);
 
   const history = createBrowserHistory({ window });

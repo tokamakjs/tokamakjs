@@ -1,6 +1,6 @@
 import { CanActivate } from '../interfaces';
 import { Reflector } from '../reflection';
-import { Type } from '../utils';
+import { Constructor } from '../utils';
 
 export type View = (ctrl?: any) => JSX.Element | null;
 
@@ -10,7 +10,7 @@ export interface ControllerMetadata {
     error?: View;
     loading?: View;
   };
-  guards?: Array<Type<CanActivate>>;
+  guards?: Array<Constructor<CanActivate>>;
 }
 
 export function controller(metadata: ControllerMetadata): ClassDecorator {

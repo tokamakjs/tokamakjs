@@ -2,11 +2,11 @@ import join from 'url-join';
 
 import { View, controller } from '../decorators';
 import { Reflector } from '../reflection';
-import { Type } from '../utils';
+import { Constructor } from '../utils';
 
 export interface RouteDefinition {
   path: string;
-  controller: Type;
+  controller: Constructor;
   children: Array<RouteDefinition>;
   isIncluded: boolean;
 }
@@ -23,7 +23,7 @@ function _genControllerName(view: View): string {
   return `${name[0].toUpperCase()}${name.slice(1)}Controller`;
 }
 
-function _createEmptyController(view: View): Type {
+function _createEmptyController(view: View): Constructor {
   @controller({ view })
   class EmptyController {}
 
@@ -34,7 +34,7 @@ function _createEmptyController(view: View): Type {
 
 export function createRoute(
   path: string,
-  controllerOrView: Type | View,
+  controllerOrView: Constructor | View,
   children: Array<RouteDefinition> | Array<Array<RouteDefinition>> = [],
 ): RouteDefinition {
   const controller = Reflector.isController(controllerOrView)
@@ -48,7 +48,7 @@ export function createRoute(
   return { path, controller, children, isIncluded: false };
 }
 
-export function includeRoutes(basepath: string, Module: Type): Array<RouteDefinition> {
+export function includeRoutes(basepath: string, Module: Constructor): Array<RouteDefinition> {
   const { routing } = Reflector.getModuleMetadata(Module);
 
   if (routing == null) {

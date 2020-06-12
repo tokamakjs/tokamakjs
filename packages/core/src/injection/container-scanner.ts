@@ -1,5 +1,5 @@
 import { InvalidScopeException, UnknownElementException } from '../exceptions';
-import { Type, isFunction } from '../utils';
+import { Constructor, isFunction } from '../utils';
 import { Container } from './container';
 import { Scope } from './enums';
 import { InstanceWrapper } from './instance-wrapper';
@@ -15,7 +15,7 @@ export class ContainerScanner {
     this._flatContainer = this.flattenContainer(_container);
   }
 
-  public find<T = any, R = T>(token: Type<T> | string | symbol): R {
+  public find<T = any, R = T>(token: Constructor<T> | string | symbol): R {
     const name = isFunction(token) ? token.name : token;
     const instanceWrapper = this._flatContainer.providers.get(name as string);
 

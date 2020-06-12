@@ -1,5 +1,5 @@
 import { NotImplementedException } from '../exceptions';
-import { Type } from '../utils';
+import { Constructor } from '../utils';
 import { Container } from './container';
 import { ContainerScanner } from './container-scanner';
 import { Provider } from './provider';
@@ -10,7 +10,7 @@ export class AppContext {
 
   private constructor(private readonly _container: Container) {}
 
-  static async create(metatype: Type): Promise<AppContext> {
+  static async create(metatype: Constructor): Promise<AppContext> {
     const container = await Container.from(metatype);
     return new AppContext(container);
   }
@@ -31,7 +31,7 @@ export class AppContext {
     this._isInitialized = true;
   }
 
-  public get<T = any, R = T>(token: Type<T> | string | symbol): R {
+  public get<T = any, R = T>(token: Constructor<T> | string | symbol): R {
     if (!this._isInitialized) {
       throw new Error('AppContext not initialized');
     }
@@ -39,7 +39,7 @@ export class AppContext {
     return this._scanner.find<T, R>(token);
   }
 
-  public resolve<T = any, R = T>(_token: Type<T> | string | symbol): R {
+  public resolve<T = any, R = T>(_token: Constructor<T> | string | symbol): R {
     if (!this._isInitialized) {
       throw new Error('AppContext not initialized');
     }

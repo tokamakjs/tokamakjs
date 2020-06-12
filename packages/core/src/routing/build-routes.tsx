@@ -2,7 +2,7 @@ import React from 'react';
 
 import { AppContext } from '../injection';
 import { Reflector } from '../reflection';
-import { Type } from '../utils';
+import { Constructor } from '../utils';
 import { createRouteComponent } from './create-route-component';
 import { RouteObject } from './router';
 import { RouteDefinition } from './utils';
@@ -24,7 +24,7 @@ function _transformRoutes(
   );
 }
 
-export function buildRoutes(Module: Type, context: AppContext): Array<RouteObject> {
+export function buildRoutes(Module: Constructor, context: AppContext): Array<RouteObject> {
   const { routing } = Reflector.getModuleMetadata(Module);
 
   if (routing == null) {
