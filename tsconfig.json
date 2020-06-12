@@ -14,10 +14,7 @@
     "incremental": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "strict": true,
-    "paths": {
-      "~/*": ["./src/app/*"]
-    }
+    "strict": true
   },
   "exclude": ["node_modules", "dist"]
 }
