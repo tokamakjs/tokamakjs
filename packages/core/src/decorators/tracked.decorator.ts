@@ -3,7 +3,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 type Promiser = (...args: any) => Promise<any>;
 
 export type Tracked<T> = T & {
-  __isLoading$__: Subject<boolean>;
+  __isPending$__: Subject<boolean>;
 };
 
 export function tracked(
@@ -11,23 +11,23 @@ export function tracked(
   key: string | symbol,
   descriptor: TypedPropertyDescriptor<Promiser>,
 ) {
-  let isLoading$: Subject<boolean> = new BehaviorSubject<boolean>(false);
+  const isPending$: Subject<boolean> = new BehaviorSubject<boolean>(false);
 
-  Object.defineProperty(target, '__isLoading$__', {
+  Object.defineProperty(target, '__isPending$__', {
     enumerable: false,
     configurable: false,
     writable: false,
-    value: isLoading$,
+    value: isPending$,
   });
 
   const original = (target as any)[key];
 
   descriptor.value = function (...args) {
-    isLoading$.next(true);
+    isPending$.next(true);
     const result: Promise<any> = original.apply(this, args);
 
     result.then(() => {
-      isLoading$.next(false);
+      isPending$.next(false);
     });
 
     return result;

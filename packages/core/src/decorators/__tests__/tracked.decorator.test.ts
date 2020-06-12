@@ -13,11 +13,11 @@ describe('@tracked', () => {
     }
   }
 
-  it('should add a hidden "__isLoading$__" property to target', () => {
+  it('should add a hidden "__isPending$__" property to target', () => {
     const testController = new TestController() as Tracked<TestController>;
     const isLoadingDescriptor = Object.getOwnPropertyDescriptor(
       TestController.prototype,
-      '__isLoading$__',
+      '__isPending$__',
     );
 
     expect(isLoadingDescriptor).toMatchObject({
@@ -25,14 +25,14 @@ describe('@tracked', () => {
       enumerable: false,
       configurable: false,
     });
-    expect(testController.__isLoading$__).toBeInstanceOf(BehaviorSubject);
+    expect(testController.__isPending$__).toBeInstanceOf(BehaviorSubject);
   });
 
   it('should set target async method as tracked', async () => {
     const testController = new TestController() as Tracked<TestController>;
     const observerMock = jest.fn();
 
-    testController.__isLoading$__.subscribe(observerMock);
+    testController.__isPending$__.subscribe(observerMock);
     await testController.testLoad();
     await testController.testLoad();
 
