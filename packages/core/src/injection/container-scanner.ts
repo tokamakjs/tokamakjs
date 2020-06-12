@@ -1,5 +1,5 @@
 import { InvalidScopeException, UnknownElementException } from '../exceptions';
-import { Type, isFunction } from '../types';
+import { Type, isFunction } from '../utils';
 import { Container } from './container';
 import { Scope } from './enums';
 import { InstanceWrapper } from './instance-wrapper';

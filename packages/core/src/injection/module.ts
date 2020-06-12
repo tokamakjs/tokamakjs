@@ -5,19 +5,18 @@ import { CircularDependencyException, UnknownExportException } from '../exceptio
 import { hasOnDidInit, hasOnInit } from '../interfaces';
 import { Reflector } from '../reflection';
 import { RouteDefinition } from '../routing';
+import { Type, isFunction } from '../utils';
+import { Container } from './container';
+import { Scope } from './enums';
+import { ForwardReference, isForwardReference } from './forward-ref';
+import { InstanceWrapper } from './instance-wrapper';
 import {
   CustomProvider,
   Provider,
-  Type,
   isClassProvider,
   isCustomProvider,
-  isFunction,
   isValueProvider,
-} from '../types';
-import { Container } from './container';
-import { Scope } from './enums';
-import { InstanceWrapper } from './instance-wrapper';
-import { isForwardReference, ForwardReference } from './forward-ref';
+} from './provider';
 
 export type Injectable = unknown;
 

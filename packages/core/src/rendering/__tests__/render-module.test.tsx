@@ -1,10 +1,16 @@
-import { renderModule } from '../render-module';
+// @ts-ignore
+import { AppContext } from '../../injection/app-context';
+// import { renderModule } from '../render-module';
+
+jest.mock('react');
+jest.mock('react-dom');
+jest.mock('../../injection/app-context');
 
 describe('renderModule', () => {
-  class RootModule {}
+  // class RootModule {}
 
   beforeAll(() => {
-    renderModule(RootModule, '#root');
+    // renderModule(RootModule, '#root');
   });
 
   it('creates the app context using the provided root module', () => {});

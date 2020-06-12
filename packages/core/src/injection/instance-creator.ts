@@ -1,9 +1,11 @@
 import { UndefinedDependencyException } from '../exceptions';
 import { Reflector } from '../reflection';
-import { ProviderToken, Type, isForwardReference, isFunction } from '../types';
+import { Type, isFunction } from '../utils';
 import { Context } from './constants';
+import { isForwardReference } from './forward-ref';
 import { Instance, InstanceWrapper } from './instance-wrapper';
 import { Module } from './module';
+import { ProviderToken } from './provider';
 
 export class InstanceCreator<T = any> {
   constructor(private readonly wrapper: InstanceWrapper<T>) {}

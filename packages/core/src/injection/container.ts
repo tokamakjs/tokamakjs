@@ -1,6 +1,6 @@
-import { ModuleDefinition, Provider } from '../types';
 import { flatten } from '../utils';
-import { Module } from './module';
+import { Module, ModuleDefinition } from './module';
+import { Provider } from './provider';
 
 async function _traverse(
   moduleDef: ModuleDefinition,

@@ -1,8 +1,9 @@
-import { ProviderToken, Type } from '../types';
+import { Type } from '../utils';
 import { Context, DEFAULT_CONTEXT } from './constants';
 import { Scope } from './enums';
 import { InstanceCreator } from './instance-creator';
 import { Module } from './module';
+import { ProviderToken } from './provider';
 
 interface InstanceWrapperKwargs<T> {
   isResolved: boolean;

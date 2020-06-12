@@ -1,5 +1,5 @@
+import { Type } from '../utils';
 import { Scope } from './enums';
-import { Type } from '../types';
 
 export type ProviderToken = string | symbol | Type<any> | Function;
 
