@@ -9,7 +9,7 @@ describe('Reflector', () => {
     const moduleMetadata: ModuleMetadata = {
       routing: ['Test' as any],
       exports: ['Test'],
-      imports: ['Test'],
+      imports: ['Test' as any],
       providers: ['Test'],
     };
 
@@ -35,7 +35,7 @@ describe('Reflector', () => {
     const moduleMetadata: ModuleMetadata = {
       routing: ['Test' as any],
       exports: ['Test'],
-      imports: ['Test'],
+      imports: ['Test' as any],
       providers: ['Test'],
     };
 
