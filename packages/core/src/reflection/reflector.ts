@@ -12,6 +12,18 @@ export class Reflector {
     return Reflect.getMetadata('self:module', metatype);
   }
 
+  static addManuallyInjectedDeps(
+    target: Object,
+    dependencies: Array<{ index: number; token: any }>,
+  ): void {
+    const existing = Reflector.getManuallyInjectedDeps(target);
+    Reflect.defineMetadata('self:paramtypes', [...existing, ...dependencies], target);
+  }
+
+  static getManuallyInjectedDeps(target: Object): Array<{ index: number; token: any }> {
+    return Reflect.getMetadata('self:paramtypes', target) ?? [];
+  }
+
   static getConstructorDependencies(metatype?: Object): Array<ProviderToken> {
     if (metatype == null) {
       return [];
@@ -27,18 +39,6 @@ export class Reflector {
 
   static getTypeOfProperty(target: Object, key: string | symbol): any {
     return Reflect.getMetadata('design:type', target, key);
-  }
-
-  static getManuallyInjectedDeps(target: Object): Array<{ index: number; token: any }> {
-    return Reflect.getMetadata('self:paramtypes', target) ?? [];
-  }
-
-  static addManuallyInjectedDeps(
-    target: Object,
-    dependencies: Array<{ index: number; token: any }>,
-  ): void {
-    const existing = Reflector.getManuallyInjectedDeps(target);
-    Reflect.defineMetadata('self:paramtypes', [...existing, ...dependencies], target);
   }
 
   static addControllerMetadata(target: Object, metadata: ControllerMetadata): void {
