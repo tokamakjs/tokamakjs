@@ -1,4 +1,4 @@
-import { Type, isFunction } from '../types';
+import { Type, isFunction } from '../utils';
 
 const message = (name: string) =>
   `${name} is marked as a scoped provider. Transient scoped providers can't be used in combination with "get()" method. Please, use "resolve()" instead.`;

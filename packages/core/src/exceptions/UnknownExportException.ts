@@ -5,6 +5,7 @@ export class UnknownExportException extends Error {
 
 Possible Solutions:
 - Is ${token} part of the relevant providers/imports within ${module}?
+- If ${token} is a controller, is it added to the routing of the ${module}?
 `,
     );
   }
