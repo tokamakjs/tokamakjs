@@ -3,12 +3,18 @@ module.exports = {
   plugins: ['@typescript-eslint/eslint-plugin', 'eslint-plugin-react', 'eslint-plugin-jest'],
   extends: [
     'eslint:recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
     'plugin:react/recommended',
     'plugin:jest/recommended',
     'plugin:jest/style',
   ],
   parserOptions: {
     sourceType: 'module',
+  },
+  settings: {
+    react: {
+      version: '16',
+    },
   },
   env: {
     node: true,
@@ -19,7 +25,6 @@ module.exports = {
   rules: {
     // General
     'array-callback-return': ['warn'],
-    'eqeqeq': ['off', 'always', { null: 'ignore' }],
     'new-parens': ['warn'],
     'no-array-constructor': ['warn'],
     'no-caller': ['warn'],

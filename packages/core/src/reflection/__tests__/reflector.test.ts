@@ -103,7 +103,7 @@ describe('Reflector', () => {
 
     it('retrieves the metadata for the arguments of the constructor', () => {
       const dependencies = Reflector.getConstructorDependencies(TestProvider);
-      expect(dependencies.length).toBe(3);
+      expect(dependencies).toHaveLength(3);
       expect(dependencies[0]).toBe(TestFoo);
       expect(dependencies[1]).toBe(TestBar);
       expect(dependencies[2]).toBe('TEST_BAZ');

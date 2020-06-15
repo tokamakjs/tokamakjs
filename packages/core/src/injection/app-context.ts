@@ -39,6 +39,7 @@ export class AppContext {
     return this._scanner.find<T, R>(token);
   }
 
+  // eslint-disable-next-line
   public resolve<T = any, R = T>(_token: Constructor<T> | string | symbol): R {
     if (!this._isInitialized) {
       throw new Error('AppContext not initialized');

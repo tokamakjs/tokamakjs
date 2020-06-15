@@ -11,7 +11,7 @@ export function matchRouteBranch(
   let matchedPathname = '/';
   let matchedParams = {} as Params;
 
-  let matches: Array<RouteMatch> = [];
+  const matches: Array<RouteMatch> = [];
 
   for (let i = 0; i < routes.length; i++) {
     const route = routes[i];

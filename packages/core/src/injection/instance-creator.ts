@@ -69,7 +69,6 @@ export class InstanceCreator<T = any> {
 
     // At this point, we tried to resolve from any possible place
     if (wrapper == null) {
-      console.log(name, this.wrapper.host);
       throw new UndefinedDependencyException(name, this.wrapper.name);
     }
 
