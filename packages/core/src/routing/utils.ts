@@ -17,9 +17,15 @@ function _isArrayOfArrays<T>(value: Array<any>): value is Array<Array<T>> {
 
 function _genControllerName(view: View): string {
   let name = view.name;
+
+  if (name == null || name === '') {
+    return 'EmptyController';
+  }
+
   if (name.includes('View')) {
     name = name.replace('View', '');
   }
+
   return `${name[0].toUpperCase()}${name.slice(1)}Controller`;
 }
 
