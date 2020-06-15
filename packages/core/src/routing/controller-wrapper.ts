@@ -3,7 +3,7 @@ import { OnDidMount, OnWillUnmount } from '../interfaces';
 export const WRAPPER_KEY = Symbol('ControllerWrapper');
 
 export class ControllerWrapper<T = any> implements OnDidMount, OnWillUnmount {
-  private _refresh?: () => void;
+  private _refreshView?: () => void;
   private _hasRendered = false;
 
   constructor(controller: T) {
@@ -23,14 +23,14 @@ export class ControllerWrapper<T = any> implements OnDidMount, OnWillUnmount {
   }
 
   public setRefreshViewFunction(refresh: () => void): void {
-    this._refresh = refresh;
+    this._refreshView = refresh;
   }
 
   public refresh(): void {
-    if (this._refresh == null) {
+    if (this._refreshView == null) {
       throw new Error('No refresh function set.');
     }
 
-    this._refresh();
+    this._refreshView();
   }
 }
