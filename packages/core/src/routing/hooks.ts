@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { Subject } from 'rxjs';
 
 import { CanActivate, hasOnDidMount, hasOnDidRender, hasOnDidUnmount } from '../interfaces';
@@ -69,4 +69,9 @@ export function useGuards(guards: Array<CanActivate>): { isPending: boolean; for
   }
 
   return state;
+}
+
+export function useForceUpdate(): () => void {
+  const [, setState] = useState();
+  return useCallback(() => setState({}), []);
 }
