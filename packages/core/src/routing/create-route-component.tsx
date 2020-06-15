@@ -1,4 +1,4 @@
-import React, { Fragment, createElement } from 'react';
+import React, { ComponentType, Fragment, createElement } from 'react';
 
 import { AppContext } from '../injection';
 import { Reflector } from '../reflection';
@@ -6,7 +6,7 @@ import { Constructor } from '../utils';
 import { ControllerWrapper } from './controller-wrapper';
 import { useForceUpdate, useGuards, useMountLifeCycle, useRenderLifeCycle } from './hooks';
 
-export function createRouteComponent(context: AppContext, controller: Constructor) {
+export function createRouteComponent(context: AppContext, controller: Constructor): ComponentType {
   const { view: useView, guards = [], states } = Reflector.getControllerMetadata(controller);
 
   const controllerInstance = context.get(controller);

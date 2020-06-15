@@ -14,8 +14,8 @@ export function hasOnDidMount(value: any): value is OnDidMount {
   return value?.onDidMount != null;
 }
 
-export function hasOnDidUnmount(value: any): value is OnWillUnmount {
-  return value?.onDidUnmount != null;
+export function hasOnWillUnmount(value: any): value is OnWillUnmount {
+  return value?.onWillUnmount != null;
 }
 
 export function hasOnDidRender(value: any): value is OnDidRender {

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { Subject } from 'rxjs';
 
-import { CanActivate, hasOnDidMount, hasOnDidRender, hasOnDidUnmount } from '../interfaces';
+import { CanActivate, hasOnDidMount, hasOnDidRender, hasOnWillUnmount } from '../interfaces';
 import { useRouterState } from './router';
 
 export function useMountLifeCycle(controller: any): void {
@@ -14,7 +14,7 @@ export function useMountLifeCycle(controller: any): void {
 
     return () => {
       if (onDidMountCb != null && typeof onDidMountCb === 'function') onDidMountCb();
-      if (hasOnDidUnmount(controller)) controller.onWillUnmount();
+      if (hasOnWillUnmount(controller)) controller.onWillUnmount();
     };
   }, []);
 }

@@ -18,5 +18,8 @@
     "rxjs": "^6.5.5",
     "url-join": "^4.0.1",
     "uuid": "^8.1.0"
+  },
+  "devDependencies": {
+    "react-test-renderer": "^16.13.1"
   }
 }
