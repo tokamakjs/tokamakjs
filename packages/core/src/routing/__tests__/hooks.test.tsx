@@ -19,7 +19,7 @@ describe('hooks', () => {
 
     return (
       <div>
-        <p id="useTrackLoading">isLoading: {String(isLoading)}</p>
+        <p id="useTrackLoading">{isLoading}</p>
       </div>
     );
   };
@@ -76,23 +76,11 @@ describe('hooks', () => {
     it('returns the last emitted value of __isLoading$__', () => {
       const inst = renderer.create(<TestComponent />);
 
-      renderer.act(() => {
-        fakeController.__isLoading$__.next(false);
-      });
+      renderer.act(() => fakeController.__isLoading$__.next(false));
+      expect(inst.root.findByProps({ id: 'useTrackLoading' }).props.children).toBe(false);
 
-      expect(inst.root.findByProps({ id: 'useTrackLoading' }).children).toEqual([
-        'isLoading: ',
-        'false',
-      ]);
-
-      renderer.act(() => {
-        fakeController.__isLoading$__.next(true);
-      });
-
-      expect(inst.root.findByProps({ id: 'useTrackLoading' }).children).toEqual([
-        'isLoading: ',
-        'true',
-      ]);
+      renderer.act(() => fakeController.__isLoading$__.next(true));
+      expect(inst.root.findByProps({ id: 'useTrackLoading' }).props.children).toBe(true);
     });
   });
 
