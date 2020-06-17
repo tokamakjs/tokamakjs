@@ -7,7 +7,7 @@
   "author": "Lars <lars.bs@hotmail.com>",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tokamakjs/tokamakjs.git"
+    "url": "https://github.com/tokamakjs/tokamak"
   },
   "scripts": {
     "clean": "rimraf packages/*/lib",
