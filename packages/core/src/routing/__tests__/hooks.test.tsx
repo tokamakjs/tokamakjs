@@ -1,8 +1,14 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
+import renderer, { act } from 'react-test-renderer';
 import { Subject } from 'rxjs';
 
-import { useMountLifeCycle, useRenderLifeCycle, useTrackLoading } from '../hooks';
+import {
+  useForceUpdate,
+  useGuards,
+  useMountLifeCycle,
+  useRenderLifeCycle,
+  useTrackLoading,
+} from '../hooks';
 
 describe('hooks', () => {
   const fakeController = {
@@ -12,14 +18,18 @@ describe('hooks', () => {
     __isLoading$__: new Subject<boolean>(),
   };
 
-  const TestComponent = () => {
+  const TestComponent = ({ guards = [] }: any) => {
     useMountLifeCycle(fakeController);
     useRenderLifeCycle(fakeController);
     const isLoading = useTrackLoading(fakeController);
-
+    const { isPending, forbidden } = useGuards(guards);
     return (
       <div>
         <p id="useTrackLoading">{isLoading}</p>
+        <p id="useGuards">
+          {isPending}
+          {forbidden}
+        </p>
       </div>
     );
   };
@@ -85,18 +95,52 @@ describe('hooks', () => {
   });
 
   describe('useGuards', () => {
-    it('returns isLoading true while processing the guards', () => {});
+    it('returns isLoading true while processing the guards and false when finished', async () => {
+      const canActivate = async () => {
+        await new Promise((r) => setTimeout(r, 1000));
+        return true;
+      };
 
-    it('returns isLoading false when all guards has been processed', () => {});
+      const guards = [{ canActivate }, { canActivate }];
 
-    it('returns forbidden true if one guard canActivate method returns false', () => {});
+      const inst = renderer.create(<TestComponent guards={guards} />);
+      expect(inst.root.findByProps({ id: 'useGuards' }).props.children[0]).toBe(true);
+      await act(async () => await new Promise((r) => setTimeout(r, 2000)));
+      expect(inst.root.findByProps({ id: 'useGuards' }).props.children[0]).toBe(false);
+    });
 
-    it('returns forbidden false if every guard canActivate method returns true', () => {});
+    it('returns forbidden true if one guard canActivate method returns false', () => {
+      const guards = [{ canActivate: () => true }, { canActivate: () => false }];
+
+      const inst = renderer.create(<TestComponent guards={guards} />);
+      expect(inst.root.findByProps({ id: 'useGuards' }).props.children[1]).toBe(true);
+    });
+
+    it('returns forbidden false if every guard canActivate method returns true', () => {
+      const canActivate = () => true;
+      const guards = [{ canActivate }, { canActivate }];
+
+      const inst = renderer.create(<TestComponent guards={guards} />);
+      expect(inst.root.findByProps({ id: 'useGuards' }).props.children[1]).toBe(false);
+    });
   });
 
   describe('useForceUpdate', () => {
-    it('returns a function to force update the component', () => {});
+    test('when forceUpdate is called, it re-renders the component', () => {
+      const trackRendering = jest.fn();
 
-    test('when forceUpdate is called, it re-renders the component', () => {});
+      const TestComponent = () => {
+        const forceUpdate = useForceUpdate();
+        trackRendering();
+        return <button onClick={() => forceUpdate()} />;
+      };
+
+      const inst = renderer.create(<TestComponent />);
+      expect(trackRendering).toHaveBeenCalledTimes(1);
+      renderer.act(() => {
+        inst.root.findByType('button').props.onClick();
+      });
+      expect(trackRendering).toHaveBeenCalledTimes(2);
+    });
   });
 });
