@@ -15,13 +15,12 @@
     "incremental": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "strict": true
+    "strict": true,
+    "paths": {
+      "@tokamakjs/core": ["./packages/core/src/index.ts"],
+      "@tokamakjs/common": ["./packages/common/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "dist"],
-  "include": [
-    "packages/**/*",
-  ],
-  "paths": {
-    "@tokamakjs/core": ["packages/core/src/**/*"]
-  }
+  "include": ["packages/**/*"]
 }
