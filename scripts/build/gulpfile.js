@@ -4,6 +4,7 @@ const gulpBabel = require('gulp-babel');
 const rimraf = require('rimraf');
 const gulpRename = require('gulp-rename');
 const gulpTypescript = require('gulp-typescript');
+const merge = require('merge-stream');
 
 const PACKAGES_DIR = path.resolve(__dirname, '../../packages');
 const DIST_DIR = path.resolve(__dirname, '../../dist');
@@ -21,7 +22,7 @@ function cleanBundles() {
 function buildPackages(next) {
   const buildTs = src(`${PACKAGES_DIR}/*/src/**/*.ts`).pipe(ts());
 
-  return buildTs.dts
+  return merge(buildTs.js, buildTs.dts)
     .pipe(
       gulpRename((path) => {
         path.dirname = path.dirname.replace('src', 'lib');
