@@ -10,7 +10,7 @@
     "url": "git+https://github.com/tokamakjs/tokamakjs.git"
   },
   "scripts": {
-    "clean": "rimraf dist && rimraf packages/*/lib",
+    "clean": "rimraf packages/*/lib",
     "build": "gulp --gulpfile scripts/build/gulpfile.js --cwd ./",
     "format": "prettier --write \"packages/**/*.{ts,tsx}\"",
     "lint": "eslint -f node_modules/eslint-formatter-pretty --ext js,jsx,ts,tsx packages/",
