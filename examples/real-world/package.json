@@ -3,12 +3,12 @@
   "version": "0.0.1",
   "description": "Tokamak real world app example.",
   "author": "Lars <lars.bs@hotmail.com>",
-  "homepage": "https://github.com/tokamakjs/tokamakjs#readme",
   "license": "MIT",
   "main": "lib/index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tokamakjs/tokamakjs.git"
+    "url": "https://github.com/tokamakjs/tokamak",
+    "directory": "examples/real-world"
   },
   "scripts": {},
   "dependencies": {
