@@ -1,1 +1,2 @@
-export * from './render-module';
+export * from './decorators';
+export * from './routing/constants';

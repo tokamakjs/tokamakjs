@@ -1,7 +1,5 @@
+import { HISTORY, inject, injectable } from '@tokamakjs/core';
 import { History } from 'history';
-
-import { HISTORY } from '../../core/constants';
-import { inject, injectable } from '../../../core/src/decorators';
 
 @injectable()
 export class RouterService {

@@ -10,6 +10,8 @@
     "url": "git+https://github.com/tokamakjs/tokamakjs.git"
   },
   "scripts": {
+    "clean": "rimraf dist && rimraf packages/*/lib",
+    "build": "gulp --gulpfile scripts/build/gulpfile.js --cwd ./",
     "format": "prettier --write \"packages/**/*.{ts,tsx}\"",
     "lint": "eslint -f node_modules/eslint-formatter-pretty --ext js,jsx,ts,tsx packages/",
     "test:watch": "NODE_ENV=development jest --watch",
@@ -41,6 +43,10 @@
     "eslint-formatter-pretty": "^4.0.0",
     "eslint-plugin-jest": "^23.13.2",
     "eslint-plugin-react": "^7.20.0",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-typescript": "^6.0.0-alpha.1",
     "husky": "^4.2.5",
     "import-sort-style-local": "^1.0.0",
     "jest": "^26.0.1",
@@ -49,6 +55,7 @@
     "prettier": "^2.0.5",
     "prettier-plugin-import-sort": "0.0.4",
     "reflect-metadata": "^0.1.13",
+    "rimraf": "^3.0.2",
     "ts-jest": "^26.1.0"
   }
 }

@@ -1,4 +1,5 @@
-import { module } from '../../../core/src/decorators';
+import { module } from '@tokamakjs/core';
+
 import { RouterService } from './router.service';
 
 @module({
