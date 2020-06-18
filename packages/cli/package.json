@@ -11,5 +11,7 @@
     "directory": "packages/cli"
   },
   "scripts": {},
-  "dependencies": {}
+  "dependencies": {
+    "meow": "^7.0.1"
+  }
 }
