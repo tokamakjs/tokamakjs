@@ -1,7 +1,10 @@
+import dotenv from 'dotenv';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 
 import { createConfig } from './webpack.config';
+
+dotenv.config();
 
 export async function startAction(): Promise<void> {
   const appPackageJson = require(`${process.cwd()}/package.json`);
