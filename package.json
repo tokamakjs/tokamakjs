@@ -10,6 +10,8 @@
     "url": "https://github.com/tokamakjs/tokamak"
   },
   "scripts": {
+    "example:real-world": "lerna run --scope @tokamakjs/real-world-example start",
+    "start:cli": "ts-node packages/cli/bin/cli.ts",
     "clean": "rimraf packages/*/lib",
     "build": "gulp --gulpfile scripts/build/gulpfile.js --cwd ./",
     "format": "prettier --write \"packages/**/*.{ts,tsx}\"",
@@ -57,6 +59,7 @@
     "prettier-plugin-import-sort": "0.0.4",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "ts-jest": "^26.1.0"
+    "ts-jest": "^26.1.0",
+    "ts-node": "^8.10.2"
   }
 }

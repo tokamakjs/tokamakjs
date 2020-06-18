@@ -10,8 +10,11 @@
     "url": "https://github.com/tokamakjs/tokamak",
     "directory": "examples/real-world"
   },
-  "scripts": {},
+  "scripts": {
+    "start": "tok start"
+  },
   "dependencies": {
+    "@tokamakjs/cli": "^0.0.1",
     "@tokamakjs/core": "^0.0.1",
     "modern-normalize": "^0.6.0"
   }
