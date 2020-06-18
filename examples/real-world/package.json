@@ -4,7 +4,7 @@
   "description": "Tokamak real world app example.",
   "author": "Lars <lars.bs@hotmail.com>",
   "license": "MIT",
-  "main": "lib/index.js",
+  "main": "src/index.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/tokamakjs/tokamak",
@@ -14,8 +14,11 @@
     "start": "tok start"
   },
   "dependencies": {
+    "@babel/preset-env": "^7.10.2",
     "@tokamakjs/cli": "^0.0.1",
     "@tokamakjs/core": "^0.0.1",
-    "modern-normalize": "^0.6.0"
+    "modern-normalize": "^0.6.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
   }
 }
