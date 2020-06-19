@@ -1,4 +1,7 @@
-#!/usr/bin/env ts-node
+#!/usr/bin/env ts-node-script
+
+const dotenv = require('dotenv');
+dotenv.config();
 
 import { program } from 'commander';
 

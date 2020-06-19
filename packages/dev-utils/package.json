@@ -11,6 +11,12 @@
     "directory": "packages/dev-utils"
   },
   "scripts": {},
-  "dependencies": {},
-  "devDependencies": {}
+  "dependencies": {
+    "@larsbs/progress": "^1.0.0",
+    "chalk": "^4.1.0",
+    "cli-truncate": "^2.1.0",
+    "figures": "^3.2.0",
+    "log-update": "^4.0.0",
+    "webpack": "^4.43.0"
+  }
 }

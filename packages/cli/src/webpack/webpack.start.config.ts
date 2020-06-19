@@ -1,5 +1,6 @@
 /// <reference path="../../types/error-overlay-webpack-plugin.d.ts" />
 
+import { BetterProgressPlugin } from '@tokamakjs/dev-utils';
 import ErrorOverlayPlugin from 'error-overlay-webpack-plugin';
 import FriendlyErrorsPlugin from 'friendly-errors-webpack-plugin';
 import { Configuration } from 'webpack';
@@ -20,6 +21,12 @@ export function createStartConfig(entry: string, babel: BabelConfig): Configurat
     ...(webpackBaseConfig.plugins ?? []),
     new FriendlyErrorsPlugin({ clearConsole: false }),
     new ErrorOverlayPlugin(),
+    new BetterProgressPlugin({
+      mode: 'bar',
+      summary: () => {
+        console.log('Hello');
+      },
+    }),
   ];
 
   webpackBaseConfig.devServer = {
