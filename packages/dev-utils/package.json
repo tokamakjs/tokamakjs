@@ -1,0 +1,16 @@
+{
+  "name": "@tokamakjs/dev-utils",
+  "version": "0.0.1",
+  "description": "Tokamak app framework dev utils.",
+  "author": "Lars <lars.bs@hotmail.com>",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tokamakjs/tokamak",
+    "directory": "packages/dev-utils"
+  },
+  "scripts": {},
+  "dependencies": {},
+  "devDependencies": {}
+}

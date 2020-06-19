@@ -1,1 +1,1 @@
-export * from './start/environment';
+export * from './environment';
