@@ -27,9 +27,30 @@ class WebpackConfigurator extends Configurator<WebpackConfig> {
   }
 }
 
+class MessageConfigurator {
+  private _envVars = ['NODE_ENV'];
+  private _appName = 'TOKAMAK APP';
+
+  public envVars(vars: Array<string>): void {
+    this._envVars = vars;
+  }
+
+  public appName(name: string): void {
+    this._appName = name;
+  }
+
+  public getConfig() {
+    return {
+      appName: this._appName,
+      envVars: this._envVars,
+    };
+  }
+}
+
 export class Environment {
   private _babel = new BabelConfigurator();
   private _webpack = new WebpackConfigurator();
+  private _message = new MessageConfigurator();
 
   get babel() {
     return this._babel;
@@ -39,11 +60,19 @@ export class Environment {
     return this._webpack;
   }
 
+  get message() {
+    return this._message;
+  }
+
   public createBabelConfig(config: BabelConfig): BabelConfig {
     return this._babel.getConfig(config);
   }
 
   public createWebpackConfig(config: WebpackConfig): WebpackConfig {
     return this._webpack.getConfig(config);
+  }
+
+  public createMessageConfig(): { appName: string; envVars: Array<string> } {
+    return this._message.getConfig();
   }
 }

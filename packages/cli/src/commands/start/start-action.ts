@@ -17,7 +17,7 @@ export async function startAction(): Promise<void> {
 
   const finalBabelConfig = environment.createBabelConfig(createBabelConfig());
   const finalWebpackConfig = environment.createWebpackConfig(
-    createWebpackConfig('start', appPackageJson.main, finalBabelConfig),
+    createWebpackConfig('start', appPackageJson.main, finalBabelConfig, environment),
   );
 
   const compiler = webpack(finalWebpackConfig);

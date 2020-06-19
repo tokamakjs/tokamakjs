@@ -9,7 +9,7 @@ export function development(environment: Environment) {
     return config;
   });
 
-  // environment.message.envVars(['NODE_ENV', 'APP_ENV']);
+  environment.message.envVars(['NODE_ENV', 'APP_ENV']);
 
-  // environment.message.appName('REAL WORLD');
+  environment.message.appName('REAL WORLD');
 }
