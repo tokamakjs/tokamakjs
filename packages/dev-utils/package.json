@@ -16,8 +16,10 @@
     "chalk": "^4.1.0",
     "cli-truncate": "^2.1.0",
     "figures": "^3.2.0",
+    "ip": "^1.1.5",
     "log-update": "^4.0.0",
     "ongoing": "^1.0.2",
+    "strip-ansi": "^6.0.0",
     "webpack": "^4.43.0"
   }
 }
