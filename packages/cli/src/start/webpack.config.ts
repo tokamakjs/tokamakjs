@@ -2,7 +2,9 @@ import HtmlPlugin from 'html-webpack-plugin';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 import { Configuration, EnvironmentPlugin } from 'webpack';
 
-export function createConfig(entry: string): Configuration {
+import { BabelConfig } from './environment';
+
+export function createConfig(entry: string, babel?: BabelConfig): Configuration {
   const webpackConfig: Configuration = {
     mode: 'development',
     resolve: {
@@ -29,12 +31,7 @@ export function createConfig(entry: string): Configuration {
           use: [
             {
               loader: require.resolve('babel-loader'),
-              options: {
-                presets: [
-                  ['@babel/preset-env', { useBuiltIns: 'usage', corejs: { version: 3 } }],
-                  '@babel/preset-react',
-                ],
-              },
+              options: babel,
             },
             {
               loader: require.resolve('ts-loader'),

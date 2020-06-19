@@ -19,6 +19,7 @@
     "resolveJsonModule": true,
     "paths": {
       "@tokamakjs/core": ["./packages/core/src/index.ts"],
+      "@tokamakjs/cli": ["./packages/cli/src/index.ts"],
       "@tokamakjs/common": ["./packages/common/src/index.ts"]
     }
   },
