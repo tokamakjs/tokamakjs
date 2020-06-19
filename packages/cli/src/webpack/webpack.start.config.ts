@@ -19,14 +19,14 @@ export function createStartConfig(entry: string, babel: BabelConfig): Configurat
 
   webpackBaseConfig.plugins = [
     ...(webpackBaseConfig.plugins ?? []),
-    new FriendlyErrorsPlugin({ clearConsole: false }),
-    new ErrorOverlayPlugin(),
     new BetterProgressPlugin({
       mode: 'bar',
       summary: () => {
         console.log('Hello');
       },
     }),
+    new FriendlyErrorsPlugin({ clearConsole: false }),
+    new ErrorOverlayPlugin(),
   ];
 
   webpackBaseConfig.devServer = {

@@ -1,10 +1,9 @@
-/// <reference path="../../types/larsbs__progress.d.ts" />
-
-import ProgressBar from '@larsbs/progress';
+import { clearScreen } from 'ansi-escapes';
 import chalk from 'chalk';
 import cliTruncate from 'cli-truncate';
 import figures from 'figures';
 import logUpdate from 'log-update';
+import { ProgressBar } from 'ongoing';
 import { ProgressPlugin } from 'webpack';
 
 process.on('SIGINT', () => process.exit());
@@ -18,16 +17,22 @@ function _truncate(message: string): string {
   return cliTruncate(message, width, { position: 'middle' });
 }
 
-function _getShortenedPath(moduleName: string): string {
+function _getShortenedPath(moduleName?: string): string {
+  if (moduleName == null) return '';
   return moduleName.replace(process.cwd() + '/', '');
 }
 
-function _parseModuleProgress(moduleProgress: string) {
+function _parseModuleProgress(moduleProgress?: string) {
+  if (moduleProgress == null) return '';
   const [current, total] = moduleProgress.split('/');
   return `${current} of ${total}`;
 }
 
-function _getModulesMessage(moduleProgress: string, moduleName: string): string {
+function _getModulesMessage(moduleProgress?: string, moduleName?: string): string {
+  if (moduleProgress == null && moduleName == null) {
+    return '';
+  }
+
   return `${_parseModuleProgress(moduleProgress)} :: ${_getShortenedPath(moduleName)}`;
 }
 
@@ -35,32 +40,31 @@ export function barProgress(summary: VoidFunction): ProgressPlugin.Handler {
   const format = `${chalk.bold(':msg')}  :bar  ${chalk.green(':percent')} :mpr`;
 
   const progressBar = new ProgressBar(format, {
-    complete: chalk.green('═'),
-    incomplete: chalk.grey('─'),
-    width: 30,
-    total: 100,
+    completedChar: chalk.green('═'),
+    incompletedChar: chalk.grey('─'),
   });
 
   return (
     percentage: number,
     message: string,
-    moduleProgress: string,
-    _activeModules: string,
-    moduleName: string,
+    moduleProgress?: string,
+    _activeModules?: string,
+    moduleName?: string,
   ) => {
     const moduleMessage =
       _truncate(_getModulesMessage(moduleProgress, moduleName)) ?? moduleProgress;
 
-    progressBar.update(percentage, {
-      msg: _capitalize(message),
-      mpr: `\n ${chalk.grey(`${figures.pointer} ${moduleMessage}`)}`,
-    });
+    logUpdate(
+      progressBar.update(percentage, {
+        msg: _capitalize(message),
+        mpr: `\n ${chalk.grey(`${figures.arrowRight} ${moduleMessage}`)}`,
+      }),
+    );
 
-    logUpdate(progressBar.lastDraw);
-
-    if (percentage === 1) {
+    if (percentage >= 1) {
       logUpdate.clear();
       logUpdate.done();
+      process.stdout.write(clearScreen);
       summary();
     }
   };
