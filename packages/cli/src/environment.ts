@@ -1,11 +1,5 @@
-import { Configuration as WebpackConfig } from 'webpack';
-
-export interface BabelConfig {
-  presets?: Array<any>;
-  plugins?: Array<any>;
-}
-
-export { WebpackConfig };
+import { BabelConfig } from './babel';
+import { WebpackConfig } from './webpack';
 
 abstract class Configurator<T> {
   protected _configurator?: (config: T) => T;

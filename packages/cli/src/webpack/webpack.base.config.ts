@@ -1,17 +1,12 @@
-/// <reference path="../../../types/error-overlay-webpack-plugin.d.ts" />
-
-import ErrorOverlayPlugin from 'error-overlay-webpack-plugin';
-import FriendlyErrorsPlugin from 'friendly-errors-webpack-plugin';
 import HtmlPlugin from 'html-webpack-plugin';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 import { Configuration, EnvironmentPlugin } from 'webpack';
 
-import { BabelConfig } from '../../environment';
+import { BabelConfig } from '../babel';
 
-export function createWebpackConfig(entry: string, babel?: BabelConfig): Configuration {
-  const webpackConfig: Configuration = {
+export function createBaseConfig(entry: string, babel: BabelConfig): Configuration {
+  return {
     mode: 'development',
-    devtool: 'cheap-module-source-map',
     optimization: {
       noEmitOnErrors: true,
     },
@@ -28,8 +23,6 @@ export function createWebpackConfig(entry: string, babel?: BabelConfig): Configu
     plugins: [
       new HtmlPlugin({ filename: 'index.html', template: 'src/index.html' }),
       new EnvironmentPlugin(['NODE_ENV']),
-      new FriendlyErrorsPlugin({ clearConsole: false }),
-      new ErrorOverlayPlugin(),
     ],
     module: {
       rules: [
@@ -87,18 +80,4 @@ export function createWebpackConfig(entry: string, babel?: BabelConfig): Configu
       ],
     },
   };
-
-  webpackConfig.devServer = {
-    host: '0.0.0.0',
-    port: (process.env.WEBPACK_PORT as any) ?? 4000,
-    historyApiFallback: true,
-    clientLogLevel: 'silent',
-    stats: 'errors-only',
-    hot: true,
-    inline: true,
-    overlay: false,
-    noInfo: true,
-  };
-
-  return webpackConfig;
 }

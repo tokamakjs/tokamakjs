@@ -1,4 +1,7 @@
-import { BabelConfig } from '../../environment';
+export interface BabelConfig {
+  presets?: Array<any>;
+  plugins?: Array<any>;
+}
 
 export function createBabelConfig(): BabelConfig {
   const babelConfig: BabelConfig = {

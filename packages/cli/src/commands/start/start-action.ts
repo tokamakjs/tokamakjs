@@ -2,9 +2,9 @@ import dotenv from 'dotenv';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 
+import { createBabelConfig } from '../../babel/create-babel-config';
 import { Environment } from '../../environment';
-import { createBabelConfig } from './create-babel-config';
-import { createWebpackConfig } from './create-webpack-config';
+import { createWebpackConfig } from '../../webpack';
 
 dotenv.config();
 
@@ -17,7 +17,7 @@ export async function startAction(): Promise<void> {
 
   const finalBabelConfig = environment.createBabelConfig(createBabelConfig());
   const finalWebpackConfig = environment.createWebpackConfig(
-    createWebpackConfig(appPackageJson.main, finalBabelConfig),
+    createWebpackConfig('start', appPackageJson.main, finalBabelConfig),
   );
 
   const compiler = webpack(finalWebpackConfig);
