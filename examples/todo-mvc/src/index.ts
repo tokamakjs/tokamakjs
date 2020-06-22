@@ -1,3 +1,5 @@
+import 'todomvc-common/base.js';
+
 import { renderModule } from '@tokamakjs/core';
 
 import { AppModule } from './app/app.module';

@@ -21,7 +21,9 @@
     "@tokamakjs/core": "^0.0.1",
     "modern-normalize": "^0.6.0",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "todomvc-app-css": "^2.3.0",
+    "todomvc-common": "^1.0.5"
   },
   "devDependencies": {
     "rimraf": "^3.0.2"

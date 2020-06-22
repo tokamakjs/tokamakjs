@@ -3,17 +3,16 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tokamak TodoMVC</title>
-    <style>
-      html,
-      body,
-      #root {
-        width: 100%;
-        height: 100%;
-      }
-    </style>
+    <title>Tokamak • TodoMVC</title>
+    <link rel="stylesheet" href="<%= require('todomvc-common/base.css') %>" />
+    <link rel="stylesheet" href="<%= require('todomvc-app-css/index.css') %>" />
   </head>
   <body>
-    <div id="root" />
+    <div id="root"></div>
+    <footer class="info">
+      <p>Double-click to edit a todo</p>
+      <p>Created by <a href="http://github.com/remojansen/">Remo H. Jansen</a></p>
+      <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
+    </footer>
   </body>
 </html>
