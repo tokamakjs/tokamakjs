@@ -1,13 +1,13 @@
-/// <reference path="../../types/error-overlay-webpack-plugin.d.ts" />
+/// <reference path="../../../types/error-overlay-webpack-plugin.d.ts" />
 
 import { BetterProgressPlugin, initialAppMessage } from '@tokamakjs/dev-utils';
 import ErrorOverlayPlugin from 'error-overlay-webpack-plugin';
 import FriendlyErrorsPlugin from 'friendly-errors-webpack-plugin';
 import { Configuration } from 'webpack';
 
-import { BabelConfig } from '../babel';
-import { Environment } from '../environment';
-import { createBaseConfig } from './webpack.base.config';
+import { BabelConfig } from '../../babel';
+import { Environment } from '../../environment';
+import { createBaseConfig } from '../../webpack/webpack.base.config';
 
 export function createStartConfig(
   entry: string,
