@@ -10,7 +10,7 @@ export const TodosView = (ctrl: TodosController) => {
       <Header onAddTodo={(todo) => ctrl.addTodo(todo)} />
       {ctrl.todos.length > 0 ? (
         <Fragment>
-          <Main todos={ctrl.todos} />
+          <Main todos={ctrl.todos} onClickDeleteTodo={(todo) => ctrl.deleteTodo(todo)} />
           <Footer />
         </Fragment>
       ) : null}

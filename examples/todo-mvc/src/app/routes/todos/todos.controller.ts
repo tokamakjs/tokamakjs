@@ -29,4 +29,8 @@ export class TodosController implements OnDidMount {
   addTodo(todo: string): void {
     this.todosStore.addTodo({ id: _poorsManUuid(), value: todo });
   }
+
+  deleteTodo(todo: Todo): void {
+    this.todosStore.deleteTodo(todo);
+  }
 }
