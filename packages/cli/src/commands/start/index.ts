@@ -1,8 +1,13 @@
 import { Command } from 'commander';
 
-import { startAction } from './start-action';
-
 export const startCommand = new Command('start')
   .alias('s')
   .description('Starts a tokamak app')
-  .action(startAction);
+  .action(() => {
+    // Set environment to development by default
+    process.env.NODE_ENV = process.env.NODE_ENV ?? 'development';
+
+    // Use require() syntax to be able to setup env before requiring
+    const { startAction } = require('./start-action');
+    startAction();
+  });

@@ -1,6 +1,3 @@
-// Set environment to development by default
-process.env.NODE_ENV = process.env.NODE_ENV ?? 'development';
-
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 
