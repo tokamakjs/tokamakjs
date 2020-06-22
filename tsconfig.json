@@ -7,6 +7,7 @@
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "declaration": true,
     "target": "es2019",
     "sourceMap": true,
     "outDir": "./dist",
@@ -15,9 +16,14 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "strict": true,
+    "resolveJsonModule": true,
     "paths": {
-      "~/*": ["./src/app/*"]
+      "@tokamakjs/core": ["./packages/core/src/index.ts"],
+      "@tokamakjs/cli": ["./packages/cli/src/index.ts"],
+      "@tokamakjs/dev-utils": ["./packages/dev-utils/src/index.ts"],
+      "@tokamakjs/common": ["./packages/common/src/index.ts"]
     }
   },
-  "exclude": ["node_modules", "dist"]
+  "exclude": ["node_modules", "dist"],
+  "include": ["packages/**/*", "examples/**/*"]
 }

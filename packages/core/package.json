@@ -1,0 +1,25 @@
+{
+  "name": "@tokamakjs/core",
+  "version": "0.0.1",
+  "description": "Tokamak app framework core.",
+  "author": "Lars <lars.bs@hotmail.com>",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tokamakjs/tokamak",
+    "directory": "packages/core"
+  },
+  "scripts": {},
+  "dependencies": {
+    "history": "^5.0.0-beta.9",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "rxjs": "^6.5.5",
+    "url-join": "^4.0.1",
+    "uuid": "^8.1.0"
+  },
+  "devDependencies": {
+    "react-test-renderer": "^16.13.1"
+  }
+}

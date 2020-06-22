@@ -1,0 +1,29 @@
+{
+  "name": "@tokamakjs/real-world-example",
+  "version": "0.0.1",
+  "description": "Tokamak real world app example.",
+  "author": "Lars <lars.bs@hotmail.com>",
+  "license": "MIT",
+  "main": "src/index.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tokamakjs/tokamak",
+    "directory": "examples/real-world"
+  },
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "NODE_OPTIONS='-r tsconfig-paths/register' tok build",
+    "start": "NODE_OPTIONS='-r tsconfig-paths/register' tok start"
+  },
+  "dependencies": {
+    "@babel/preset-env": "^7.10.2",
+    "@tokamakjs/cli": "^0.0.1",
+    "@tokamakjs/core": "^0.0.1",
+    "modern-normalize": "^0.6.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "devDependencies": {
+    "rimraf": "^3.0.2"
+  }
+}

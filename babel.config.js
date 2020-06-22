@@ -5,12 +5,6 @@ const presets = [
   '@babel/preset-react',
 ];
 
-const plugins = [
-  ['emotion', { sourceMap: true, autoLabel: true, labelFormat: '[filename]__[local]' }],
-];
-
-if (IS_DEV) {
-  plugins.push('react-refresh/babel.js');
-}
+const plugins = [];
 
 module.exports = { presets, plugins };
