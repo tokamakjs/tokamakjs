@@ -6,6 +6,7 @@ import { TodosStorageService } from '~/services';
 export interface Todo {
   id: number;
   value: string;
+  isDone: boolean;
 }
 
 @injectable()
@@ -33,9 +34,16 @@ export class TodosStore implements OnModuleInit {
     this.todos$.next(this._todos.slice());
   }
 
-  public editTodo(id: number, newValue: string): void {
+  public editTodoValue(id: number, newValue: string): void {
     const index = this._todos.findIndex((t) => t.id === id);
     this._todos[index] = { ...this._todos[index], value: newValue };
+    this.todos$.next(this._todos.slice());
+  }
+
+  public toggleTodo(id: number): void {
+    const index = this._todos.findIndex((t) => t.id === id);
+    const todo = this._todos[index];
+    this._todos[index] = { ...todo, isDone: !todo.isDone };
     this.todos$.next(this._todos.slice());
   }
 

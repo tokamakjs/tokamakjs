@@ -1,3 +1,4 @@
+import cn from 'classnames';
 import React, { useState } from 'react';
 
 import { useDoubleClick, useOnClickOutside } from '~/hooks';
@@ -6,10 +7,11 @@ import { Todo } from '~/stores';
 interface MainProps {
   todos: Array<Todo>;
   onClickDeleteTodo: (todo: Todo) => void;
-  onEditTodo: (id: number, newValue: string) => void;
+  onEditTodoValue: (id: number, newValue: string) => void;
+  onClickDone: (todo: Todo) => void;
 }
 
-export const Main = ({ todos, onClickDeleteTodo, onEditTodo }: MainProps) => {
+export const Main = ({ todos, onClickDeleteTodo, onEditTodoValue, onClickDone }: MainProps) => {
   const [editingTodo, setEditingTodo] = useState<Todo | undefined>();
   const [todoValue, setTodoValue] = useState<string>('');
 
@@ -19,7 +21,7 @@ export const Main = ({ todos, onClickDeleteTodo, onEditTodo }: MainProps) => {
   });
 
   const inputRef = useOnClickOutside<HTMLInputElement>(() => {
-    onEditTodo(editingTodo!.id, todoValue);
+    onEditTodoValue(editingTodo!.id, todoValue);
     setTodoValue('');
     setEditingTodo(undefined);
   });
@@ -32,10 +34,18 @@ export const Main = ({ todos, onClickDeleteTodo, onEditTodo }: MainProps) => {
         {todos.map((todo) => (
           <li
             key={todo.id}
-            className={editingTodo?.id === todo.id ? 'editing' : undefined}
+            className={cn({
+              editing: editingTodo?.id === todo.id,
+              completed: todo.isDone,
+            })}
             onClick={handleDoubleClick(todo)}>
             <div className="view">
-              <input className="toggle" type="checkbox" />
+              <input
+                className="toggle"
+                type="checkbox"
+                checked={todo.isDone}
+                onChange={() => onClickDone(todo)}
+              />
               <label>{todo.value}</label>
               <button className="destroy" onClick={() => onClickDeleteTodo(todo)}></button>
             </div>

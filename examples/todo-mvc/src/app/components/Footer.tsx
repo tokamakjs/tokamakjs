@@ -1,10 +1,14 @@
 import React from 'react';
 
-export const Footer = () => {
+interface FooterProps {
+  todoCount: number;
+}
+
+export const Footer = ({ todoCount }: FooterProps) => {
   return (
     <footer className="footer">
       <span className="todo-count">
-        <strong>0</strong> item left
+        <strong>{todoCount}</strong> item left
       </span>
       <ul className="filters">
         <li>

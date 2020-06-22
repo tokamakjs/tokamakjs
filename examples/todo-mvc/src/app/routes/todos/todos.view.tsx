@@ -13,11 +13,12 @@ export const TodosView = (ctrl: TodosController) => {
           <Main
             todos={ctrl.todos}
             onClickDeleteTodo={(todo) => ctrl.deleteTodo(todo)}
-            onEditTodo={(id, newValue) => {
-              ctrl.editTodo(id, newValue);
+            onEditTodoValue={(id, newValue) => {
+              ctrl.editTodoValue(id, newValue);
             }}
+            onClickDone={(todo) => ctrl.toggleTodo(todo.id)}
           />
-          <Footer />
+          <Footer todoCount={ctrl.uncompletedTodos.length} />
         </Fragment>
       ) : null}
     </Fragment>

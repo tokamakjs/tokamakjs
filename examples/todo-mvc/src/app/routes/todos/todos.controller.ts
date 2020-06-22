@@ -18,6 +18,10 @@ export class TodosController implements OnDidMount {
     return this._todos;
   }
 
+  get uncompletedTodos() {
+    return this._todos.filter((t) => !t.isDone);
+  }
+
   public onDidMount() {
     const subscription = this.todosStore.todos$.subscribe((todos) => (this._todos = todos));
 
@@ -27,14 +31,18 @@ export class TodosController implements OnDidMount {
   }
 
   public addTodo(todo: string): void {
-    this.todosStore.addTodo({ id: _poorsManUuid(), value: todo });
+    this.todosStore.addTodo({ id: _poorsManUuid(), value: todo, isDone: false });
   }
 
   public deleteTodo(todo: Todo): void {
     this.todosStore.deleteTodo(todo);
   }
 
-  public editTodo(id: number, newValue: string): void {
-    this.todosStore.editTodo(id, newValue);
+  public editTodoValue(id: number, newValue: string): void {
+    this.todosStore.editTodoValue(id, newValue);
+  }
+
+  public toggleTodo(id: number): void {
+    this.todosStore.toggleTodo(id);
   }
 }
