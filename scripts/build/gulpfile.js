@@ -20,7 +20,7 @@ function cleanBundles() {
 }
 
 function buildPackages(next) {
-  const buildTs = src(`${PACKAGES_DIR}/*/src/**/*.{ts,tsx}`).pipe(ts());
+  const buildTs = src([`${PACKAGES_DIR}/*/src/**/*.{ts,tsx}`, '!**/*.test.{ts,tsx}']).pipe(ts());
 
   return merge(buildTs.js.pipe(gulpBabel()), buildTs.dts)
     .pipe(
