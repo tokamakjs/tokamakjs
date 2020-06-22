@@ -12,7 +12,10 @@ export const NewTodo = ({ onAdd }: NewTodoProps) => {
   const handleAddTodo = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.keyCode === ENTER_KEY) {
       e.preventDefault();
-      if (newTodo !== '') onAdd(newTodo);
+      if (newTodo !== '') {
+        onAdd(newTodo);
+        setNewTodo('');
+      }
     }
   };
 
@@ -21,7 +24,7 @@ export const NewTodo = ({ onAdd }: NewTodoProps) => {
       className="new-todo"
       placeholder="What needs to be done?"
       autoFocus
-      onKeyPress={handleAddTodo}
+      onKeyDown={handleAddTodo}
       name="todo"
       value={newTodo}
       onChange={(e) => setNewTodo(e.target.value)}

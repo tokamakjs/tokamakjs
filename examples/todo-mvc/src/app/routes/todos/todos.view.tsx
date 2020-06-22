@@ -2,16 +2,15 @@ import React, { Fragment } from 'react';
 
 import { Footer, Header, Main } from '~/components';
 
-import { useTodosFacade } from './todos.facade';
+import { TodosController } from './todos.controller';
 
-export const TodosView = () => {
-  const { todos } = useTodosFacade();
+export const TodosView = (ctrl: TodosController) => {
   return (
     <Fragment>
-      <Header onAddTodo={(todo) => console.log(todo)} />
-      {todos.length > 0 ? (
+      <Header onAddTodo={(todo) => ctrl.addTodo(todo)} />
+      {ctrl.todos.length > 0 ? (
         <Fragment>
-          <Main />
+          <Main todos={ctrl.todos} />
           <Footer />
         </Fragment>
       ) : null}
