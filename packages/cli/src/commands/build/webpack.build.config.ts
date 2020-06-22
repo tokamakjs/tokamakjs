@@ -1,5 +1,6 @@
 import path from 'path';
 
+import { BetterProgressPlugin } from '@tokamakjs/dev-utils';
 import { Configuration } from 'webpack';
 
 import { BabelConfig } from '../../babel';
@@ -17,7 +18,10 @@ export function createBuildConfig(entry: string, babel: BabelConfig): Configurat
 
   webpackBaseConfig.output!.path = path.resolve(process.cwd(), 'dist');
 
-  webpackBaseConfig.plugins = [...(webpackBaseConfig.plugins ?? [])];
+  webpackBaseConfig.plugins = [
+    ...(webpackBaseConfig.plugins ?? []),
+    new BetterProgressPlugin({ mode: 'detailed' }),
+  ];
 
   return webpackBaseConfig;
 }
