@@ -33,4 +33,8 @@ export class TodosController implements OnDidMount {
   deleteTodo(todo: Todo): void {
     this.todosStore.deleteTodo(todo);
   }
+
+  editTodo(id: number, newValue: string): void {
+    this.todosStore.editTodo(id, newValue);
+  }
 }

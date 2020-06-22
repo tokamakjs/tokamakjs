@@ -33,6 +33,12 @@ export class TodosStore implements OnModuleInit {
     this.todos$.next(this._todos.slice());
   }
 
+  public editTodo(id: number, newValue: string): void {
+    const index = this._todos.findIndex((t) => t.id === id);
+    this._todos[index] = { ...this._todos[index], value: newValue };
+    this.todos$.next(this._todos.slice());
+  }
+
   private _persistTodos(todos: Array<Todo>) {
     this._storageService.persistTodos(todos);
   }
