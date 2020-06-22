@@ -20,9 +20,9 @@ function cleanBundles() {
 }
 
 function buildPackages(next) {
-  const buildTs = src(`${PACKAGES_DIR}/*/src/**/*.ts`).pipe(ts());
+  const buildTs = src(`${PACKAGES_DIR}/*/src/**/*.{ts,tsx}`).pipe(ts());
 
-  return merge(buildTs.js, buildTs.dts)
+  return merge(buildTs.js.pipe(gulpBabel()), buildTs.dts)
     .pipe(
       gulpRename((path) => {
         path.dirname = path.dirname.replace('src', 'lib');
