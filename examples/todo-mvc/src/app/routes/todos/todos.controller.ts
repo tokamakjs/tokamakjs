@@ -18,7 +18,7 @@ export class TodosController implements OnDidMount {
     return this._todos;
   }
 
-  onDidMount() {
+  public onDidMount() {
     const subscription = this.todosStore.todos$.subscribe((todos) => (this._todos = todos));
 
     return () => {
@@ -26,15 +26,15 @@ export class TodosController implements OnDidMount {
     };
   }
 
-  addTodo(todo: string): void {
+  public addTodo(todo: string): void {
     this.todosStore.addTodo({ id: _poorsManUuid(), value: todo });
   }
 
-  deleteTodo(todo: Todo): void {
+  public deleteTodo(todo: Todo): void {
     this.todosStore.deleteTodo(todo);
   }
 
-  editTodo(id: number, newValue: string): void {
+  public editTodo(id: number, newValue: string): void {
     this.todosStore.editTodo(id, newValue);
   }
 }
