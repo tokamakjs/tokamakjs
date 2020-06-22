@@ -9,7 +9,7 @@ const merge = require('merge-stream');
 const PACKAGES_DIR = path.resolve(__dirname, '../../packages');
 const DIST_DIR = path.resolve(__dirname, '../../dist');
 
-const ts = gulpTypescript.createProject('tsconfig.json');
+const ts = gulpTypescript.createProject('tsconfig.json', { module: 'ESNext' });
 
 function cleanPackages() {
   return new Promise((r) => rimraf(`${PACKAGES_DIR}/*/lib`, r));
