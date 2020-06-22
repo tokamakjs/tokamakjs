@@ -1,12 +1,14 @@
-#!/usr/bin/env ts-node
+#!/usr/bin/env ts-node-script
+
+require('dotenv').config();
 
 import { program } from 'commander';
 
 import packageJson from '../package.json';
-import { buildCommand } from '../src/build';
-import { generateCommand } from '../src/generate';
-import { newCommand } from '../src/new';
-import { startCommand } from '../src/start';
+import { buildCommand } from '../src/commands/build';
+import { generateCommand } from '../src/commands/generate';
+import { newCommand } from '../src/commands/new';
+import { startCommand } from '../src/commands/start';
 
 program
   .version(packageJson.version)

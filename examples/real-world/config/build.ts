@@ -1,6 +1,6 @@
-// @ts-nocheck
+import { BabelConfig, Environment, WebpackConfig } from '@tokamakjs/cli';
 
-export function development(environment: Environment) {
+export function build(environment: Environment) {
   environment.webpack.config((config: WebpackConfig) => {
     return config;
   });
