@@ -3,10 +3,6 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@tokamakjs/core": ["../../packages/core/src/index.ts"],
-      "@tokamakjs/cli": ["../../packages/cli/src/index.ts"],
-      "@tokamakjs/dev-utils": ["../../packages/dev-utils/src/index.ts"],
-      "@tokamakjs/common": ["../../packages/common/src/index.ts"],
       "~/*": ["./src/app/*"]
     }
   },
