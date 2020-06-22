@@ -1,3 +1,5 @@
+import path from 'path';
+
 import { Configuration } from 'webpack';
 
 import { BabelConfig } from '../../babel';
@@ -10,11 +12,10 @@ export function createBuildConfig(entry: string, babel: BabelConfig): Configurat
 
   webpackBaseConfig.optimization = {
     runtimeChunk: { name: 'runtime' },
-    splitChunks: {
-      name: 'vendor',
-      chunks: 'all',
-    },
+    splitChunks: { name: 'vendor', chunks: 'all' },
   };
+
+  webpackBaseConfig.output!.path = path.resolve(process.cwd(), 'dist');
 
   webpackBaseConfig.plugins = [...(webpackBaseConfig.plugins ?? [])];
 

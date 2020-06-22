@@ -11,6 +11,7 @@
     "directory": "examples/real-world"
   },
   "scripts": {
+    "build": "NODE_OPTIONS='-r tsconfig-paths/register' tok build",
     "start": "NODE_OPTIONS='-r tsconfig-paths/register' tok start"
   },
   "dependencies": {
