@@ -1,8 +1,8 @@
 import { createRoute, module } from '@tokamakjs/core';
 
-import { RootView } from './routes/root/root.view';
+import { TodosView } from './routes/todos/todos.view';
 
 @module({
-  routing: [createRoute('/', RootView)],
+  routing: [createRoute('/', TodosView)],
 })
 export class AppModule {}
