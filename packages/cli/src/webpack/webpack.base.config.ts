@@ -48,6 +48,7 @@ export function createBaseConfig(entry: string, babel: BabelConfig): Configurati
                   noUnusedLocals: false,
                   noUnusedParameters: false,
                   module: 'ESNext',
+                  declaration: false,
                 },
               },
             },

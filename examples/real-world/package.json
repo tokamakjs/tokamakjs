@@ -11,6 +11,7 @@
     "directory": "examples/real-world"
   },
   "scripts": {
+    "clean": "rimraf dist",
     "build": "NODE_OPTIONS='-r tsconfig-paths/register' tok build",
     "start": "NODE_OPTIONS='-r tsconfig-paths/register' tok start"
   },
@@ -22,5 +23,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "rimraf": "^3.0.2"
+  }
 }
