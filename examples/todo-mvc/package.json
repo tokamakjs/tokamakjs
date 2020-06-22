@@ -26,6 +26,7 @@
     "todomvc-common": "^1.0.5"
   },
   "devDependencies": {
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+    "typescript": "^3.9.5"
   }
 }

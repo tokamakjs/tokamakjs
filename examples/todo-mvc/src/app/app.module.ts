@@ -1,5 +1,4 @@
-import { module } from '@tokamakjs/core';
-import { createRoute } from 'packages/core/src/routing';
+import { createRoute, module } from '@tokamakjs/core';
 
 import { RootView } from './routes/root/root.view';
 

@@ -44,6 +44,7 @@ export function createBaseConfig(entry: string, babel: BabelConfig): Configurati
               loader: require.resolve('ts-loader'),
               options: {
                 onlyCompileBundledFiles: true,
+                context: process.cwd(),
                 compilerOptions: {
                   noUnusedLocals: false,
                   noUnusedParameters: false,
