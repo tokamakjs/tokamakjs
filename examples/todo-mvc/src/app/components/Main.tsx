@@ -13,8 +13,6 @@ export const Main = ({ todos, onClickDeleteTodo, onEditTodo }: MainProps) => {
   const [editingTodo, setEditingTodo] = useState<Todo | undefined>();
   const [todoValue, setTodoValue] = useState<string>('');
 
-  const isEditing = editingTodo != null;
-
   const handleDoubleClick = useDoubleClick<Todo>((todo) => {
     setTodoValue(todo.value);
     setEditingTodo(todo);
@@ -34,14 +32,14 @@ export const Main = ({ todos, onClickDeleteTodo, onEditTodo }: MainProps) => {
         {todos.map((todo) => (
           <li
             key={todo.id}
-            className={isEditing ? 'editing' : undefined}
+            className={editingTodo?.id === todo.id ? 'editing' : undefined}
             onClick={handleDoubleClick(todo)}>
             <div className="view">
               <input className="toggle" type="checkbox" />
               <label>{todo.value}</label>
               <button className="destroy" onClick={() => onClickDeleteTodo(todo)}></button>
             </div>
-            {isEditing ? (
+            {editingTodo?.id === todo.id ? (
               <input
                 ref={inputRef}
                 className="edit"
