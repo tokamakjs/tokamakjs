@@ -29,8 +29,8 @@ export class TodosStore implements OnModuleInit {
     this.todos$.next(this._todos.slice());
   }
 
-  public deleteTodo(todo: Todo): void {
-    this._todos = this._todos.filter((t) => t.id !== todo.id);
+  public deleteTodo(todo: Todo | number): void {
+    this._todos = this._todos.filter((t) => t.id !== (typeof todo === 'number' ? todo : todo.id));
     this.todos$.next(this._todos.slice());
   }
 

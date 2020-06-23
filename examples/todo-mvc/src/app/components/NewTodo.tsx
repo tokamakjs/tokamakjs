@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const ENTER_KEY = 13;
+import { ENTER_KEY } from '~/constants';
 
 interface NewTodoProps {
   onAdd: (todo: string) => void;

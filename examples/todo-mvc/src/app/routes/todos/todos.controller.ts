@@ -35,7 +35,11 @@ export class TodosController implements OnDidMount {
   }
 
   public editTodoValue(id: number, newValue: string): void {
-    this.todosStore.editTodoValue(id, newValue);
+    if (newValue == null || newValue === '') {
+      this.todosStore.deleteTodo(id);
+    } else {
+      this.todosStore.editTodoValue(id, newValue);
+    }
   }
 
   public toggleTodo(id: number): void {

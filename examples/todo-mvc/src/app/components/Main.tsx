@@ -1,6 +1,7 @@
 import cn from 'classnames';
 import React, { useState } from 'react';
 
+import { ENTER_KEY, ESC_KEY } from '~/constants';
 import { useDoubleClick, useOnClickOutside } from '~/hooks';
 import { Todo } from '~/stores';
 
@@ -21,10 +22,23 @@ export const Main = ({ todos, onClickDeleteTodo, onEditTodoValue, onClickDone }:
   });
 
   const inputRef = useOnClickOutside<HTMLInputElement>(() => {
-    onEditTodoValue(editingTodo!.id, todoValue);
+    onEditTodoValue(editingTodo!.id, todoValue.trim());
     setTodoValue('');
     setEditingTodo(undefined);
   });
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.keyCode === ENTER_KEY) {
+      e.preventDefault();
+      onEditTodoValue(editingTodo!.id, todoValue.trim());
+      setTodoValue('');
+      setEditingTodo(undefined);
+    } else if (e.keyCode === ESC_KEY) {
+      e.preventDefault();
+      setTodoValue('');
+      setEditingTodo(undefined);
+    }
+  };
 
   return (
     <section className="main">
@@ -56,6 +70,7 @@ export const Main = ({ todos, onClickDeleteTodo, onEditTodoValue, onClickDone }:
                 value={todoValue}
                 autoFocus
                 onChange={(e) => setTodoValue(e.target.value)}
+                onKeyDown={handleKeyDown}
               />
             ) : null}
           </li>
