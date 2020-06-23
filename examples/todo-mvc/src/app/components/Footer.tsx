@@ -2,9 +2,11 @@ import React from 'react';
 
 interface FooterProps {
   todoCount: number;
+  displayClear: boolean;
+  onClickClear: VoidFunction;
 }
 
-export const Footer = ({ todoCount }: FooterProps) => {
+export const Footer = ({ todoCount, displayClear, onClickClear }: FooterProps) => {
   return (
     <footer className="footer">
       <span className="todo-count">
@@ -23,7 +25,11 @@ export const Footer = ({ todoCount }: FooterProps) => {
           <a href="#/completed">Completed</a>
         </li>
       </ul>
-      <button className="clear-completed">Clear completed</button>
+      {displayClear ? (
+        <button className="clear-completed" onClick={() => onClickClear()}>
+          Clear completed
+        </button>
+      ) : null}
     </footer>
   );
 };

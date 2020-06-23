@@ -47,6 +47,11 @@ export class TodosStore implements OnModuleInit {
     this.todos$.next(this._todos.slice());
   }
 
+  public clearCompleted(): void {
+    this._todos = this._todos.filter((t) => !t.isDone);
+    this.todos$.next(this._todos.slice());
+  }
+
   private _persistTodos(todos: Array<Todo>) {
     this._storageService.persistTodos(todos);
   }

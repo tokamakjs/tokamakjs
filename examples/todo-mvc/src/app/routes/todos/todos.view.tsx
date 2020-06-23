@@ -18,7 +18,11 @@ export const TodosView = (ctrl: TodosController) => {
             }}
             onClickDone={(todo) => ctrl.toggleTodo(todo.id)}
           />
-          <Footer todoCount={ctrl.uncompletedTodos.length} />
+          <Footer
+            todoCount={ctrl.uncompletedTodos.length}
+            displayClear={ctrl.todos.length !== ctrl.uncompletedTodos.length}
+            onClickClear={() => ctrl.clearCompleted()}
+          />
         </Fragment>
       ) : null}
     </Fragment>

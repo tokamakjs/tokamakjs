@@ -45,4 +45,8 @@ export class TodosController implements OnDidMount {
   public toggleTodo(id: number): void {
     this.todosStore.toggleTodo(id);
   }
+
+  public clearCompleted(): void {
+    this.todosStore.clearCompleted();
+  }
 }
