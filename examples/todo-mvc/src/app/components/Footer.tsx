@@ -12,7 +12,7 @@ export const Footer = ({ activeFilter, todoCount, displayClear, onClickClear }: 
   return (
     <footer className="footer">
       <span className="todo-count">
-        <strong>{todoCount}</strong> item left
+        <strong>{todoCount}</strong> {todoCount === 1 ? 'item' : 'items'} left
       </span>
       <ul className="filters">
         <li>
