@@ -12,8 +12,8 @@ export const NewTodo = ({ onAdd }: NewTodoProps) => {
   const handleAddTodo = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.keyCode === ENTER_KEY) {
       e.preventDefault();
-      if (newTodo !== '') {
-        onAdd(newTodo);
+      if (newTodo.trim() !== '') {
+        onAdd(newTodo.trim());
         setNewTodo('');
       }
     }
