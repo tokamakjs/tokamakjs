@@ -1,6 +1,3 @@
-// Set environment to production
-process.env.NODE_ENV = 'production';
-
 import webpack from 'webpack';
 
 import { createBabelConfig } from '../../babel/create-babel-config';

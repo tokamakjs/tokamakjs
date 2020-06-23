@@ -1,20 +1,20 @@
 import { WRAPPER_KEY } from '../routing';
 
 export function observable(target: Object, propertyKey: string | symbol): void {
-  const propertyContainer = {} as any;
+  let valueContainer: any;
 
   Object.defineProperty(target, propertyKey, {
     configurable: true,
     enumerable: true,
     get() {
-      return propertyContainer[propertyKey];
+      return valueContainer;
     },
     set(value: any) {
-      if (value === propertyContainer[propertyKey]) {
+      if (value === valueContainer) {
         return;
       }
 
-      propertyContainer[propertyKey] = value;
+      valueContainer = value;
       (this as any)[WRAPPER_KEY]?.refresh();
     },
   } as PropertyDescriptor);

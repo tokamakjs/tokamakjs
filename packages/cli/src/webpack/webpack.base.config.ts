@@ -11,7 +11,7 @@ export function createBaseConfig(entry: string, babel: BabelConfig): Configurati
       noEmitOnErrors: true,
     },
     resolve: {
-      extensions: ['.mjs', '.js', '.ts', '.tsx'],
+      extensions: ['.mjs', '.js', '.ts', '.tsx', '.jsx'],
       plugins: [new TsconfigPathsPlugin()],
       symlinks: false,
     },
@@ -44,6 +44,7 @@ export function createBaseConfig(entry: string, babel: BabelConfig): Configurati
               loader: require.resolve('ts-loader'),
               options: {
                 onlyCompileBundledFiles: true,
+                context: process.cwd(),
                 compilerOptions: {
                   noUnusedLocals: false,
                   noUnusedParameters: false,
@@ -51,6 +52,16 @@ export function createBaseConfig(entry: string, babel: BabelConfig): Configurati
                   declaration: false,
                 },
               },
+            },
+          ],
+        },
+        {
+          test: /\.jsx?$/,
+          exclude: /node_modules/,
+          use: [
+            {
+              loader: require.resolve('babel-loader'),
+              options: babel,
             },
           ],
         },
