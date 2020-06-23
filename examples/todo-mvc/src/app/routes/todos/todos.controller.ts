@@ -18,10 +18,6 @@ export class TodosController implements OnDidMount {
     return this._todos;
   }
 
-  get uncompletedTodos() {
-    return this._todos.filter((t) => !t.isDone);
-  }
-
   public onDidMount() {
     const subscription = this.todosStore.todos$.subscribe((todos) => (this._todos = todos));
 

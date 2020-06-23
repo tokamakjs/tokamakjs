@@ -1,12 +1,14 @@
+import { Link } from '@tokamakjs/core';
 import React from 'react';
 
 interface FooterProps {
+  activeFilter?: 'active' | 'completed';
   todoCount: number;
   displayClear: boolean;
   onClickClear: VoidFunction;
 }
 
-export const Footer = ({ todoCount, displayClear, onClickClear }: FooterProps) => {
+export const Footer = ({ activeFilter, todoCount, displayClear, onClickClear }: FooterProps) => {
   return (
     <footer className="footer">
       <span className="todo-count">
@@ -14,15 +16,23 @@ export const Footer = ({ todoCount, displayClear, onClickClear }: FooterProps) =
       </span>
       <ul className="filters">
         <li>
-          <a className="selected" href="#/">
+          <Link className={activeFilter == null ? 'selected' : undefined} href="/">
             All
-          </a>
+          </Link>
         </li>
         <li>
-          <a href="#/active">Active</a>
+          <Link
+            className={activeFilter === 'active' ? 'selected' : undefined}
+            href="?filterBy=active">
+            Active
+          </Link>
         </li>
         <li>
-          <a href="#/completed">Completed</a>
+          <Link
+            className={activeFilter === 'completed' ? 'selected' : undefined}
+            href="?filterBy=completed">
+            Completed
+          </Link>
         </li>
       </ul>
       {displayClear ? (

@@ -75,3 +75,5 @@ export function useForceUpdate(): () => void {
   const [, setState] = useState();
   return useCallback(() => setState({}), []);
 }
+
+export { useLocation } from './router/hooks';

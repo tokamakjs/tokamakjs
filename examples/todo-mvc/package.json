@@ -18,9 +18,11 @@
   "dependencies": {
     "@babel/preset-env": "^7.10.2",
     "@tokamakjs/cli": "^0.0.1",
+    "@tokamakjs/common": "^0.0.1",
     "@tokamakjs/core": "^0.0.1",
     "classnames": "^2.2.6",
     "modern-normalize": "^0.6.0",
+    "query-string": "^6.13.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "rxjs": "^6.5.5",
