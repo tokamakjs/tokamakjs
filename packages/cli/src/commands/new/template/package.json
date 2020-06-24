@@ -11,9 +11,9 @@
     "start": "tok start"
   },
   "dependencies": {
-    "@tokamakjs/cli": "^0.0.1",
-    "@tokamakjs/common": "^0.0.1",
-    "@tokamakjs/core": "^0.0.1",
+    "@tokamakjs/cli": "^0.1.0-alpha.4",
+    "@tokamakjs/common": "^0.1.0-alpha.4",
+    "@tokamakjs/core": "^0.1.0-alpha.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
