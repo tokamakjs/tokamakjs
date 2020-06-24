@@ -1,6 +1,5 @@
 {
   "name": "tokamak",
-  "version": "0.0.1",
   "description": "A semi-opinionated modern framework to build React applications using the latest tools in the React ecosystem.",
   "private": true,
   "license": "MIT",
