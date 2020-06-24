@@ -23,6 +23,9 @@
     "uuid": "^8.1.0"
   },
   "devDependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "react-test-renderer": "^16.13.1"
-  }
+  },
+  "gitHead": "f1544f26bd22384570a86f5a32255b3c49d040c6"
 }
