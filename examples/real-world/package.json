@@ -4,6 +4,7 @@
   "description": "Tokamak real world app example.",
   "author": "Lars <lars.bs@hotmail.com>",
   "license": "MIT",
+  "private": true,
   "main": "src/index.ts",
   "repository": {
     "type": "git",
