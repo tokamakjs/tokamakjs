@@ -10,6 +10,7 @@
     "url": "https://github.com/tokamakjs/tokamak"
   },
   "scripts": {
+    "prepublishOnly": "npm run test && npm run build",
     "example:real-world": "lerna run --scope @tokamakjs/real-world-example start",
     "start:cli": "ts-node packages/cli/bin/cli.ts",
     "clean": "rimraf packages/*/lib",
