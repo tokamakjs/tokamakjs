@@ -4,6 +4,9 @@
   "description": "Tokamak app framework core.",
   "author": "Lars <lars.bs@hotmail.com>",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "lib/index.js",
   "types": "./lib",
   "repository": {
@@ -27,5 +30,5 @@
     "react-dom": "^16.13.1",
     "react-test-renderer": "^16.13.1"
   },
-  "gitHead": "94fb82a711864ba6e414cbd621a0543f2764690a"
+  "gitHead": "f5ad9fc7644758cb48700fd12dbab83a112f6d46"
 }

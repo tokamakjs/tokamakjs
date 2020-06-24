@@ -4,6 +4,9 @@
   "description": "Tokamak cli.",
   "author": "Lars <lars.bs@hotmail.com>",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "bin": {
     "tok": "./bin/cli.ts"
   },
@@ -35,5 +38,5 @@
     "webpack": "^4.43.0",
     "webpack-dev-server": "^3.11.0"
   },
-  "gitHead": "94fb82a711864ba6e414cbd621a0543f2764690a"
+  "gitHead": "f5ad9fc7644758cb48700fd12dbab83a112f6d46"
 }
