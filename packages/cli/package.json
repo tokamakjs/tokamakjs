@@ -8,7 +8,7 @@
     "access": "public"
   },
   "bin": {
-    "tok": "./bin/cli.ts"
+    "tok": "./bin/cli.js"
   },
   "repository": {
     "type": "git",
