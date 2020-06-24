@@ -39,14 +39,24 @@ function buildPackages() {
     .pipe(dest(PACKAGES_DIR));
 }
 
+function copyTemplate() {
+  return src('**/template/**/*')
+    .pipe(
+      gulpRename((path) => {
+        path.dirname = path.dirname.replace('src', 'lib');
+      }),
+    )
+    .pipe(dest(PACKAGES_DIR));
+}
+
 function watchPackages() {
   watch(
     [`${PACKAGES_DIR}/*/src/**/*.{ts,tsx}`, '!**/*.test.{ts,tsx}'],
     { ignoreInitial: false },
-    buildPackages,
+    series(buildPackages, copyTemplate),
   );
 }
 
 // Tasks
-module.exports.default = series(cleanPackages, buildPackages);
+module.exports.default = series(cleanPackages, buildPackages, copyTemplate);
 module.exports.watch = series(cleanPackages, watchPackages);
