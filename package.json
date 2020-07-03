@@ -1,6 +1,5 @@
 {
   "name": "tokamak",
-  "version": "0.0.1",
   "description": "A semi-opinionated modern framework to build React applications using the latest tools in the React ecosystem.",
   "private": true,
   "license": "MIT",
@@ -10,6 +9,7 @@
     "url": "https://github.com/tokamakjs/tokamak"
   },
   "scripts": {
+    "prepublishOnly": "npm run test && npm run build",
     "example:real-world": "lerna run --scope @tokamakjs/real-world-example start",
     "start:cli": "ts-node packages/cli/bin/cli.ts",
     "clean": "rimraf packages/*/lib",
@@ -34,6 +34,7 @@
     "@babel/preset-react": "^7.10.1",
     "@types/classnames": "^2.2.10",
     "@types/friendly-errors-webpack-plugin": "^0.1.2",
+    "@types/fs-extra": "^9.0.1",
     "@types/ip": "^1.1.0",
     "@types/jest": "^26.0.0",
     "@types/lodash": "^4.14.156",

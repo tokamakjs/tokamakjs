@@ -5,6 +5,13 @@ import { Environment } from '../../environment';
 import { createBuildConfig } from './webpack.build.config';
 
 export function buildAction(): Promise<void> {
+  require('ts-node').register({
+    transpileOnly: true,
+    compilerOptions: {
+      module: 'commonjs',
+    },
+  });
+
   const appPackageJson = require(`${process.cwd()}/package.json`);
   const { build } = require(`${process.cwd()}/config/build`);
 

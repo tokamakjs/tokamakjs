@@ -1,9 +1,12 @@
 {
   "name": "@tokamakjs/common",
-  "version": "0.0.1",
+  "version": "0.1.0-alpha.8",
   "description": "Tokamak app framework common utils.",
   "author": "Lars <lars.bs@hotmail.com>",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "lib/index.js",
   "repository": {
     "type": "git",
@@ -12,10 +15,11 @@
   },
   "scripts": {},
   "dependencies": {
-    "@tokamakjs/core": "^0.0.1",
+    "@tokamakjs/core": "^0.1.0-alpha.8",
     "history": "^5.0.0-beta.9",
     "lodash": "^4.17.15",
     "query-string": "^6.13.1",
     "react": "^16.13.1"
-  }
+  },
+  "gitHead": "f5ad9fc7644758cb48700fd12dbab83a112f6d46"
 }

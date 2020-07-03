@@ -24,7 +24,11 @@ function cleanBundles() {
 }
 
 function buildPackages() {
-  const buildTs = src([`${PACKAGES_DIR}/*/src/**/*.{ts,tsx}`, '!**/*.test.{ts,tsx}']).pipe(ts());
+  const buildTs = src([
+    `${PACKAGES_DIR}/*/src/**/*.{ts,tsx}`,
+    '!**/*.test.{ts,tsx}',
+    '!**/template/**/*',
+  ]).pipe(ts());
 
   return merge(buildTs.js.pipe(gulpBabel()), buildTs.dts)
     .pipe(
@@ -35,14 +39,25 @@ function buildPackages() {
     .pipe(dest(PACKAGES_DIR));
 }
 
+function copyTemplate() {
+  return src([`${PACKAGES_DIR}/**/template/**/*`])
+    .pipe(
+      gulpRename((path) => {
+        if (path.dirname.includes('node_modules')) return;
+        path.dirname = path.dirname.replace('src', 'lib');
+      }),
+    )
+    .pipe(dest(PACKAGES_DIR));
+}
+
 function watchPackages() {
   watch(
     [`${PACKAGES_DIR}/*/src/**/*.{ts,tsx}`, '!**/*.test.{ts,tsx}'],
     { ignoreInitial: false },
-    buildPackages,
+    series(buildPackages, copyTemplate),
   );
 }
 
 // Tasks
-module.exports.default = series(cleanPackages, buildPackages);
+module.exports.default = series(cleanPackages, buildPackages, copyTemplate);
 module.exports.watch = series(cleanPackages, watchPackages);

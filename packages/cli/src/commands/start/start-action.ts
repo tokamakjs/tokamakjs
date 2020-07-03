@@ -6,6 +6,13 @@ import { Environment } from '../../environment';
 import { createStartConfig } from './webpack.start.config';
 
 export async function startAction(): Promise<void> {
+  require('ts-node').register({
+    transpileOnly: true,
+    compilerOptions: {
+      module: 'commonjs',
+    },
+  });
+
   const appPackageJson = require(`${process.cwd()}/package.json`);
   const { start } = require(`${process.cwd()}/config/start`);
 
