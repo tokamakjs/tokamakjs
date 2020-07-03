@@ -7,8 +7,6 @@ import fs from 'fs-extra';
 
 import { logLine } from '../../log-line';
 
-const TEMPLATE_DIR = path.resolve(__dirname, 'template');
-
 const dependencies = [
   '@tokamakjs/cli',
   '@tokamakjs/common',
@@ -25,6 +23,11 @@ async function _checkCanCreate(cwd: string): Promise<boolean> {
   await fs.ensureDir(cwd);
   const files = await fs.readdir(cwd);
   return files.every((f) => !conflictingFiles.includes(f));
+}
+
+async function _copyTemplate(cwd: string): Promise<void> {
+  const templateDir = path.resolve(__dirname, 'template');
+  await fs.copy(templateDir, cwd);
 }
 
 async function _install(cwd: string, deps: Array<string>, dev: boolean): Promise<void> {
@@ -56,7 +59,7 @@ export async function newAction(name: string) {
   );
 
   logLine(pointer, chalk.bold('Copying files into destination...'));
-  await fs.copy(TEMPLATE_DIR, outputDir);
+  await _copyTemplate(outputDir);
 
   logLine(pointer, chalk.bold('Installing dependencies...'));
   await _install(outputDir, dependencies, false);
