@@ -1,6 +1,6 @@
 {
   "name": "@tokamakjs/real-world-example",
-  "version": "0.1.0-alpha.7",
+  "version": "0.1.0-alpha.8",
   "description": "Tokamak real world app example.",
   "author": "Lars <lars.bs@hotmail.com>",
   "license": "MIT",
@@ -19,7 +19,7 @@
   "dependencies": {
     "@babel/preset-env": "^7.10.2",
     "@tokamakjs/cli": "^0.1.0-alpha.7",
-    "@tokamakjs/core": "^0.1.0-alpha.4",
+    "@tokamakjs/core": "^0.1.0-alpha.8",
     "modern-normalize": "^0.6.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
