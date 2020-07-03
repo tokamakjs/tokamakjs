@@ -10,15 +10,6 @@
     "build": "tok build",
     "start": "tok start"
   },
-  "dependencies": {
-    "@tokamakjs/cli": "^0.1.0-alpha.4",
-    "@tokamakjs/common": "^0.1.0-alpha.4",
-    "@tokamakjs/core": "^0.1.0-alpha.4",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
-  },
-  "devDependencies": {
-    "rimraf": "^3.0.2",
-    "typescript": "^3.9.5"
-  }
+  "dependencies": {},
+  "devDependencies": {}
 }
