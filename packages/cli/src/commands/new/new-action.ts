@@ -7,20 +7,21 @@ import ora from 'ora';
 
 const TEMPLATE_DIR = path.resolve(__dirname, 'template');
 
-const dependencies = ['@tokamak/cli', '@tokamak/common', '@tokamak/core', 'react', 'react-dom'];
+const dependencies = [
+  '@tokamakjs/cli',
+  '@tokamakjs/common',
+  '@tokamakjs/core',
+  'react',
+  'react-dom',
+];
+
 const devDependencies = ['@types/react', '@types/react-dom', 'prettier', 'rimraf', 'typescript'];
 
 async function _install(cwd: string, deps: Array<string>, dev: boolean) {
   await execa(
     'npm',
-    ['install', dev ? '--save-dev' : '--save', '--save-exact', '--log-level', 'error', ...deps],
-    {
-      stdin: 'inherit',
-      stdio: 'inherit',
-      stderr: 'inherit',
-      stdout: 'inherit',
-      cwd,
-    },
+    ['install', dev ? '--save-dev' : '--save', '--save-exact', '--loglevel', 'error', ...deps],
+    { stdio: 'inherit', cwd },
   );
 }
 
