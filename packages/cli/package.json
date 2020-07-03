@@ -1,6 +1,6 @@
 {
   "name": "@tokamakjs/cli",
-  "version": "0.1.0-alpha.7",
+  "version": "0.1.0-alpha.9",
   "description": "Tokamak cli.",
   "author": "Lars <lars.bs@hotmail.com>",
   "license": "MIT",
@@ -20,7 +20,7 @@
     "@babel/core": "^7.10.2",
     "@babel/preset-env": "^7.10.2",
     "@babel/preset-react": "^7.10.1",
-    "@tokamakjs/dev-utils": "^0.1.0-alpha.4",
+    "@tokamakjs/dev-utils": "^0.1.0-alpha.9",
     "babel-loader": "^8.1.0",
     "chalk": "^4.1.0",
     "commander": "^5.1.0",
