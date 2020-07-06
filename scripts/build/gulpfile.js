@@ -40,7 +40,7 @@ function buildPackages() {
 }
 
 function copyTemplate() {
-  return src([`${PACKAGES_DIR}/**/template/**/*`])
+  return src([`${PACKAGES_DIR}/**/template/**/*`, `${PACKAGES_DIR}/**/template/**/.*`])
     .pipe(
       gulpRename((path) => {
         if (path.dirname.includes('node_modules')) return;
