@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
 interface Form<T> {
-  get: (name: keyof T) => T[keyof T] | '';
-  set: (value: T[keyof T], name: keyof T) => void;
+  get: (name?: keyof T) => T[keyof T] | '';
+  set: (value: T[keyof T], name?: keyof T) => void;
   values: Partial<T>;
 }
 
@@ -11,7 +11,7 @@ export function useForm<T extends object = Record<string, any>>(
 ): Form<T> {
   const [state, setState] = useState<Partial<T>>(defaultValues);
 
-  const getter = <K extends keyof T>(name: K): T[K] | '' => {
+  const getter = <K extends keyof T>(name?: K): T[K] | '' => {
     if (name == null) {
       throw new Error(
         'Undefined `name` prop found in component. Please, make sure every Input has a `name` field.',
@@ -21,7 +21,7 @@ export function useForm<T extends object = Record<string, any>>(
     return state[name] ?? '';
   };
 
-  const setter = (value: T[keyof T], name: keyof T): void => {
+  const setter = (value: T[keyof T], name?: keyof T): void => {
     if (name == null) {
       throw new Error(
         'Undefined `name` prop found in component. Please, make sure every Input has a `name` field.',
