@@ -5,7 +5,7 @@ import execa from 'execa';
 import figures from 'figures';
 import fs from 'fs-extra';
 
-import { logLine } from '../../log-line';
+import { logLine } from '../../utils';
 
 const dependencies = [
   '@tokamakjs/cli',
