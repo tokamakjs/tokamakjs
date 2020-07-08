@@ -6,6 +6,10 @@ import qs from 'query-string';
 export class RouterService {
   constructor(@inject(HISTORY) private readonly _history: History) {}
 
+  get location() {
+    return this._history.location;
+  }
+
   get query() {
     const { search } = this._history.location;
     return qs.parse(search);
