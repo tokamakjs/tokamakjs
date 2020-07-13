@@ -20,7 +20,7 @@ export function buildAction(): Promise<void> {
 
   const finalBabelConfig = environment.createBabelConfig(createBabelConfig());
   const finalWebpackConfig = environment.createWebpackConfig(
-    createBuildConfig(appPackageJson.main, finalBabelConfig),
+    createBuildConfig(appPackageJson.main, finalBabelConfig, environment),
   );
 
   const compiler = webpack(finalWebpackConfig);
