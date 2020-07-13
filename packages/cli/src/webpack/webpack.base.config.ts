@@ -4,7 +4,11 @@ import { Configuration, EnvironmentPlugin } from 'webpack';
 
 import { BabelConfig } from '../babel';
 
-export function createBaseConfig(entry: string, babel: BabelConfig): Configuration {
+export function createBaseConfig(
+  entry: string,
+  babel: BabelConfig,
+  envVars: Array<string>,
+): Configuration {
   return {
     mode: 'development',
     optimization: {
@@ -22,7 +26,7 @@ export function createBaseConfig(entry: string, babel: BabelConfig): Configurati
     },
     plugins: [
       new HtmlPlugin({ filename: 'index.html', template: 'src/index.html' }),
-      new EnvironmentPlugin(['NODE_ENV']),
+      new EnvironmentPlugin(envVars),
     ],
     module: {
       rules: [

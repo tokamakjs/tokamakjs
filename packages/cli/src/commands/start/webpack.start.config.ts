@@ -14,7 +14,8 @@ export function createStartConfig(
   babel: BabelConfig,
   environment: Environment,
 ): Configuration {
-  const webpackBaseConfig = createBaseConfig(entry, babel);
+  const { appName, envVars } = environment.createMessageConfig();
+  const webpackBaseConfig = createBaseConfig(entry, babel, envVars);
 
   webpackBaseConfig.devtool = 'cheap-module-source-map';
 
@@ -23,7 +24,6 @@ export function createStartConfig(
   };
 
   const port = process.env.WEBPACK_PORT ?? 4000;
-  const { appName, envVars } = environment.createMessageConfig();
 
   webpackBaseConfig.plugins = [
     ...(webpackBaseConfig.plugins ?? []),
