@@ -1,5 +1,5 @@
 import { HISTORY, inject, injectable } from '@tokamakjs/core';
-import { History } from 'history';
+import { History, Location } from 'history';
 import qs from 'query-string';
 
 @injectable()
@@ -7,7 +7,7 @@ export class RouterService {
   constructor(@inject(HISTORY) private readonly _history: History) {}
 
   get location() {
-    return this._history.location;
+    return this._history.location as Location;
   }
 
   get query() {
