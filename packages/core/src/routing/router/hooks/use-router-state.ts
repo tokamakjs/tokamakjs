@@ -8,7 +8,7 @@ export function useRouterState(): RouterState {
   const params = useParams();
   const location = useLocation();
 
-  const { search } = location;
+  const { search } = location ?? { search: '' };
   const query = qs.parse(search);
 
   return { params, location, query };
