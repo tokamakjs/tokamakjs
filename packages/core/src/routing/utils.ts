@@ -1,8 +1,11 @@
+import { History } from 'history';
 import join from 'url-join';
 
-import { View, controller } from '../decorators';
+import { View, controller, inject } from '../decorators';
+import { OnDidMount } from '../interfaces';
 import { Reflector } from '../reflection';
 import { Constructor } from '../utils';
+import { HISTORY } from './constants';
 
 export interface RouteDefinition {
   path: string;
@@ -64,4 +67,17 @@ export function includeRoutes(basepath: string, Module: Constructor): Array<Rout
   return routing.map((route) => {
     return { ...route, path: join(basepath, route.path), isIncluded: true };
   });
+}
+
+export function createRedirection(from: string, to: string): RouteDefinition {
+  @controller({ view: () => null })
+  class RedirectionController implements OnDidMount {
+    constructor(@inject(HISTORY) private readonly _history: History) {}
+
+    onDidMount() {
+      this._history.replace(to);
+    }
+  }
+
+  return { path: from, controller: RedirectionController, children: [], isIncluded: false };
 }

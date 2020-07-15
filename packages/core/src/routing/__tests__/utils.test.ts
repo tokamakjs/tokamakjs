@@ -1,4 +1,4 @@
-import { RouteDefinition, createRoute, includeRoutes } from '../utils';
+import { RouteDefinition, createRedirection, createRoute, includeRoutes } from '../utils';
 
 describe('utils', () => {
   describe('createRoute', () => {
@@ -89,6 +89,26 @@ describe('utils', () => {
       expect(result).toHaveLength(2);
       expect(result[0]).toEqual({ ...loginRoute, path: '/test/login', isIncluded: true });
       expect(result[1]).toEqual({ ...signUpRoute, path: '/test/sign-up', isIncluded: true });
+    });
+  });
+
+  describe('createRedirection', () => {
+    it('creates a valid route definition', () => {
+      const route = createRedirection('/from', '/to');
+      expect(route.path).toEqual('/from');
+      expect(route.isIncluded).toBe(false);
+      expect(route.children).toEqual([]);
+      expect(route.controller).toBeDefined();
+    });
+
+    it('creates a controller that will redirect when mounted', () => {
+      const { controller: Controller } = createRedirection('/from', '/to');
+      const replaceMock = jest.fn();
+      const fakeHistory = { replace: replaceMock };
+      const controller = new Controller(fakeHistory);
+      controller.onDidMount();
+      expect(fakeHistory.replace).toHaveBeenCalledTimes(1);
+      expect(fakeHistory.replace).toHaveBeenCalledWith('/to');
     });
   });
 });
