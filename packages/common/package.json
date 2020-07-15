@@ -21,5 +21,11 @@
     "query-string": "^6.13.1",
     "react": "^16.13.1"
   },
+  "devDependencies": {
+    "graphql": "^15.3.0"
+  },
+  "peerDependencies": {
+    "graphql": "^15.x"
+  },
   "gitHead": "d6ae0ba88c7421ed9482c8e54b4f367d79034278"
 }
