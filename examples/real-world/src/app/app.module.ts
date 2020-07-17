@@ -1,9 +1,10 @@
-import { module } from '@tokamakjs/core';
-import { createRoute } from 'packages/core/src/routing';
+import { createRoute, module } from '@tokamakjs/core';
 
-import { RootView } from './routes/root/root.view';
+import { RootController } from './routes/root';
+import { ServiceA, ServiceB } from './routes/services';
 
 @module({
-  routing: [createRoute('/', RootView)],
+  routing: [createRoute('/', RootController)],
+  providers: [ServiceA, ServiceB],
 })
 export class AppModule {}
