@@ -4,3 +4,4 @@ export * from './constants';
 export * from './enums';
 export * from './provider';
 export * from './module';
+export * from './module-ref';

@@ -3,7 +3,9 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "~/*": ["./src/app/*"]
+      "~/*": ["./src/app/*"],
+      "@tokamakjs/core": ["../../packages/core/src/index.ts"],
+      "@tokamakjs/common": ["../../packages/common/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "dist"]

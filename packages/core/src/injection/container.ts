@@ -1,5 +1,6 @@
 import { flatten } from '../utils';
 import { Module, ModuleDefinition } from './module';
+import { ModuleRef } from './module-ref';
 import { Provider } from './provider';
 
 async function _traverse(
@@ -34,6 +35,7 @@ class GlobalModule {}
 
 export class Container {
   public readonly globalModule = new Module(GlobalModule, {});
+  private _isInitialized: boolean = false;
 
   private constructor(public readonly modules: Map<string, Module>) {
     modules.forEach((module) => (module.container = this));
@@ -50,7 +52,16 @@ export class Container {
     return new Container(modulesMap);
   }
 
+  get isInitialized() {
+    return this._isInitialized;
+  }
+
   public async init(): Promise<void> {
+    this.addGlobalProvider({
+      provide: ModuleRef,
+      useValue: new ModuleRef(this),
+    });
+
     await this.globalModule.init();
     await this.globalModule.createInstances();
 
