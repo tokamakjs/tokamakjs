@@ -16,6 +16,11 @@ describe('hooks', () => {
     onWillUnmount: jest.fn(),
     onDidRender: jest.fn(),
     __isLoading$__: new Subject<boolean>(),
+    __hooks__: new Map([
+      ['onDidMount', [jest.fn()]],
+      ['onWillUnmount', [jest.fn()]],
+      ['onDidRender', [jest.fn()]],
+    ]),
   };
 
   const TestComponent = ({ guards = [] }: any) => {
@@ -47,11 +52,19 @@ describe('hooks', () => {
     beforeEach(() => {
       fakeController.onDidMount.mockReset();
       fakeController.onWillUnmount.mockReset();
+      fakeController.__hooks__.forEach((v) => {
+        v.forEach((v) => v.mockReset());
+      });
     });
 
     it('calls onDidMount', () => {
       renderer.create(<TestComponent />);
       expect(fakeController.onDidMount).toHaveBeenCalledTimes(1);
+    });
+
+    it('calls onDidMount hooks', () => {
+      renderer.create(<TestComponent />);
+      expect(fakeController.__hooks__.get('onDidMount')![0]).toHaveBeenCalledTimes(1);
     });
 
     it('calls the returned callback from onDidMount when unmounting', () => {
@@ -64,21 +77,43 @@ describe('hooks', () => {
       expect(onDidMountCbMock).toHaveBeenCalledTimes(1);
     });
 
+    it('calls the returned callback from onDidMount hooks when unmounting', () => {
+      const onDidMountHookCbMock = jest.fn();
+      fakeController.__hooks__.get('onDidMount')![0].mockReturnValue(onDidMountHookCbMock);
+
+      const inst = renderer.create(<TestComponent />);
+      inst.unmount();
+
+      expect(onDidMountHookCbMock).toHaveBeenCalledTimes(1);
+    });
+
     it('calls onWillUnmount', () => {
       const inst = renderer.create(<TestComponent />);
       inst.unmount();
       expect(fakeController.onWillUnmount).toHaveBeenCalledTimes(1);
+    });
+
+    it('calls onWillUnmount hook', () => {
+      const inst = renderer.create(<TestComponent />);
+      inst.unmount();
+      expect(fakeController.__hooks__.get('onWillUnmount')![0]).toHaveBeenCalledTimes(1);
     });
   });
 
   describe('useRenderLifeCycle', () => {
     beforeEach(() => {
       fakeController.onDidRender.mockReset();
+      fakeController.__hooks__.get('onDidRender')![0].mockReset();
     });
 
     it('calls onDidRender', () => {
       renderer.create(<TestComponent />);
       expect(fakeController.onDidRender).toHaveBeenCalledTimes(1);
+    });
+
+    it('calls onDidRender hooks', () => {
+      renderer.create(<TestComponent />);
+      expect(fakeController.__hooks__.get('onDidRender')![0]).toHaveBeenCalledTimes(1);
     });
   });
 

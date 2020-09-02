@@ -1,6 +1,6 @@
 type HookName = 'onDidMount' | 'onWillUnmount' | 'onDidRender';
 
-interface WithHooks {
+export interface WithHooks {
   __hooks__: Map<HookName, Array<Function>>;
 }
 

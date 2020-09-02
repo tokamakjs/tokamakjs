@@ -25,7 +25,9 @@ export function useMountLifeCycle(controller: any): void {
     if (!hasHooks(controller)) return;
 
     const onDidMountHooks = controller.__hooks__.get('onDidMount') ?? [];
-    const onDidMountCbs = onDidMountHooks.map((hook) => hook());
+    const onDidMountCbs = onDidMountHooks
+      .map((hook) => hook())
+      .filter((v) => typeof v === 'function');
 
     return () => {
       const onWillUnmountHooks = controller.__hooks__.get('onWillUnmount') ?? [];
