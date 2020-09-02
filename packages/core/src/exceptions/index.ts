@@ -5,3 +5,4 @@ export * from './UnknownExportException';
 export * from './UnknownElementException';
 export * from './InvalidScopeException';
 export * from './UndefinedDependencyException';
+export * from './IllegalArgumentException';

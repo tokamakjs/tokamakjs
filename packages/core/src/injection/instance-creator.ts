@@ -1,4 +1,4 @@
-import { UndefinedDependencyException } from '../exceptions';
+import { CircularDependencyException, UndefinedDependencyException } from '../exceptions';
 import { Reflector } from '../reflection';
 import { Constructor, isFunction } from '../utils';
 import { Context } from './constants';
@@ -43,7 +43,7 @@ export class InstanceCreator<T = any> {
 
   private async _resolveDependency(ctx: Context, dep?: ProviderToken): Promise<InstanceWrapper> {
     if (dep == null) {
-      throw new UndefinedDependencyException();
+      throw new CircularDependencyException(this.wrapper.name);
     }
 
     const token = isForwardReference(dep) ? dep.forwardRef() : dep;

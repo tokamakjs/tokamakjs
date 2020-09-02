@@ -1,7 +1,7 @@
 import { Constructor } from '../utils';
 import { Scope } from './enums';
 
-export type ProviderToken = string | symbol | Constructor<any> | Function;
+export type ProviderToken<T = any> = string | symbol | Constructor<T> | Function;
 
 export interface ClassProvider<T = any> {
   provide: ProviderToken;
