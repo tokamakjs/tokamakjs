@@ -24,22 +24,28 @@ function _createFakeAppContext(): AppContext {
 }
 
 function _resetLifeCycleMocks(instance: any): void {
-  instance?.onDidMount?.mockReset();
-  instance?.onWillUnmount?.mockReset();
-  instance?.setRefreshViewFunction?.mockReset();
+  instance?.__hooks__?.get('onDidMount')?.[0].mockReset();
+  instance?.__hooks__?.get('onWillUnmount')?.[0].mockReset();
+  instance?.__hooks__?.get('onDidRender')?.[0].mockReset();
 }
 
 describe('createRouteComponent', () => {
   class RouteController {
-    onDidMount = jest.fn();
-    onWillUnmount = jest.fn();
+    __hooks__ = new Map([
+      ['onDidMount', [jest.fn()]],
+      ['onWillUnmount', [jest.fn()]],
+      ['onDidRender', [jest.fn()]],
+    ]);
   }
 
   const fakeAppContext = _createFakeAppContext();
   const fakeControllerWrapper = {
     setRefreshViewFunction: jest.fn(),
-    onDidMount: jest.fn(),
-    onWillUnmount: jest.fn(),
+    __hooks__: new Map([
+      ['onDidMount', [jest.fn()]],
+      ['onWillUnmount', [jest.fn()]],
+      ['onDidRender', [jest.fn()]],
+    ]),
   };
   const fakeController = fakeAppContext.get(RouteController);
   const FakeView = () => <div>TEST_VIEW</div>;
@@ -74,6 +80,8 @@ describe('createRouteComponent', () => {
       _resetLifeCycleMocks(fakeControllerWrapper);
       _resetLifeCycleMocks(fakeController);
 
+      fakeControllerWrapper.setRefreshViewFunction.mockReset();
+
       // We need to fire useEffect synchronously for tests to pass
       jest.spyOn(React, 'useEffect').mockImplementation(React.useLayoutEffect);
     });
@@ -88,9 +96,9 @@ describe('createRouteComponent', () => {
 
     it('calls the wrapper life-cycle methods', async () => {
       const inst = renderer.create(<Route />);
-      expect(fakeControllerWrapper.onDidMount).toHaveBeenCalledTimes(1);
+      expect(fakeControllerWrapper.__hooks__.get('onDidMount')![0]).toHaveBeenCalledTimes(1);
       inst.unmount();
-      expect(fakeControllerWrapper.onWillUnmount).toHaveBeenCalledTimes(1);
+      expect(fakeControllerWrapper.__hooks__.get('onWillUnmount')![0]).toHaveBeenCalledTimes(1);
     });
 
     it('renders the loading view when pending', () => {
@@ -126,9 +134,9 @@ describe('createRouteComponent', () => {
 
     it('calls the controller life-cycle methods', () => {
       const inst = renderer.create(<Route />);
-      expect(fakeController.onDidMount).toHaveBeenCalledTimes(1);
+      expect(fakeController.__hooks__.get('onDidMount')![0]).toHaveBeenCalledTimes(1);
       inst.unmount();
-      expect(fakeController.onWillUnmount).toHaveBeenCalledTimes(1);
+      expect(fakeController.__hooks__.get('onWillUnmount')![0]).toHaveBeenCalledTimes(1);
     });
 
     it('renders the <ViewHolder /> component when is not pending or forbidden', () => {

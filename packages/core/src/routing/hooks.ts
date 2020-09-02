@@ -2,25 +2,10 @@ import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { Subject } from 'rxjs';
 
 import { hasHooks } from '../decorators';
-import { CanActivate, hasOnDidMount, hasOnDidRender, hasOnWillUnmount } from '../interfaces';
+import { CanActivate } from '../interfaces';
 import { useRouterState } from './router';
 
 export function useMountLifeCycle(controller: any): void {
-  // Method
-  useEffect(() => {
-    let onDidMountCb: any;
-
-    if (hasOnDidMount(controller)) {
-      onDidMountCb = controller.onDidMount();
-    }
-
-    return () => {
-      if (onDidMountCb != null && typeof onDidMountCb === 'function') onDidMountCb();
-      if (hasOnWillUnmount(controller)) controller.onWillUnmount();
-    };
-  }, []);
-
-  // Hooks
   useEffect(() => {
     if (!hasHooks(controller)) return;
 
@@ -38,12 +23,6 @@ export function useMountLifeCycle(controller: any): void {
 }
 
 export function useRenderLifeCycle(controller: any): void {
-  // Method
-  useLayoutEffect(() => {
-    if (hasOnDidRender(controller)) controller.onDidRender();
-  });
-
-  // Hooks
   useLayoutEffect(() => {
     if (!hasHooks(controller)) return;
 
