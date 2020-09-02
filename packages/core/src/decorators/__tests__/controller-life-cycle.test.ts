@@ -16,19 +16,25 @@ describe('controller-life-cycle', () => {
 
   describe('@onDidMount', () => {
     it('should add the decorated method to the list of onDidMount hooks', () => {
-      expect(controller.__hooks__.get('onDidMount')).toEqual([controller.onDidMountHook]);
+      expect(controller.__hooks__.get('onDidMount')).toEqual([
+        controller.onDidMountHook.bind(controller),
+      ]);
     });
   });
 
   describe('@onWillUnmount', () => {
     it('should add the decorated method to the list of onWillUnmount hooks', () => {
-      expect(controller.__hooks__.get('onWillUnmount')).toEqual([controller.onWillUnmountHook]);
+      expect(controller.__hooks__.get('onWillUnmount')).toEqual([
+        controller.onWillUnmountHook.bind(controller),
+      ]);
     });
   });
 
   describe('@onDidRender', () => {
     it('should add the decorated method to the list of onDidRender hooks', () => {
-      expect(controller.__hooks__.get('onDidRender')).toEqual([controller.onDidRenderHook]);
+      expect(controller.__hooks__.get('onDidRender')).toEqual([
+        controller.onDidRenderHook.bind(controller),
+      ]);
     });
   });
 });
