@@ -1,4 +1,4 @@
-import React, { ComponentType } from 'react';
+import React, { ComponentType, useEffect } from 'react';
 import renderer from 'react-test-renderer';
 
 import { ControllerMetadata } from '../../decorators';
@@ -48,7 +48,13 @@ describe('createRouteComponent', () => {
     ]),
   };
   const fakeController = fakeAppContext.get(RouteController);
-  const FakeView = () => <div>TEST_VIEW</div>;
+  const insideUseEffectMock = jest.fn();
+  const FakeView = () => {
+    useEffect(() => {
+      insideUseEffectMock();
+    });
+    return <div>TEST_VIEW</div>;
+  };
   const FakeViewLoading = () => <div>Loading...</div>;
 
   let Route: ComponentType;
@@ -81,6 +87,7 @@ describe('createRouteComponent', () => {
       _resetLifeCycleMocks(fakeController);
 
       fakeControllerWrapper.setRefreshViewFunction.mockReset();
+      insideUseEffectMock.mockReset();
 
       // We need to fire useEffect synchronously for tests to pass
       jest.spyOn(React, 'useEffect').mockImplementation(React.useLayoutEffect);
@@ -146,6 +153,11 @@ describe('createRouteComponent', () => {
           TEST_VIEW
         </div>
       `);
+    });
+
+    it('allows the use of hooks inside the view', () => {
+      renderer.create(<Route />);
+      expect(insideUseEffectMock).toHaveBeenCalledTimes(1);
     });
   });
 });
