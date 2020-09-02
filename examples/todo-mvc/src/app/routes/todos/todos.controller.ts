@@ -1,4 +1,4 @@
-import { OnDidMount, controller, observable } from '@tokamakjs/core';
+import { controller, observable, onDidMount } from '@tokamakjs/core';
 
 import { Todo, TodosStore } from '~/stores';
 
@@ -9,7 +9,7 @@ function _poorsManUuid(): number {
 }
 
 @controller({ view: TodosView })
-export class TodosController implements OnDidMount {
+export class TodosController {
   @observable private _todos = [] as Array<Todo>;
 
   constructor(private readonly todosStore: TodosStore) {}
@@ -18,6 +18,7 @@ export class TodosController implements OnDidMount {
     return this._todos;
   }
 
+  @onDidMount()
   public onDidMount() {
     const subscription = this.todosStore.todos$.subscribe((todos) => (this._todos = todos));
 

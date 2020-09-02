@@ -1,8 +1,7 @@
 import { History } from 'history';
 import join from 'url-join';
 
-import { View, controller, inject } from '../decorators';
-import { OnDidMount } from '../interfaces';
+import { View, controller, inject, onDidMount } from '../decorators';
 import { Reflector } from '../reflection';
 import { Constructor } from '../utils';
 import { HISTORY } from './constants';
@@ -71,9 +70,10 @@ export function includeRoutes(basepath: string, Module: Constructor): Array<Rout
 
 export function createRedirection(from: string, to: string): RouteDefinition {
   @controller({ view: () => null })
-  class RedirectionController implements OnDidMount {
+  class RedirectionController {
     constructor(@inject(HISTORY) private readonly _history: History) {}
 
+    @onDidMount()
     onDidMount() {
       this._history.replace(to);
     }

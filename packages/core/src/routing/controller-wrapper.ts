@@ -1,8 +1,8 @@
-import { OnDidMount, OnWillUnmount } from '../interfaces';
+import { onDidMount, onWillUnmount } from '../decorators/controller-life-cycle';
 
 export const WRAPPER_KEY = Symbol('ControllerWrapper');
 
-export class ControllerWrapper<T = any> implements OnDidMount, OnWillUnmount {
+export class ControllerWrapper<T = any> {
   private _refreshView?: () => void;
   private _hasRendered = false;
 
@@ -14,10 +14,12 @@ export class ControllerWrapper<T = any> implements OnDidMount, OnWillUnmount {
     return this._hasRendered;
   }
 
+  @onDidMount()
   public onDidMount(): void {
     this._hasRendered = true;
   }
 
+  @onWillUnmount()
   public onWillUnmount(): void {
     this._hasRendered = false;
   }
