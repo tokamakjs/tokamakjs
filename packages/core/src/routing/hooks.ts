@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { Subject } from 'rxjs';
 
+import { hasHooks } from '../decorators';
 import { CanActivate, hasOnDidMount, hasOnDidRender, hasOnWillUnmount } from '../interfaces';
 import { useRouterState } from './router';
 
 export function useMountLifeCycle(controller: any): void {
+  // Method
   useEffect(() => {
     let onDidMountCb: any;
 
@@ -17,11 +19,34 @@ export function useMountLifeCycle(controller: any): void {
       if (hasOnWillUnmount(controller)) controller.onWillUnmount();
     };
   }, []);
+
+  // Hooks
+  useEffect(() => {
+    if (!hasHooks(controller)) return;
+
+    const onDidMountHooks = controller.__hooks__.get('onDidMount') ?? [];
+    const onDidMountCbs = onDidMountHooks.map((hook) => hook());
+
+    return () => {
+      const onWillUnmountHooks = controller.__hooks__.get('onWillUnmount') ?? [];
+      const totalHooks = [...onWillUnmountHooks, ...onDidMountCbs];
+      totalHooks.forEach((cb) => cb());
+    };
+  }, []);
 }
 
 export function useRenderLifeCycle(controller: any): void {
+  // Method
   useLayoutEffect(() => {
     if (hasOnDidRender(controller)) controller.onDidRender();
+  });
+
+  // Hooks
+  useLayoutEffect(() => {
+    if (!hasHooks(controller)) return;
+
+    const onDidRenderHooks = controller.__hooks__.get('onDidRender') ?? [];
+    onDidRenderHooks.forEach((hook) => hook());
   });
 }
 

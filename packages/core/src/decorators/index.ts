@@ -4,3 +4,4 @@ export * from './controller.decorator';
 export * from './inject.decorator';
 export * from './tracked.decorator';
 export * from './observable.decorator';
+export * from './controller-life-cycle';

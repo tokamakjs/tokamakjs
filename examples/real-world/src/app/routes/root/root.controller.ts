@@ -1,4 +1,4 @@
-import { controller } from '@tokamakjs/core';
+import { controller, onDidMount, onDidRender } from '@tokamakjs/core';
 
 import { ServiceA, ServiceB } from '../services';
 import { RootView } from './root.view';
@@ -10,5 +10,19 @@ export class RootController {
   doStuff() {
     console.log('FROM A', this.serviceA.hello());
     console.log('FROM B', this.serviceB.bye());
+  }
+
+  @onDidMount()
+  doStuffOnMount() {
+    console.log('Hello mount');
+
+    return () => {
+      console.log('Hello unmount');
+    };
+  }
+
+  @onDidRender()
+  doStuffAfterRender() {
+    console.log('Hello on did render');
   }
 }
