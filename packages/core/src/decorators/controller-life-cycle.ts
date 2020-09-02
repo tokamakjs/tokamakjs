@@ -15,7 +15,7 @@ function _addHook(target: any, hookName: HookName, hookFn: Function): void {
   }
 
   const existingHooks = target.__hooks__.get(hookName) ?? [];
-  target.__hooks__.set(hookName, [...existingHooks, hookFn.bind(target)]);
+  target.__hooks__.set(hookName, [...existingHooks, hookFn]);
 }
 
 export function onDidMount(): MethodDecorator {

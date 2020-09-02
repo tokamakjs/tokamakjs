@@ -11,13 +11,13 @@ export function useMountLifeCycle(controller: any): void {
 
     const onDidMountHooks = controller.__hooks__.get('onDidMount') ?? [];
     const onDidMountCbs = onDidMountHooks
-      .map((hook) => hook())
+      .map((hook) => hook.apply(controller))
       .filter((v) => typeof v === 'function');
 
     return () => {
       const onWillUnmountHooks = controller.__hooks__.get('onWillUnmount') ?? [];
       const totalHooks = [...onWillUnmountHooks, ...onDidMountCbs];
-      totalHooks.forEach((cb) => cb());
+      totalHooks.forEach((cb) => cb.apply(controller));
     };
   }, []);
 }
@@ -27,7 +27,7 @@ export function useRenderLifeCycle(controller: any): void {
     if (!hasHooks(controller)) return;
 
     const onDidRenderHooks = controller.__hooks__.get('onDidRender') ?? [];
-    onDidRenderHooks.forEach((hook) => hook());
+    onDidRenderHooks.forEach((hook) => hook.apply(controller));
   });
 }
 
