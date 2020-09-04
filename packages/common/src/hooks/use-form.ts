@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-interface ManagedForm<T> {
+export interface ManagedForm<T> {
   get: (name?: keyof T) => T[keyof T] | '';
   set: (value: T[keyof T], name?: keyof T) => void;
   values: Partial<T>;
