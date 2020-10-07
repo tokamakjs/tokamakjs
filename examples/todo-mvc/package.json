@@ -1,6 +1,6 @@
 {
   "name": "@tokamakjs/todo-mvc-example",
-  "version": "0.1.0-alpha.28",
+  "version": "0.1.0-alpha.29",
   "description": "Tokamak Todo MVC app example.",
   "author": "Lars <lars.bs@hotmail.com>",
   "license": "MIT",
@@ -18,9 +18,9 @@
   },
   "dependencies": {
     "@babel/preset-env": "^7.10.2",
-    "@tokamakjs/cli": "^0.1.0-alpha.28",
-    "@tokamakjs/common": "^0.1.0-alpha.27",
-    "@tokamakjs/core": "^0.1.0-alpha.26",
+    "@tokamakjs/cli": "^0.1.0-alpha.29",
+    "@tokamakjs/common": "^0.1.0-alpha.29",
+    "@tokamakjs/core": "^0.1.0-alpha.29",
     "classnames": "^2.2.6",
     "modern-normalize": "^0.6.0",
     "query-string": "^6.13.1",
