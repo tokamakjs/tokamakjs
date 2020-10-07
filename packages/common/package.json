@@ -13,7 +13,9 @@
     "url": "https://github.com/tokamakjs/tokamak",
     "directory": "packages/common"
   },
-  "scripts": {},
+  "scripts": {
+    "build": "tsc -b"
+  },
   "dependencies": {
     "@tokamakjs/core": "^0.1.0-alpha.30",
     "history": "^5.0.0-beta.9",

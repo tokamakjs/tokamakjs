@@ -13,7 +13,9 @@
     "url": "https://github.com/tokamakjs/tokamak",
     "directory": "packages/core"
   },
-  "scripts": {},
+  "scripts": {
+    "build:watch": "tsc -b --watch --preserveWatchOutput"
+  },
   "peerDependencies": {
     "react": "^16.13.1",
     "react-dom": "^16.13.1"

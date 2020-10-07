@@ -14,8 +14,7 @@
     "directory": "packages/dev-utils"
   },
   "scripts": {
-    "build": "tsc",
-    "prepublishOnly": "npm run build"
+    "build:watch": "tsc -b --watch --preserveWatchOutput"
   },
   "dependencies": {
     "ansi-escapes": "^4.3.1",
