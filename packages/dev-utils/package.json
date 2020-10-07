@@ -1,6 +1,6 @@
 {
   "name": "@tokamakjs/dev-utils",
-  "version": "0.1.0-alpha.29",
+  "version": "0.1.0-alpha.30",
   "description": "Tokamak app framework dev utils.",
   "author": "Lars <lars.bs@hotmail.com>",
   "license": "MIT",
@@ -25,5 +25,5 @@
     "strip-ansi": "^6.0.0",
     "webpack": "^4.43.0"
   },
-  "gitHead": "83a4b10f7a8684bb619143483f88569184423252"
+  "gitHead": "1ad2efd4f2f2aa2c1516a13393582c44d875368c"
 }

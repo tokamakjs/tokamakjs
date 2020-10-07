@@ -1,6 +1,6 @@
 {
   "name": "@tokamakjs/cli",
-  "version": "0.1.0-alpha.29",
+  "version": "0.1.0-alpha.30",
   "description": "Tokamak cli.",
   "author": "Lars <lars.bs@hotmail.com>",
   "license": "MIT",
@@ -21,7 +21,7 @@
     "@babel/core": "^7.10.2",
     "@babel/preset-env": "^7.10.2",
     "@babel/preset-react": "^7.10.1",
-    "@tokamakjs/dev-utils": "^0.1.0-alpha.29",
+    "@tokamakjs/dev-utils": "^0.1.0-alpha.30",
     "babel-loader": "^8.1.0",
     "chalk": "^4.1.0",
     "commander": "^5.1.0",
@@ -46,5 +46,5 @@
     "webpack": "^4.43.0",
     "webpack-dev-server": "^3.11.0"
   },
-  "gitHead": "83a4b10f7a8684bb619143483f88569184423252"
+  "gitHead": "1ad2efd4f2f2aa2c1516a13393582c44d875368c"
 }

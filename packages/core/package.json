@@ -1,6 +1,6 @@
 {
   "name": "@tokamakjs/core",
-  "version": "0.1.0-alpha.29",
+  "version": "0.1.0-alpha.30",
   "description": "Tokamak app framework core.",
   "author": "Lars <lars.bs@hotmail.com>",
   "license": "MIT",
@@ -31,5 +31,5 @@
     "react-dom": "^16.13.1",
     "react-test-renderer": "^16.13.1"
   },
-  "gitHead": "b4595e1bcd4accb8c3c98ea2ef4e3a3dfc614fbe"
+  "gitHead": "1ad2efd4f2f2aa2c1516a13393582c44d875368c"
 }
