@@ -1,29 +1,9 @@
 {
-  "compilerOptions": {
-    "jsx": "preserve",
-    "moduleResolution": "node",
-    "module": "CommonJS",
-    "esModuleInterop": true,
-    "removeComments": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "declaration": true,
-    "target": "es2019",
-    "sourceMap": true,
-    "outDir": "./dist",
-    "baseUrl": "./",
-    "incremental": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "strict": true,
-    "resolveJsonModule": true,
-    "paths": {
-      "@tokamakjs/core": ["./packages/core/src/index.ts"],
-      "@tokamakjs/cli": ["./packages/cli/src/index.ts"],
-      "@tokamakjs/dev-utils": ["./packages/dev-utils/src/index.ts"],
-      "@tokamakjs/common": ["./packages/common/src/index.ts"]
-    }
-  },
-  "exclude": ["node_modules", "dist"],
-  "include": ["packages/**/*", "examples/**/*"]
+  "files": [],
+  "references": [
+    { "path": "./packages/dev-utils" },
+    { "path": "./packages/cli" },
+    { "path": "./packages/core" },
+    { "path": "./packages/common" }
+  ]
 }

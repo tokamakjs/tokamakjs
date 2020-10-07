@@ -13,7 +13,10 @@
     "url": "https://github.com/tokamakjs/tokamak",
     "directory": "packages/dev-utils"
   },
-  "scripts": {},
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
   "dependencies": {
     "ansi-escapes": "^4.3.1",
     "chalk": "^4.1.0",

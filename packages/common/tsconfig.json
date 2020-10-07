@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./lib",
+    "rootDir": "./src",
+    "tsBuildInfoFile": "./lib/common.tsbuildinfo",
+    "paths": {
+      "@tokamakjs/core": ["../core"]
+    }
+  },
+  "exclude": ["node_modules", "lib"],
+  "references": [{ "path": "../core" }]
+}

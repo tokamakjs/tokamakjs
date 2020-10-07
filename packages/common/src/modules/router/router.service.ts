@@ -6,7 +6,7 @@ import qs from 'query-string';
 export class RouterService {
   constructor(@inject(HISTORY) private readonly _history: History) {}
 
-  get location() {
+  get location(): Location {
     return this._history.location as Location;
   }
 

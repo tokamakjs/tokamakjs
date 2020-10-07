@@ -4,3 +4,4 @@ dist
 *.log
 lib
 !examples/real-world/.env
+*.tsbuildinfo
