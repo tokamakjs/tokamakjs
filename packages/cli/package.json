@@ -18,8 +18,8 @@
   },
   "gitHead": "1ad2efd4f2f2aa2c1516a13393582c44d875368c",
   "scripts": {
-    "build": "tsc -b",
-    "copy-template": ""
+    "build": "gulp",
+    "build:watch": "gulp watch"
   },
   "dependencies": {
     "@babel/core": "^7.10.2",

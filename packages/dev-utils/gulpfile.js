@@ -1,12 +1,8 @@
-const { series, src, dest, watch } = require('gulp');
-const path = require('path');
+const { series, dest, watch } = require('gulp');
 const gulpBabel = require('gulp-babel');
 const rimraf = require('rimraf');
-const gulpRename = require('gulp-rename');
 const gulpTypescript = require('gulp-typescript');
 const merge = require('merge-stream');
-
-const PACKAGES_DIR = path.resolve(__dirname, '../../packages');
 
 const ts = gulpTypescript.createProject('tsconfig.json', {
   noUnusedLocals: process.env.NODE_ENV !== 'development',
@@ -14,20 +10,22 @@ const ts = gulpTypescript.createProject('tsconfig.json', {
 });
 
 function cleanPackages() {
-  return new Promise((r) => rimraf(`${PACKAGES_DIR}/*/lib`, r));
+  return new Promise((r) => rimraf('./lib', r));
 }
 
 function buildPackages() {
   const buildTs = ts.src().pipe(ts());
+  return merge(buildTs.js.pipe(gulpBabel()), buildTs.dts).pipe(dest('./lib'));
+}
 
-  return merge(buildTs.js.pipe(gulpBabel()), buildTs.dts)
-    .pipe(
-      gulpRename((path) => {
-        path.dirname = path.dirname.replace('src', 'lib');
-      }),
-    )
-    .pipe(dest('./lib'));
+function watchPackages() {
+  watch(
+    ['./src/**/*.{ts,tsx}', '!./src/**/*.test.{ts,tsx}'],
+    { ignoreInitial: false },
+    series(buildPackages),
+  );
 }
 
 // Tasks
 module.exports.default = series(cleanPackages, buildPackages);
+module.exports.watch = series(watchPackages);

@@ -14,7 +14,8 @@
     "directory": "packages/dev-utils"
   },
   "scripts": {
-    "build:watch": "tsc -b --watch --preserveWatchOutput"
+    "build": "gulp",
+    "build:watch": "gulp watch"
   },
   "dependencies": {
     "ansi-escapes": "^4.3.1",
