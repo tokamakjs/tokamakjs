@@ -5,30 +5,31 @@ import ErrorOverlayPlugin from 'error-overlay-webpack-plugin';
 import FriendlyErrorsPlugin from 'friendly-errors-webpack-plugin';
 import { Configuration } from 'webpack';
 
-import { Environment } from '../../environment';
+import { WebpackConfig } from '../../config-files';
 
-export function createStartConfig(env: Environment): Configuration {
-  const { webpackConfig: webpackBaseConfig, webpackPort, appName, envVars } = env;
+export function createWebpackStartConfig(
+  baseConfig: WebpackConfig,
+  { appName, envVars, port }: { appName: string; envVars: Array<string>; port: number },
+): Configuration {
+  baseConfig.devtool = 'cheap-module-source-map';
 
-  webpackBaseConfig.devtool = 'cheap-module-source-map';
-
-  webpackBaseConfig.optimization = {
+  baseConfig.optimization = {
     noEmitOnErrors: true,
   };
 
-  webpackBaseConfig.plugins = [
-    ...(webpackBaseConfig.plugins ?? []),
+  baseConfig.plugins = [
+    ...(baseConfig.plugins ?? []),
     new BetterProgressPlugin({
       mode: 'bar',
-      summary: () => process.stdout.write(initialAppMessage(appName, webpackPort, envVars)),
+      summary: () => process.stdout.write(initialAppMessage(appName, port, envVars)),
     }),
     new FriendlyErrorsPlugin({ clearConsole: false }),
     new ErrorOverlayPlugin(),
   ];
 
-  webpackBaseConfig.devServer = {
+  baseConfig.devServer = {
     host: '0.0.0.0',
-    port: webpackPort,
+    port,
     historyApiFallback: true,
     clientLogLevel: 'silent',
     stats: 'errors-only',
@@ -38,5 +39,5 @@ export function createStartConfig(env: Environment): Configuration {
     noInfo: true,
   };
 
-  return webpackBaseConfig;
+  return baseConfig;
 }

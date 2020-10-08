@@ -1,8 +1,8 @@
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 
-import { Environment, EnvironmentConfig } from '../../environment';
-import { createStartConfig } from './webpack.start.config';
+import { EnvironmentConfig } from '../../environment';
+import { StartEnvironment } from './start-environment';
 
 export async function startAction(): Promise<void> {
   require('ts-node').register({
@@ -16,10 +16,9 @@ export async function startAction(): Promise<void> {
   const appPackageJson = require(`${cwd}/package.json`);
   const { start } = require(`${cwd}/config/start`);
 
-  const config = start() as EnvironmentConfig;
-  const environment = new Environment(config, appPackageJson);
-
-  const webpackConfig = createStartConfig(environment);
+  const envConfig = start() as EnvironmentConfig;
+  const environment = new StartEnvironment(envConfig, appPackageJson);
+  const webpackConfig = environment.createWebpackConfig();
 
   const compiler = webpack(webpackConfig);
   const devServer = new WebpackDevServer(compiler, webpackConfig.devServer);

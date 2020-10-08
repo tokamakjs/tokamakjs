@@ -1,7 +1,7 @@
 import webpack from 'webpack';
 
-import { Environment, EnvironmentConfig } from '../../environment';
-import { createWebpackBuildConfig } from './webpack.build.config';
+import { EnvironmentConfig } from '../../environment';
+import { BuildEnvironment } from './build-environment';
 
 export function buildAction(): Promise<void> {
   require('ts-node').register({
@@ -16,9 +16,8 @@ export function buildAction(): Promise<void> {
   const { build } = require(`${cwd}/config/build`);
 
   const config = build() as EnvironmentConfig;
-  const environment = new Environment(config, appPackageJson);
-
-  const webpackConfig = createWebpackBuildConfig(environment);
+  const environment = new BuildEnvironment(config, appPackageJson);
+  const webpackConfig = environment.createWebpackConfig();
 
   const compiler = webpack(webpackConfig);
 
