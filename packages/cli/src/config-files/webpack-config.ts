@@ -1,3 +1,4 @@
+import CopyPlugin from 'copy-webpack-plugin';
 import HtmlPlugin from 'html-webpack-plugin';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 import { Configuration, EnvironmentPlugin } from 'webpack';
@@ -11,13 +12,15 @@ export function createWebpackBaseConfig({
   babel,
   envVars,
   indexTemplate,
+  publicFolder,
 }: {
   entry: string;
   babel: BabelConfig;
   envVars: Array<string>;
   indexTemplate: string;
+  publicFolder: string | undefined;
 }): Configuration {
-  return {
+  const baseConfig = {
     mode: 'development',
     optimization: {
       noEmitOnErrors: true,
@@ -103,5 +106,13 @@ export function createWebpackBaseConfig({
         },
       ],
     },
-  };
+  } as Configuration;
+
+  if (publicFolder != null) {
+    baseConfig.plugins?.push(
+      new CopyPlugin({ patterns: [{ context: publicFolder, from: '**/*' }] }),
+    );
+  }
+
+  return baseConfig;
 }

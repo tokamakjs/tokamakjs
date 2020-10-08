@@ -20,6 +20,7 @@ export class StartEnvironment extends Environment {
       babel: babelConfig,
       envVars: this._config.envVars,
       indexTemplate: this._config.indexTemplate,
+      publicFolder: this._config.publicFolder,
     });
     const startConfig = createWebpackStartConfig(baseConfig, {
       appName: this._config.appName,
