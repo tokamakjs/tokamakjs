@@ -1,1 +1,1 @@
-{ "extends": "../../babel.config.json", "presets": ["@babel/preset-react"] }
+{ "extends": "../../babel.config.json" }

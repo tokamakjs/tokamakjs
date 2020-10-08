@@ -79,7 +79,7 @@ export function useGuards(guards: Array<CanActivate>): { isPending: boolean; for
 
 export function useForceUpdate(): () => void {
   const [, setState] = useState();
-  return useCallback(() => setState({}), []);
+  return useCallback(() => setState({} as any), []);
 }
 
 export { useLocation } from './router/hooks';
