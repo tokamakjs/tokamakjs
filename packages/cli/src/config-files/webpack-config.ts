@@ -2,13 +2,21 @@ import HtmlPlugin from 'html-webpack-plugin';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 import { Configuration, EnvironmentPlugin } from 'webpack';
 
-import { BabelConfig } from '../babel';
+import { BabelConfig } from './babel-config';
 
-export function createBaseConfig(
-  entry: string,
-  babel: BabelConfig,
-  envVars: Array<string>,
-): Configuration {
+export { Configuration as WebpackConfig } from 'webpack';
+
+export function createWebpackBaseConfig({
+  entry,
+  babel,
+  envVars,
+  indexTemplate,
+}: {
+  entry: string;
+  babel: BabelConfig;
+  envVars: Array<string>;
+  indexTemplate: string;
+}): Configuration {
   return {
     mode: 'development',
     optimization: {
@@ -25,7 +33,7 @@ export function createBaseConfig(
       publicPath: '/',
     },
     plugins: [
-      new HtmlPlugin({ filename: 'index.html', template: 'src/index.html' }),
+      new HtmlPlugin({ filename: 'index.html', template: indexTemplate }),
       new EnvironmentPlugin(envVars),
     ],
     module: {

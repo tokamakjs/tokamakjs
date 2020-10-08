@@ -4,6 +4,8 @@ const rimraf = require('rimraf');
 const gulpTypescript = require('gulp-typescript');
 const merge = require('merge-stream');
 
+console.log(process.env.NODE_ENV);
+
 const ts = gulpTypescript.createProject('tsconfig.json', {
   noUnusedLocals: process.env.NODE_ENV !== 'development',
   noUnusedParameters: process.env.NODE_ENV !== 'development',

@@ -1,8 +1,7 @@
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 
-import { createBabelConfig } from '../../babel/create-babel-config';
-import { Environment } from '../../environment';
+import { Environment, EnvironmentConfig } from '../../environment';
 import { createStartConfig } from './webpack.start.config';
 
 export async function startAction(): Promise<void> {
@@ -13,19 +12,17 @@ export async function startAction(): Promise<void> {
     },
   });
 
-  const appPackageJson = require(`${process.cwd()}/package.json`);
-  const { start } = require(`${process.cwd()}/config/start`);
+  const cwd = process.cwd();
+  const appPackageJson = require(`${cwd}/package.json`);
+  const { start } = require(`${cwd}/config/start`);
 
-  const environment = new Environment();
-  start(environment);
+  const config = start() as EnvironmentConfig;
+  const environment = new Environment(config, appPackageJson);
 
-  const finalBabelConfig = environment.createBabelConfig(createBabelConfig());
-  const finalWebpackConfig = environment.createWebpackConfig(
-    createStartConfig(appPackageJson.main, finalBabelConfig, environment),
-  );
+  const webpackConfig = createStartConfig(environment);
 
-  const compiler = webpack(finalWebpackConfig);
-  const devServer = new WebpackDevServer(compiler, finalWebpackConfig.devServer);
+  const compiler = webpack(webpackConfig);
+  const devServer = new WebpackDevServer(compiler, webpackConfig.devServer);
 
-  devServer.listen(finalWebpackConfig.devServer!.port!);
+  devServer.listen(webpackConfig.devServer!.port!);
 }

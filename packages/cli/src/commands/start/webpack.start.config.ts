@@ -5,17 +5,10 @@ import ErrorOverlayPlugin from 'error-overlay-webpack-plugin';
 import FriendlyErrorsPlugin from 'friendly-errors-webpack-plugin';
 import { Configuration } from 'webpack';
 
-import { BabelConfig } from '../../babel';
 import { Environment } from '../../environment';
-import { createBaseConfig } from '../../webpack/webpack.base.config';
 
-export function createStartConfig(
-  entry: string,
-  babel: BabelConfig,
-  environment: Environment,
-): Configuration {
-  const { appName, envVars } = environment.createMessageConfig();
-  const webpackBaseConfig = createBaseConfig(entry, babel, envVars);
+export function createStartConfig(env: Environment): Configuration {
+  const { webpackConfig: webpackBaseConfig, webpackPort, appName, envVars } = env;
 
   webpackBaseConfig.devtool = 'cheap-module-source-map';
 
@@ -23,13 +16,11 @@ export function createStartConfig(
     noEmitOnErrors: true,
   };
 
-  const port = process.env.WEBPACK_PORT ?? 4000;
-
   webpackBaseConfig.plugins = [
     ...(webpackBaseConfig.plugins ?? []),
     new BetterProgressPlugin({
       mode: 'bar',
-      summary: () => process.stdout.write(initialAppMessage(appName, port, envVars)),
+      summary: () => process.stdout.write(initialAppMessage(appName, webpackPort, envVars)),
     }),
     new FriendlyErrorsPlugin({ clearConsole: false }),
     new ErrorOverlayPlugin(),
@@ -37,7 +28,7 @@ export function createStartConfig(
 
   webpackBaseConfig.devServer = {
     host: '0.0.0.0',
-    port: port as number,
+    port: webpackPort,
     historyApiFallback: true,
     clientLogLevel: 'silent',
     stats: 'errors-only',

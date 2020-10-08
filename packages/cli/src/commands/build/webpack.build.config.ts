@@ -3,17 +3,10 @@ import path from 'path';
 import { BetterProgressPlugin } from '@tokamakjs/dev-utils';
 import { Configuration } from 'webpack';
 
-import { BabelConfig } from '../../babel';
 import { Environment } from '../../environment';
-import { createBaseConfig } from '../../webpack/webpack.base.config';
 
-export function createBuildConfig(
-  entry: string,
-  babel: BabelConfig,
-  environment: Environment,
-): Configuration {
-  const { envVars } = environment.createMessageConfig();
-  const webpackBaseConfig = createBaseConfig(entry, babel, envVars);
+export function createWebpackBuildConfig(env: Environment): Configuration {
+  const { webpackConfig: webpackBaseConfig } = env;
 
   webpackBaseConfig.devtool = 'source-map';
 

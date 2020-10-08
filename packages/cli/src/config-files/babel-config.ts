@@ -3,7 +3,7 @@ export interface BabelConfig {
   plugins?: Array<any>;
 }
 
-export function createBabelConfig(): BabelConfig {
+export function createBabelBaseConfig(): BabelConfig {
   const babelConfig: BabelConfig = {
     presets: [
       ['@babel/preset-env', { useBuiltIns: 'usage', corejs: { version: 3 } }],

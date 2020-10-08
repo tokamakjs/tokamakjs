@@ -1,15 +1,14 @@
-import { BabelConfig, Environment, WebpackConfig } from '@tokamakjs/cli';
+import path from 'path';
 
-export function start(environment: Environment) {
-  environment.webpack.config((config: WebpackConfig) => {
-    return config;
-  });
+import { BabelConfig, EnvironmentConfig, WebpackConfig } from '@tokamakjs/cli';
 
-  environment.babel.config((config: BabelConfig) => {
-    return config;
-  });
-
-  environment.message.envVars(['NODE_ENV', 'APP_ENV']);
-
-  environment.message.appName('REAL WORLD');
+export function start(): EnvironmentConfig {
+  return {
+    appName: 'REAL WORLD EXAMPLE',
+    envVars: ['NODE_ENV', 'APP_ENV'],
+    indexTemplate: path.resolve(__dirname, '../public/index.html'),
+    publicFolder: path.resolve(__dirname, '../public'),
+    webpack: (config: WebpackConfig) => config,
+    babel: (config: BabelConfig) => config,
+  };
 }

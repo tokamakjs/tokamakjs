@@ -1,8 +1,7 @@
 import webpack from 'webpack';
 
-import { createBabelConfig } from '../../babel/create-babel-config';
-import { Environment } from '../../environment';
-import { createBuildConfig } from './webpack.build.config';
+import { Environment, EnvironmentConfig } from '../../environment';
+import { createWebpackBuildConfig } from './webpack.build.config';
 
 export function buildAction(): Promise<void> {
   require('ts-node').register({
@@ -12,18 +11,16 @@ export function buildAction(): Promise<void> {
     },
   });
 
-  const appPackageJson = require(`${process.cwd()}/package.json`);
-  const { build } = require(`${process.cwd()}/config/build`);
+  const cwd = process.cwd();
+  const appPackageJson = require(`${cwd}/package.json`);
+  const { build } = require(`${cwd}/config/build`);
 
-  const environment = new Environment();
-  build(environment);
+  const config = build() as EnvironmentConfig;
+  const environment = new Environment(config, appPackageJson);
 
-  const finalBabelConfig = environment.createBabelConfig(createBabelConfig());
-  const finalWebpackConfig = environment.createWebpackConfig(
-    createBuildConfig(appPackageJson.main, finalBabelConfig, environment),
-  );
+  const webpackConfig = createWebpackBuildConfig(environment);
 
-  const compiler = webpack(finalWebpackConfig);
+  const compiler = webpack(webpackConfig);
 
   return new Promise((resolve, reject) => {
     compiler.run((err, stats) => {

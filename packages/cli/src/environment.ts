@@ -1,78 +1,72 @@
-import { BabelConfig } from './babel';
-import { WebpackConfig } from './webpack';
+import { defaults } from 'lodash';
 
-abstract class Configurator<T> {
-  protected _configurator?: (config: T) => T;
+import {
+  BabelConfig,
+  WebpackConfig,
+  createBabelBaseConfig,
+  createWebpackBaseConfig,
+} from './config-files';
 
-  public abstract config(configurator: (config: T) => T): void;
-
-  public getConfig(config: T): T {
-    if (this._configurator == null) {
-      return config;
-    }
-
-    return this._configurator(config);
-  }
-}
-
-class BabelConfigurator extends Configurator<BabelConfig> {
-  public config(configurator: (config: BabelConfig) => BabelConfig): void {
-    this._configurator = configurator;
-  }
-}
-
-class WebpackConfigurator extends Configurator<WebpackConfig> {
-  public config(configurator: (config: WebpackConfig) => WebpackConfig): void {
-    this._configurator = configurator;
-  }
-}
-
-class MessageConfigurator {
-  private _envVars = ['NODE_ENV'];
-  private _appName = 'TOKAMAK APP';
-
-  public envVars(vars: Array<string>): void {
-    this._envVars = vars;
-  }
-
-  public appName(name: string): void {
-    this._appName = name;
-  }
-
-  public getConfig() {
-    return {
-      appName: this._appName,
-      envVars: this._envVars,
-    };
-  }
+export interface EnvironmentConfig {
+  appName?: string;
+  envVars?: Array<string>;
+  indexTemplate?: string;
+  publicFolder?: string;
+  webpackPort?: number;
+  webpack?: (config: WebpackConfig) => WebpackConfig;
+  babel?: (config: BabelConfig) => BabelConfig;
 }
 
 export class Environment {
-  private _babel = new BabelConfigurator();
-  private _webpack = new WebpackConfigurator();
-  private _message = new MessageConfigurator();
+  private readonly _config: Required<EnvironmentConfig>;
 
-  get babel() {
-    return this._babel;
+  constructor(_config: EnvironmentConfig, private readonly _packageJson: Record<string, any>) {
+    this._config = defaults(_config, {
+      appName: 'TOKAMAK APP',
+      envVars: ['NODE_ENV', 'APP_ENV'],
+      indexTemplate: './public/index.html',
+      publicFolder: './public',
+      webpackPort: 4000,
+      webpack: (config: WebpackConfig) => config,
+      babel: (config: BabelConfig) => config,
+    });
   }
 
-  get webpack() {
-    return this._webpack;
+  get appName() {
+    return this._config.appName;
   }
 
-  get message() {
-    return this._message;
+  get envVars() {
+    return this._config.envVars;
   }
 
-  public createBabelConfig(config: BabelConfig): BabelConfig {
-    return this._babel.getConfig(config);
+  get indexTemplate() {
+    return this._config.indexTemplate;
   }
 
-  public createWebpackConfig(config: WebpackConfig): WebpackConfig {
-    return this._webpack.getConfig(config);
+  get publicFolder() {
+    return this._config.publicFolder;
   }
 
-  public createMessageConfig(): { appName: string; envVars: Array<string> } {
-    return this._message.getConfig();
+  get webpackPort() {
+    return this._config.webpackPort;
+  }
+
+  get babelConfig() {
+    const baseConfig = createBabelBaseConfig();
+    return typeof this._config.babel === 'function' ? this._config.babel(baseConfig) : baseConfig;
+  }
+
+  get webpackConfig() {
+    const baseConfig = createWebpackBaseConfig({
+      entry: this._packageJson.main,
+      babel: this.babelConfig,
+      envVars: this.envVars,
+      indexTemplate: this.indexTemplate,
+    });
+
+    return typeof this._config.webpack === 'function'
+      ? this._config.webpack(baseConfig)
+      : baseConfig;
   }
 }
