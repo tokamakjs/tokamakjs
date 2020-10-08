@@ -6,7 +6,7 @@ export interface BabelConfig {
 export function createBabelBaseConfig(): BabelConfig {
   const babelConfig: BabelConfig = {
     presets: [
-      ['@babel/preset-env', { useBuiltIns: 'usage', corejs: { version: 3 } }],
+      ['@babel/preset-env', { useBuiltIns: 'usage', corejs: { version: 3 }, modules: false }],
       '@babel/preset-react',
     ],
   };
