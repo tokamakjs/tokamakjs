@@ -14,7 +14,7 @@
     "start:cli": "ts-node packages/cli/bin/cli.ts",
     "clean": "rimraf packages/*/lib",
     "build": "NODE_ENV=production lerna run build --scope @tokamakjs/*",
-    "build:watch": "NODE_ENV=development lerna run --parallel build:watch",
+    "build:watch": "NODE_ENV=development tsc -b && NODE_ENV=development lerna run --parallel build:watch",
     "format": "prettier --write \"packages/**/*.{ts,tsx}\"",
     "lint": "eslint -f node_modules/eslint-formatter-pretty --ext js,jsx,ts,tsx packages/",
     "test:watch": "NODE_ENV=development jest --watch",
