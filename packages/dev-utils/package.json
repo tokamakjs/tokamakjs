@@ -14,8 +14,8 @@
     "directory": "packages/dev-utils"
   },
   "scripts": {
-    "build": "tsc",
-    "prepublishOnly": "npm run build"
+    "build": "gulp",
+    "build:watch": "gulp watch"
   },
   "dependencies": {
     "ansi-escapes": "^4.3.1",

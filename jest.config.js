@@ -3,12 +3,8 @@ module.exports = {
   testEnvironment: 'jsdom',
   globals: {
     'ts-jest': {
-      babelConfig: 'babel.config.js',
-      tsConfig: {
-        module: 'ESNext',
-        noUnusedLocals: process.env.NODE_ENV !== 'development',
-        noUnusedParameters: process.env.NODE_ENV !== 'development',
-      },
+      babelConfig: 'babel.config.json',
+      tsConfig: 'tsconfig.test.json',
     },
   },
   setupFilesAfterEnv: ['./jest.setup.ts'],

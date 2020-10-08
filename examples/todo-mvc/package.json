@@ -1,5 +1,5 @@
 {
-  "name": "@tokamakjs/todo-mvc-example",
+  "name": "tokamak-todo-mvc-example",
   "version": "0.1.0-alpha.30",
   "description": "Tokamak Todo MVC app example.",
   "author": "Lars <lars.bs@hotmail.com>",

@@ -16,7 +16,11 @@
     "url": "https://github.com/tokamakjs/tokamak",
     "directory": "packages/cli"
   },
-  "scripts": {},
+  "gitHead": "1ad2efd4f2f2aa2c1516a13393582c44d875368c",
+  "scripts": {
+    "build": "gulp",
+    "build:watch": "gulp watch"
+  },
   "dependencies": {
     "@babel/core": "^7.10.2",
     "@babel/preset-env": "^7.10.2",
@@ -46,5 +50,5 @@
     "webpack": "^4.43.0",
     "webpack-dev-server": "^3.11.0"
   },
-  "gitHead": "1ad2efd4f2f2aa2c1516a13393582c44d875368c"
+  "devDependencies": {}
 }

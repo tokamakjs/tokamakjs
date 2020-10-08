@@ -13,7 +13,10 @@
     "url": "https://github.com/tokamakjs/tokamak",
     "directory": "packages/core"
   },
-  "scripts": {},
+  "scripts": {
+    "build": "gulp",
+    "build:watch": "gulp watch"
+  },
   "peerDependencies": {
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
