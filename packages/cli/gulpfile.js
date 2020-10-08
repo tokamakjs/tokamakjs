@@ -1,4 +1,4 @@
-const { series, dest, watch } = require('gulp');
+const { src, series, dest, watch } = require('gulp');
 const gulpBabel = require('gulp-babel');
 const rimraf = require('rimraf');
 const gulpTypescript = require('gulp-typescript');
@@ -18,14 +18,18 @@ function buildPackages() {
   return merge(buildTs.js.pipe(gulpBabel()), buildTs.dts).pipe(dest('./lib'));
 }
 
+function copyTemplate() {
+  return src([`src/**/template/**/*`, `src/**/template/**/.*`]).pipe(dest('./lib'));
+}
+
 function watchPackages() {
   watch(
     ['./src/**/*.{ts,tsx}', '!./src/**/*.test.{ts,tsx}'],
     { ignoreInitial: false },
-    series(buildPackages),
+    series(buildPackages, copyTemplate),
   );
 }
 
 // Tasks
-module.exports.default = series(cleanPackages, buildPackages);
+module.exports.default = series(cleanPackages, buildPackages, copyTemplate);
 module.exports.watch = series(watchPackages);
