@@ -16,12 +16,17 @@ function cleanPackages() {
 }
 
 function buildPackages() {
-  const buildTs = ts.src().pipe(ts());
+  const buildTs = src([
+    'src/**/*.{ts,tsx}',
+    '!src/**/*.test.*',
+    '!src/**/template/**/*',
+    '!src/**/template/**/.*',
+  ]).pipe(ts());
   return merge(buildTs.js.pipe(gulpBabel()), buildTs.dts).pipe(dest('./lib'));
 }
 
 function copyTemplate() {
-  return src([`src/**/template/**/*`, `src/**/template/**/.*`]).pipe(dest('./lib'));
+  return src(['src/**/template/**/*', 'src/**/template/**/.*']).pipe(dest('./lib'));
 }
 
 function watchPackages() {

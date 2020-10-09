@@ -9,6 +9,6 @@
       "@tokamakjs/dev-utils": ["../dev-utils"]
     }
   },
-  "exclude": ["node_modules", "lib", "**/template/**/*", "src/**/*.test.*"],
+  "exclude": ["node_modules", "lib", "**/template/**/*"],
   "references": [{ "path": "../dev-utils" }]
 }

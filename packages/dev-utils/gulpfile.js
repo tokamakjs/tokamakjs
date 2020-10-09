@@ -1,4 +1,4 @@
-const { series, dest, watch } = require('gulp');
+const { src, series, dest, watch } = require('gulp');
 const gulpBabel = require('gulp-babel');
 const rimraf = require('rimraf');
 const gulpTypescript = require('gulp-typescript');
@@ -14,7 +14,7 @@ function cleanPackages() {
 }
 
 function buildPackages() {
-  const buildTs = ts.src().pipe(ts());
+  const buildTs = src(['./src/**/*.{ts,tsx}', '!./src/**/*.test.*']).pipe(ts());
   return merge(buildTs.js.pipe(gulpBabel()), buildTs.dts).pipe(dest('./lib'));
 }
 

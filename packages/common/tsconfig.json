@@ -10,6 +10,6 @@
       "@tokamakjs/core": ["../core"]
     }
   },
-  "exclude": ["node_modules", "lib", "src/**/*.test.*"],
+  "exclude": ["node_modules", "lib"],
   "references": [{ "path": "../core" }]
 }
