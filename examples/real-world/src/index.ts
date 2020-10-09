@@ -1,9 +1,10 @@
-import { renderModule } from '@tokamakjs/core';
+import { tokamak } from '@tokamakjs/core';
 
 import { AppModule } from './app/app.module';
 
 async function bootstrap() {
-  renderModule(AppModule, '#root');
+  const app = await tokamak(AppModule);
+  app.render('#root');
 }
 
 bootstrap();

@@ -4,7 +4,7 @@ import { render } from 'react-dom';
 // @ts-ignore
 import { AppContext } from '../../injection';
 import { HISTORY, buildRoutes } from '../../routing';
-import { renderModule } from '../render-module';
+import { RenderFn, tokamak } from '../tokamak-app';
 
 jest.mock('react');
 jest.mock('react-dom');
@@ -23,6 +23,8 @@ describe('renderModule', () => {
 
   const fakeHistory = {};
 
+  let app: { render: RenderFn };
+
   beforeAll(async () => {
     jest.spyOn(AppContext, 'create').mockImplementation(async () => {
       return (fakeAppContext as unknown) as AppContext;
@@ -32,7 +34,13 @@ describe('renderModule', () => {
       return fakeHistory as any;
     });
 
-    await renderModule(RootModule, '#root');
+    app = await tokamak(RootModule);
+    app.render('#root');
+  });
+
+  it('returns an app that can be rendered to a selector', () => {
+    expect(app).toBeDefined();
+    expect(typeof app.render).toBe('function');
   });
 
   it('creates the app context using the provided root module', () => {

@@ -1,6 +1,6 @@
 export * from './decorators';
 export * from './routing/constants';
-export * from './rendering/render-module';
+export * from './rendering';
 export * from './routing/utils';
 export * from './interfaces';
 export * from './routing/hooks';
