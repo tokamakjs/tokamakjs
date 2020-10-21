@@ -1,6 +1,6 @@
 {
   "name": "@tokamakjs/core",
-  "version": "0.1.0-alpha.31",
+  "version": "0.1.0-alpha.32",
   "description": "Tokamak app framework core.",
   "author": "Lars <lars.bs@hotmail.com>",
   "license": "MIT",
@@ -18,9 +18,9 @@
     "build:watch": "gulp watch"
   },
   "peerDependencies": {
+    "@babel/runtime-corejs3": "*",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "@babel/runtime-corejs3": "*"
+    "react-dom": "^16.13.1"
   },
   "dependencies": {
     "history": "^5.0.0-beta.9",
