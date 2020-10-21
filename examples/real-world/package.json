@@ -19,6 +19,7 @@
   "dependencies": {
     "@babel/preset-env": "^7.10.2",
     "@tokamakjs/cli": "^0.1.0-alpha.33",
+    "@tokamakjs/common": "^0.1.0-alpha.33",
     "@tokamakjs/core": "^0.1.0-alpha.33",
     "modern-normalize": "^0.6.0",
     "react": "^16.13.1",

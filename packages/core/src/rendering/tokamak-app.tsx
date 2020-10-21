@@ -5,7 +5,7 @@ import React from 'react';
 import { render } from 'react-dom';
 
 import { AppContext } from '../injection';
-import { HISTORY, Router, buildRoutes, useRoutes } from '../routing';
+import { HISTORY, MATCH_BAG, Router, buildRoutes, useRoutes } from '../routing';
 import { Constructor } from '../utils';
 
 export type RenderFn = (selector: string) => void;
@@ -16,10 +16,13 @@ export async function tokamak(metatype: Constructor): Promise<{ render: RenderFn
   const history = createBrowserHistory({ window });
   appContext.addGlobalProvider({ provide: HISTORY, useValue: history });
 
+  const matchBag = { match: undefined };
+  appContext.addGlobalProvider({ provide: MATCH_BAG, useValue: matchBag });
+
   await appContext.init();
 
   const routes = buildRoutes(metatype, appContext);
-  const RootNode = () => useRoutes(routes);
+  const RootNode = () => useRoutes(routes, matchBag);
 
   return {
     render(selector: string): void {

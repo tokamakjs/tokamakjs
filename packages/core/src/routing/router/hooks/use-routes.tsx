@@ -2,11 +2,15 @@ import React, { ReactElement, useContext, useMemo } from 'react';
 import join from 'url-join';
 
 import { RouteContext } from '../route-context';
-import { RouteObject } from '../types';
+import { RouteMatch, RouteObject } from '../types';
 import { matchRoutes } from '../utils';
 import { useLocation } from './use-location';
 
-export function useRoutes(routes: Array<RouteObject>, basename = ''): ReactElement | null {
+export function useRoutes(
+  routes: Array<RouteObject>,
+  matchBag: { match?: RouteMatch },
+  basename = '',
+): ReactElement | null {
   const { pathname, params: parentParams } = useContext(RouteContext);
   const location = useLocation();
 
@@ -26,7 +30,7 @@ export function useRoutes(routes: Array<RouteObject>, basename = ''): ReactEleme
 
   return matches.reduceRight((outlet, match) => {
     const { route, params, pathname } = match;
-
+    matchBag.match = match;
     return (
       <RouteContext.Provider
         value={{
