@@ -19,7 +19,7 @@
     "format": "prettier --write \"packages/**/*.{ts,tsx}\"",
     "lint": "eslint -f node_modules/eslint-formatter-pretty --ext js,jsx,ts,tsx packages/",
     "test:watch": "NODE_ENV=development jest --watch",
-    "test": "jest"
+    "test": "jest -i"
   },
   "husky": {
     "hooks": {
