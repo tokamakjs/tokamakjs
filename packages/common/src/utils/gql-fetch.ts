@@ -3,8 +3,8 @@ import { ASTNode, print } from 'graphql';
 interface GqlFetchArgs<V> {
   url: string;
   query: ASTNode;
-  variables: V;
-  headers: Record<string, string>;
+  variables?: V;
+  headers?: Record<string, string>;
 }
 
 export async function gqlFetch<V>({
