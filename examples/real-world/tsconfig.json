@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "baseUrl": "./",
+    "jsx": "react",
     "paths": {
       "~/*": ["./src/app/*"],
       "@tokamakjs/core": ["../../packages/core"],

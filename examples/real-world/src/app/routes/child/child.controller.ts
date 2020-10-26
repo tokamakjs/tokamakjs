@@ -2,10 +2,10 @@ import { RouterService } from '@tokamakjs/common';
 import { controller, onDidMount, onDidRender } from '@tokamakjs/core';
 
 import { ServiceA, ServiceB } from '../../services';
-import { RootView } from './root.view';
+import { ChildView } from './child.view';
 
-@controller({ view: RootView })
-export class RootController {
+@controller({ view: ChildView })
+export class ChildController {
   constructor(
     private readonly serviceA: ServiceA,
     private readonly serviceB: ServiceB,
@@ -29,7 +29,7 @@ export class RootController {
 
   @onDidRender()
   public doStuffAfterRender() {
-    console.log(this.router.params.id);
+    console.log(this.router.params.projectId);
     console.log('Hello on did render');
   }
 }

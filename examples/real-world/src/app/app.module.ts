@@ -1,11 +1,12 @@
 import { RouterModule } from '@tokamakjs/common';
 import { createRoute, module } from '@tokamakjs/core';
 
+import { ChildController } from './routes/child/child.controller';
 import { RootController } from './routes/root';
-import { ServiceA, ServiceB } from './routes/services';
+import { ServiceA, ServiceB } from './services';
 
 @module({
-  routing: [createRoute('/:id', RootController)],
+  routing: [createRoute('/:id/*', RootController, [createRoute('/:projectId', ChildController)])],
   providers: [ServiceA, ServiceB],
   imports: [RouterModule],
 })
