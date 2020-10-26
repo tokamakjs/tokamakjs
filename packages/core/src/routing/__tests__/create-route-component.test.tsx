@@ -70,7 +70,7 @@ describe('createRouteComponent', () => {
     });
 
     Reflect.defineMetadata('self:controller', fakeControllerMetadata, RouteController);
-    Route = createRouteComponent(fakeAppContext, RouteController);
+    Route = createRouteComponent(fakeAppContext, RouteController).Route;
   });
 
   it('wraps the route controller in a ControllerWrapper', () => {
