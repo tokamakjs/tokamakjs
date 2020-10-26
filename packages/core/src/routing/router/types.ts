@@ -10,6 +10,7 @@ export interface RouteObject {
   element: ReactNode | NodeRenderer;
   path: string;
   children?: Array<RouteObject>;
+  controller: any;
 }
 
 export type Params = Record<string, string>;

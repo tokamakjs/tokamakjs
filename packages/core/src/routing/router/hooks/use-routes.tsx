@@ -1,14 +1,15 @@
 import React, { ReactElement, useContext, useMemo } from 'react';
 import join from 'url-join';
 
+import { MatchBag } from '../../match-bag';
 import { RouteContext } from '../route-context';
-import { RouteMatch, RouteObject } from '../types';
+import { RouteObject } from '../types';
 import { matchRoutes } from '../utils';
 import { useLocation } from './use-location';
 
 export function useRoutes(
   routes: Array<RouteObject>,
-  matchBag: { match?: RouteMatch },
+  matchBag: MatchBag,
   basename = '',
 ): ReactElement | null {
   const { pathname, params: parentParams } = useContext(RouteContext);
@@ -26,11 +27,13 @@ export function useRoutes(
     basename,
   ]);
 
+  matchBag.clear();
+
   if (matches == null) return null;
 
   return matches.reduceRight((outlet, match) => {
     const { route, params, pathname } = match;
-    matchBag.match = match;
+    matchBag.addMatch(route.controller, match);
     return (
       <RouteContext.Provider
         value={{

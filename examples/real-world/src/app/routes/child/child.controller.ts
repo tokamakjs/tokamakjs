@@ -15,7 +15,6 @@ export class ChildController {
   public doStuff() {
     console.log('FROM A', this.serviceA.hello());
     console.log('FROM B', this.serviceB.bye());
-    this.router.push('/15');
   }
 
   @onDidMount()
@@ -29,7 +28,7 @@ export class ChildController {
 
   @onDidRender()
   public doStuffAfterRender() {
-    console.log(this.router.params.projectId);
-    console.log('Hello on did render');
+    const params = this.router.getParams(this);
+    console.log('Child params:', params.projectId);
   }
 }

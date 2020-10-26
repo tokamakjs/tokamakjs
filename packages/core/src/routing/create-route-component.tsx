@@ -6,7 +6,10 @@ import { Constructor } from '../utils';
 import { ControllerWrapper } from './controller-wrapper';
 import { useForceUpdate, useGuards, useMountLifeCycle, useRenderLifeCycle } from './hooks';
 
-export function createRouteComponent(context: AppContext, controller: Constructor): ComponentType {
+export function createRouteComponent(
+  context: AppContext,
+  controller: Constructor,
+): { Route: ComponentType; controllerInstance: any } {
   const { view: useView, guards = [], states } = Reflector.getControllerMetadata(controller);
 
   const controllerInstance = context.get(controller);
@@ -44,5 +47,5 @@ export function createRouteComponent(context: AppContext, controller: Constructo
 
   Route.displayName = `${useView.name.replace('View', '').replace('view', '')}Route`;
 
-  return Route;
+  return { Route, controllerInstance };
 }

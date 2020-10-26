@@ -9,7 +9,7 @@
     "url": "https://github.com/tokamakjs/tokamak"
   },
   "scripts": {
-    "example:real-world": "lerna run --scope @tokamakjs/real-world-example start",
+    "example:real-world": "lerna run --scope tokamak-real-world-example start",
     "start:cli": "ts-node packages/cli/bin/cli.ts",
     "clean": "rimraf packages/*/lib",
     "build": "NODE_ENV=production lerna run build --scope @tokamakjs/*",

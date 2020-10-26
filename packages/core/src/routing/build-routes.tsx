@@ -13,12 +13,13 @@ function _transformRoutes(
 ): Array<RouteObject> {
   return routing.map(
     ({ path, controller, children }): RouteObject => {
-      const Route = createRouteComponent(context, controller);
+      const { Route, controllerInstance } = createRouteComponent(context, controller);
 
       return {
         path,
         element: <Route />,
         children: _transformRoutes(children, context),
+        controller: controllerInstance,
       };
     },
   );

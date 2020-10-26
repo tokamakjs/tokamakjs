@@ -1,12 +1,14 @@
-import { HISTORY, MATCH_BAG, RouteMatch, inject, injectable } from '@tokamakjs/core';
+import { HISTORY, MATCH_BAG, MatchBag, RouteMatch, inject, injectable } from '@tokamakjs/core';
 import { History, Location } from 'history';
 import qs from 'query-string';
+
+type Match = Omit<RouteMatch, 'route'>;
 
 @injectable()
 export class RouterService {
   constructor(
     @inject(HISTORY) private readonly _history: History,
-    @inject(MATCH_BAG) private readonly _matchBag: { match?: Omit<RouteMatch, 'route'> },
+    @inject(MATCH_BAG) private readonly _matchBag: MatchBag,
   ) {}
 
   get location(): Location {
@@ -22,8 +24,9 @@ export class RouterService {
     return this._history.location.search;
   }
 
-  get match() {
-    return this._matchBag.match ?? {};
+  public getParams(controller: any): Record<string, string | undefined> {
+    const match = this._matchBag.getMatch(controller) ?? { params: {} };
+    return match.params;
   }
 
   public push(...args: Parameters<History['push']>): void {

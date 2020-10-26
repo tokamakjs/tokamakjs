@@ -7,3 +7,4 @@ export * from './routing/hooks';
 export * from './routing/router/components';
 export { ModuleRef } from './injection';
 export { RouteMatch } from './routing/router/types';
+export { MatchBag } from './routing/match-bag';

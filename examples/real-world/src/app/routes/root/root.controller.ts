@@ -29,7 +29,7 @@ export class RootController {
 
   @onDidRender()
   public doStuffAfterRender() {
-    console.log(this.router.params.id);
-    console.log('Hello on did render');
+    const params = this.router.getParams(this);
+    console.log('Root params:', params.projectId);
   }
 }
