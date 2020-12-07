@@ -15,10 +15,11 @@ export class ChildController {
   public doStuff() {
     console.log('FROM A', this.serviceA.hello());
     console.log('FROM B', this.serviceB.bye());
+    this.router.push('/15');
   }
 
   @onDidMount()
-  public doStuffOnMount() {
+  public async doStuffOnMount() {
     console.log('Hello mount');
 
     return () => {

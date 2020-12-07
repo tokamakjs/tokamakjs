@@ -15,7 +15,7 @@ export class RootController {
   public doStuff() {
     console.log('FROM A', this.serviceA.hello());
     console.log('FROM B', this.serviceB.bye());
-    this.router.push('/15');
+    this.router.push('/15/12');
   }
 
   @onDidMount()
