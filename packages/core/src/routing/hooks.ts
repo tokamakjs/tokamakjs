@@ -12,12 +12,15 @@ export function useMountLifeCycle(controller: any): void {
     const onDidMountHooks = controller.__hooks__.get('onDidMount') ?? [];
     const onDidMountCbs = onDidMountHooks
       .map((hook) => hook.apply(controller))
-      .filter((v) => typeof v === 'function');
+      .filter((v) => typeof v === 'function' || v instanceof Promise);
 
     return () => {
       const onWillUnmountHooks = controller.__hooks__.get('onWillUnmount') ?? [];
       const totalHooks = [...onWillUnmountHooks, ...onDidMountCbs];
-      totalHooks.forEach((cb) => cb.apply(controller));
+      totalHooks.forEach(async (cb) => {
+        cb = cb instanceof Promise ? await cb : cb;
+        if (typeof cb === 'function') cb.apply(controller);
+      });
     };
   }, []);
 }
