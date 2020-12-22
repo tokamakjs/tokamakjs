@@ -1,4 +1,4 @@
-import { ProgressPlugin } from 'webpack';
+import { Compiler, ProgressPlugin } from 'webpack';
 
 import { barProgress } from './bar';
 import { detailedProgress } from './detailed';
@@ -15,5 +15,13 @@ export class BetterProgressPlugin extends ProgressPlugin {
     } else {
       super(detailedProgress());
     }
+  }
+
+  public apply(compiler: Compiler): void {
+    super.apply(compiler);
+
+    compiler.hooks.done.tap('BetterProgressPlugin: done', () => {
+      console.log('DONE IT IS');
+    });
   }
 }

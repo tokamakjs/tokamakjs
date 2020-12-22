@@ -2,6 +2,9 @@ import path from 'path';
 
 // @ts-ignore
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
+import { BetterProgressPlugin } from '@tokamakjs/dev-utils';
+// @ts-ignore
+import FriendlyErrorsWebpackPlugin from 'friendly-errors-webpack-plugin';
 import HtmlPlugin from 'html-webpack-plugin';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 import { Configuration, EnvironmentPlugin } from 'webpack';
@@ -24,6 +27,11 @@ const config: Configuration = {
     new HtmlPlugin({ filename: 'index.html', template: 'public/index.html' }),
     new EnvironmentPlugin(['NODE_ENV']),
     new ReactRefreshWebpackPlugin({ disableRefreshCheck: true, overlay: false }),
+    new BetterProgressPlugin({
+      mode: 'bar',
+      summary: () => console.log('HELLLO'),
+    }),
+    new FriendlyErrorsWebpackPlugin({ clearConsole: false }),
   ],
   module: {
     rules: [
@@ -89,6 +97,7 @@ config.devServer = {
   historyApiFallback: true,
   hot: true,
   inline: true,
+  quiet: true,
 };
 
 export default config;
