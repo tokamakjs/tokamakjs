@@ -13,7 +13,7 @@
   },
   "scripts": {
     "clean": "rimraf dist",
-    "start": "NODE_ENV=development webpack-dev-server --config webpack.config.ts --hot --open --useLocalIp --host 0.0.0.0 --port 4200"
+    "start": "NODE_ENV=development webpack-dev-server --config webpack.config.ts --hot --useLocalIp --host 0.0.0.0 --port 4200"
   },
   "dependencies": {
     "@babel/preset-env": "^7.10.2",

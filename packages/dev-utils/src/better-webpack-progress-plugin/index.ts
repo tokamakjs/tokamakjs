@@ -1,3 +1,4 @@
+import { clearScreen } from 'ansi-escapes';
 import { Compiler, ProgressPlugin } from 'webpack';
 
 import { barProgress } from './bar';
@@ -9,19 +10,24 @@ interface Config {
 }
 
 export class BetterProgressPlugin extends ProgressPlugin {
+  private readonly _summary: VoidFunction;
+
   constructor({ mode = 'bar', summary = () => {} }: Config) {
     if (mode === 'bar') {
-      super(barProgress(summary));
+      super(barProgress());
     } else {
       super(detailedProgress());
     }
+
+    this._summary = summary;
   }
 
   public apply(compiler: Compiler): void {
     super.apply(compiler);
 
     compiler.hooks.done.tap('BetterProgressPlugin: done', () => {
-      console.log('DONE IT IS');
+      process.stdout.write(clearScreen);
+      this._summary();
     });
   }
 }

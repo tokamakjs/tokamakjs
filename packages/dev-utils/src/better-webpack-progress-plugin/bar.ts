@@ -1,4 +1,3 @@
-import { clearScreen } from 'ansi-escapes';
 import chalk from 'chalk';
 import figures from 'figures';
 import logUpdate from 'log-update';
@@ -9,7 +8,7 @@ import { capitalize, getModulesMessage, truncate } from './utils';
 
 process.on('SIGINT', () => process.exit());
 
-export function barProgress(summary: VoidFunction): ProgressPlugin.Handler {
+export function barProgress(): ProgressPlugin.Handler {
   const format = `${chalk.bold(':msg')}  :bar  ${chalk.green(':percent')} :mpr`;
 
   const progressBar = new ProgressBar(format, {
@@ -33,11 +32,9 @@ export function barProgress(summary: VoidFunction): ProgressPlugin.Handler {
       }),
     );
 
-    if (percentage >= 1) {
+    if (percentage >= 0.99) {
       logUpdate.clear();
       logUpdate.done();
-      process.stdout.write(clearScreen);
-      summary();
     }
   };
 }
