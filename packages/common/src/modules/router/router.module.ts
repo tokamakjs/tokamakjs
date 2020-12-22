@@ -1,8 +1,8 @@
-import { module } from '@tokamakjs/core';
+import { Module } from '@tokamakjs/core';
 
 import { RouterService } from './router.service';
 
-@module({
+@Module({
   providers: [RouterService],
   exports: [RouterService],
 })

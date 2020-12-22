@@ -1,8 +1,8 @@
-import { HISTORY, MATCH_BAG, MatchBag, inject, injectable } from '@tokamakjs/core';
+import { HISTORY, Injectable, MATCH_BAG, MatchBag, inject } from '@tokamakjs/core';
 import { History, Location } from 'history';
 import qs from 'query-string';
 
-@injectable()
+@Injectable()
 export class RouterService {
   constructor(
     @inject(HISTORY) private readonly _history: History,

@@ -1,4 +1,4 @@
-import { ControllerMetadata, ModuleMetadata, inject, injectable } from '../../decorators';
+import { ControllerMetadata, Injectable, ModuleMetadata, inject } from '../../decorators';
 import { Reflector } from '../reflector';
 
 describe('Reflector', () => {
@@ -92,7 +92,7 @@ describe('Reflector', () => {
     class TestFoo {}
     class TestBar {}
 
-    @injectable()
+    @Injectable()
     class TestProvider {
       constructor(
         public foo: TestFoo,

@@ -1,7 +1,7 @@
-import { injectable } from '../injectable.decorator';
+import { Injectable } from '../injectable.decorator';
 
 describe('@injectable', () => {
-  @injectable()
+  @Injectable()
   class TestProvider {
     constructor(public testDep: string) {}
   }

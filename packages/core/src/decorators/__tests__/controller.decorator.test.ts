@@ -1,5 +1,5 @@
 import { Reflector } from '../../reflection';
-import { ControllerMetadata, controller } from '../controller.decorator';
+import { Controller, ControllerMetadata } from '../controller.decorator';
 
 jest.mock('../../reflection');
 
@@ -8,7 +8,7 @@ describe('@controller', () => {
     view: () => null,
   };
 
-  @controller(controllerMetadata)
+  @Controller(controllerMetadata)
   class TestController {}
 
   it('should add controller metadata to the class using Reflector', () => {

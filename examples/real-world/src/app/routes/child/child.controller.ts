@@ -1,10 +1,10 @@
 import { RouterService } from '@tokamakjs/common';
-import { controller, onDidMount, onDidRender } from '@tokamakjs/core';
+import { Controller, onDidMount, onDidRender } from '@tokamakjs/core';
 
 import { ServiceA, ServiceB } from '../../services';
 import { ChildView } from './child.view';
 
-@controller({ view: ChildView })
+@Controller({ view: ChildView })
 export class ChildController {
   constructor(
     private readonly serviceA: ServiceA,

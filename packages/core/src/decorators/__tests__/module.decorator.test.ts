@@ -1,5 +1,5 @@
 import { Reflector } from '../../reflection';
-import { ModuleMetadata, module } from '../module.decorator';
+import { Module, ModuleMetadata } from '../module.decorator';
 
 jest.mock('../../reflection');
 
@@ -11,7 +11,7 @@ describe('@Module', () => {
     exports: [],
   };
 
-  @module(moduleMetadata)
+  @Module(moduleMetadata)
   class TestModule {}
 
   it('should add module metadata to the class using Reflector.', () => {

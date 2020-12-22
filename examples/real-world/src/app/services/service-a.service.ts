@@ -1,8 +1,8 @@
-import { injectable } from '@tokamakjs/core';
+import { Injectable } from '@tokamakjs/core';
 
 import { ServiceB } from './service-b.service';
 
-@injectable()
+@Injectable()
 export class ServiceA {
   name = 'Service A';
 

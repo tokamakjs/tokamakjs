@@ -13,7 +13,7 @@ export interface ControllerMetadata {
   guards?: Array<Constructor<CanActivate>>;
 }
 
-export function controller(metadata: ControllerMetadata): ClassDecorator {
+export function Controller(metadata: ControllerMetadata): ClassDecorator {
   return (target: Function) => {
     Reflector.addControllerMetadata(target, metadata);
   };

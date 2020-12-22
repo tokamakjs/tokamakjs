@@ -1,7 +1,7 @@
 import { History } from 'history';
 import join from 'url-join';
 
-import { View, controller, inject, onDidMount } from '../decorators';
+import { Controller, View, inject, onDidMount } from '../decorators';
 import { Reflector } from '../reflection';
 import { Constructor } from '../utils';
 import { HISTORY } from './constants';
@@ -32,7 +32,7 @@ function _genControllerName(view: View): string {
 }
 
 function _createEmptyController(view: View): Constructor {
-  @controller({ view })
+  @Controller({ view })
   class EmptyController {}
 
   Object.defineProperty(EmptyController, 'name', { value: _genControllerName(view) });
@@ -69,7 +69,7 @@ export function includeRoutes(basepath: string, Module: Constructor): Array<Rout
 }
 
 export function createRedirection(from: string, to: string): RouteDefinition {
-  @controller({ view: () => null })
+  @Controller({ view: () => null })
   class RedirectionController {
     constructor(@inject(HISTORY) private readonly _history: History) {}
 

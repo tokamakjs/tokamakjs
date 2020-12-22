@@ -9,7 +9,7 @@ export interface ModuleMetadata {
   exports?: Array<any>;
 }
 
-export function module(metadata: ModuleMetadata): ClassDecorator {
+export function Module(metadata: ModuleMetadata): ClassDecorator {
   return (target: Function): void => {
     Reflector.addModuleMetadata(target, metadata);
   };
