@@ -1,9 +1,13 @@
-import { Outlet } from '@tokamakjs/core';
+import { Outlet, useAppContext } from '@tokamakjs/core';
 import React, { Fragment } from 'react';
 
 import { RootController } from './root.controller';
 
 export const RootView = (ctrl: RootController) => {
+  const context = useAppContext();
+
+  console.log(context);
+
   return (
     <Fragment>
       <div>

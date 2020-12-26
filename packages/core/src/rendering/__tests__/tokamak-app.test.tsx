@@ -4,7 +4,7 @@ import { render } from 'react-dom';
 // @ts-ignore
 import { AppContext } from '../../injection';
 import { HISTORY, buildRoutes } from '../../routing';
-import { RenderFn, tokamak } from '../tokamak-app';
+import { tokamak } from '../tokamak-app';
 
 jest.mock('react');
 jest.mock('react-dom');
@@ -23,7 +23,7 @@ describe('renderModule', () => {
 
   const fakeHistory = {};
 
-  let app: { render: RenderFn };
+  let app: { render: (selector: string) => void };
 
   beforeAll(async () => {
     jest.spyOn(AppContext, 'create').mockImplementation(async () => {
