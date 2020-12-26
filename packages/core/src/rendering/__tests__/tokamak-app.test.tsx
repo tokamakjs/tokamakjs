@@ -13,7 +13,7 @@ jest.mock('history');
 jest.mock('../../injection');
 jest.mock('../../routing');
 
-describe('renderModule', () => {
+describe.skip('renderModule', () => {
   class RootModule {}
 
   const fakeAppContext = {
