@@ -7,6 +7,7 @@ import { ServiceA, ServiceB } from './services';
 
 @Module({
   routing: [
+    createRoute('/', RootController, [createRoute('/:projectId', ChildController)]),
     createRoute('/:projectId', RootController, [createRoute('/:projectId', ChildController)]),
   ],
   providers: [ServiceA, ServiceB],
