@@ -1,9 +1,7 @@
 import { v4 } from 'uuid';
 
-export interface ContextId {
-  id: string;
-}
+import { Context } from './constants';
 
-export function createContextId(): ContextId {
+export function createContextId(): Context {
   return { id: v4() };
 }
