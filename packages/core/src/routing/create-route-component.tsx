@@ -1,16 +1,24 @@
 import React, { ComponentType, Fragment, createElement } from 'react';
 
-import { AppContext } from '../injection';
+import { AppContext, createContextId } from '../injection';
 import { Reflector } from '../reflection';
 import { Constructor } from '../utils';
 import { ControllerWrapper } from './controller-wrapper';
 import { useForceUpdate, useGuards, useMountLifeCycle, useRenderLifeCycle } from './hooks';
 
-export function createRouteComponent(
+export async function createRouteComponent(
   context: AppContext,
   controller: Constructor,
-): { Route: ComponentType; controllerInstance: any } {
+): Promise<{ Route: ComponentType; controllerInstance: any }> {
   const { view: useView, guards = [], states } = Reflector.getControllerMetadata(controller);
+
+  try {
+    const ctx = createContextId();
+    const controllerInstance = await context.resolve(controller, ctx);
+    console.log(controllerInstance);
+  } catch (e) {
+    console.error(e);
+  }
 
   const controllerInstance = context.get(controller);
   const guardInstances = guards.map((guard) => context.get(guard));

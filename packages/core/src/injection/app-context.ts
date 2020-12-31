@@ -1,5 +1,6 @@
 import { NotImplementedException } from '../exceptions';
 import { Constructor } from '../utils';
+import { Context } from './constants';
 import { Container } from './container';
 import { ContainerScanner } from './container-scanner';
 import { Provider } from './provider';
@@ -39,15 +40,15 @@ export class AppContext {
     return this._scanner.find<T, R>(token);
   }
 
-  // eslint-disable-next-line
-  public resolve<T = any, R = T>(_token: Constructor<T> | string | symbol): R {
+  public async resolve<T = any, R = T>(
+    token: Constructor<T> | string | symbol,
+    context: Context,
+  ): Promise<R> {
     if (!this._isInitialized) {
       throw new Error('AppContext not initialized');
     }
-    // TODO: What's the point of setting the Scope if we then need two APIs?
-    // Then we can just use resolve to get a transient instance or use get to
-    // get a transient instance based on the scope. Both seem redundant.
-    throw new NotImplementedException('This functionality is still not available.');
+
+    return await this._scanner.resolve<T, R>(token, context);
   }
 
   public addGlobalProvider(provider: Provider): void {

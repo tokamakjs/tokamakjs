@@ -50,7 +50,7 @@ export async function tokamak(metatype: Constructor): Promise<TokamakApp> {
 
   await appContext.init();
 
-  const routes = buildRoutes(metatype, appContext);
+  const routes = await buildRoutes(metatype, appContext);
   const RootNode = () => useRoutes(routes, matchBag);
 
   return new TokamakApp(RootNode, history);

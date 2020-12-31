@@ -7,30 +7,35 @@ import { createRouteComponent } from './create-route-component';
 import { RouteObject } from './router';
 import { RouteDefinition } from './utils';
 
-function _transformRoutes(
+async function _transformRoutes(
   routing: Array<RouteDefinition>,
   context: AppContext,
-): Array<RouteObject> {
-  return routing.map(
-    ({ path, controller, children }): RouteObject => {
-      const { Route, controllerInstance } = createRouteComponent(context, controller);
+): Promise<Array<RouteObject>> {
+  const finalRoutes: Array<RouteObject> = [];
 
-      return {
-        path,
-        element: <Route />,
-        children: _transformRoutes(children, context),
-        controller: controllerInstance,
-      };
-    },
-  );
+  for (const routeDefinition of routing) {
+    const { path, controller, children } = routeDefinition;
+    const { Route, controllerInstance } = await createRouteComponent(context, controller);
+    finalRoutes.push({
+      path,
+      element: <Route />,
+      children: await _transformRoutes(children, context),
+      controller: controllerInstance,
+    });
+  }
+
+  return finalRoutes;
 }
 
-export function buildRoutes(Module: Constructor, context: AppContext): Array<RouteObject> {
+export async function buildRoutes(
+  Module: Constructor,
+  context: AppContext,
+): Promise<Array<RouteObject>> {
   const { routing } = Reflector.getModuleMetadata(Module);
 
   if (routing == null) {
     throw new Error('Invalid');
   }
 
-  return _transformRoutes(routing, context);
+  return await _transformRoutes(routing, context);
 }

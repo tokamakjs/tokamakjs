@@ -1,6 +1,6 @@
 export interface Context {
-  id: number;
+  id: string;
 }
 
 // Default context for instances
-export const DEFAULT_CONTEXT: Context = Object.freeze({ id: 1 });
+export const DEFAULT_CONTEXT: Context = Object.freeze({ id: '1' });

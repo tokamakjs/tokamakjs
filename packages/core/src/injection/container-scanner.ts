@@ -1,5 +1,6 @@
 import { InvalidScopeException, UnknownElementException } from '../exceptions';
 import { isFunction } from '../utils';
+import { Context } from './constants';
 import { Container } from './container';
 import { Scope } from './enums';
 import { InstanceWrapper } from './instance-wrapper';
@@ -29,6 +30,17 @@ export class ContainerScanner {
     }
 
     return (instanceWrapper.defaultValue as unknown) as R;
+  }
+
+  public async resolve<T = any, R = T>(token: ProviderToken<T>, context: Context): Promise<R> {
+    const name = isFunction(token) ? token.name : token;
+    const instanceWrapper = this._flatContainer.providers.get(name as string);
+
+    if (instanceWrapper == null) {
+      throw new UnknownElementException(name.toString());
+    }
+
+    return ((await instanceWrapper.createInstance(context)) as unknown) as R;
   }
 
   public rescan(): void {
