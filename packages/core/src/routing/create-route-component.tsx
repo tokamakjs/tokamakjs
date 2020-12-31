@@ -12,15 +12,9 @@ export async function createRouteComponent(
 ): Promise<{ Route: ComponentType; controllerInstance: any }> {
   const { view: useView, guards = [], states } = Reflector.getControllerMetadata(controller);
 
-  try {
-    const ctx = createContextId();
-    const controllerInstance = await context.resolve(controller, ctx);
-    console.log(controllerInstance);
-  } catch (e) {
-    console.error(e);
-  }
-
-  const controllerInstance = context.get(controller);
+  const ctx = createContextId();
+  const controllerInstance = await context.resolve(controller, ctx);
+  console.log(controllerInstance);
   const guardInstances = guards.map((guard) => context.get(guard));
   const wrapper = new ControllerWrapper(controllerInstance);
 

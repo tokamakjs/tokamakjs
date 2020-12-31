@@ -17,8 +17,6 @@ interface InstanceWrapperKwargs<T> {
 export interface Instance<T> {
   value?: T;
   isResolved: boolean;
-  isPending?: boolean;
-  promise?: Promise<void>;
 }
 
 export class InstanceWrapper<T = any> {
@@ -58,14 +56,22 @@ export class InstanceWrapper<T = any> {
     const instance = this.instances.get(context);
 
     if (instance == null) {
-      // This shouldn't happen with the DEFAULT_CONTEXT
-      throw new Error(`No instance with context ${context.id} found.`);
+      return { isResolved: false };
     }
 
     return instance;
   }
 
   public async createInstance(context: Context = DEFAULT_CONTEXT): Promise<Instance<T>> {
+    const existing =
+      this.scope === Scope.SINGLETON
+        ? this.getInstance(DEFAULT_CONTEXT)
+        : this.getInstance(context);
+
+    if (existing != null && existing.isResolved) {
+      return existing;
+    }
+
     const instance = await this.creator.create(context);
     this.instances.set(context, instance);
     return instance;

@@ -125,7 +125,7 @@ export class Module {
 
     const addControllersFromRoute = (route: RouteDefinition) => {
       const { controller } = route;
-      this.addProvider(controller);
+      this.addProvider(controller, Scope.TRANSIENT);
     };
 
     routing
@@ -143,7 +143,7 @@ export class Module {
     exports.forEach((provider) => this.addExportedProviderOrModule(provider));
   }
 
-  public addProvider(provider: Provider): void {
+  public addProvider(provider: Provider, scope = Scope.SINGLETON): void {
     if (provider === undefined) throw new CircularDependencyException();
     if (isCustomProvider(provider)) {
       this.addCustomProvider(provider);
@@ -151,11 +151,7 @@ export class Module {
       const name = this.getProviderName(provider);
       this.providers.set(
         provider.name,
-        new InstanceWrapper(name, this, {
-          isResolved: false,
-          metatype: provider,
-          scope: Scope.SINGLETON,
-        }),
+        new InstanceWrapper(name, this, { isResolved: false, metatype: provider, scope }),
       );
     }
   }

@@ -1,7 +1,8 @@
 import { CircularDependencyException, UndefinedDependencyException } from '../exceptions';
 import { Reflector } from '../reflection';
 import { Constructor, isFunction } from '../utils';
-import { Context } from './constants';
+import { Context, DEFAULT_CONTEXT } from './constants';
+import { Scope } from './enums';
 import { isForwardReference } from './forward-ref';
 import { Instance, InstanceWrapper } from './instance-wrapper';
 import { Module } from './module';
@@ -11,12 +12,6 @@ export class InstanceCreator<T = any> {
   constructor(private readonly wrapper: InstanceWrapper<T>) {}
 
   public async create(ctx: Context): Promise<Instance<T>> {
-    const instance = this.wrapper.getInstance(ctx);
-
-    if (instance.isResolved) {
-      return instance;
-    }
-
     const dependencies = await this._resolveDependencies(ctx);
     return await this._createInstance(ctx, dependencies);
   }
@@ -28,7 +23,6 @@ export class InstanceCreator<T = any> {
     const dependencies = inject != null ? inject : Reflector.getConstructorDependencies(metatype);
 
     // TODO: Add support for params marked with the @optional decorator
-    // @ts-ignore
     const optionalDependencies = [] as Array<any>;
 
     const resolvedDependencies = [] as Array<any>;
@@ -108,7 +102,10 @@ export class InstanceCreator<T = any> {
 
   private async _createInstance(context: Context, dependencies: Array<any>): Promise<Instance<T>> {
     const { metatype: Metatype, inject } = this.wrapper;
-    const ctxInstance = this.wrapper.getInstance(context)!;
+    const ctxInstance =
+      this.wrapper.scope === Scope.SINGLETON
+        ? this.wrapper.getInstance(DEFAULT_CONTEXT)
+        : this.wrapper.getInstance(context);
 
     if (inject != null) {
       // we have a factory to instantiate

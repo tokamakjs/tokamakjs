@@ -40,7 +40,7 @@ export class ContainerScanner {
       throw new UnknownElementException(name.toString());
     }
 
-    return ((await instanceWrapper.createInstance(context)) as unknown) as R;
+    return ((await instanceWrapper.createInstance(context)).value as unknown) as R;
   }
 
   public rescan(): void {
