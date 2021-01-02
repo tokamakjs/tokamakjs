@@ -27,7 +27,7 @@ export async function runHooks(target: any, hookName: string): Promise<void> {
   if (hooks == null) return;
 
   for (const hook of hooks) {
-    await hook();
+    await hook.call(target);
   }
 }
 

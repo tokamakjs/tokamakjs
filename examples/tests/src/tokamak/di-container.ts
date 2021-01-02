@@ -10,9 +10,9 @@ export class DiContainer {
 
   public static async from<T>(RootModule: Class<T>): Promise<DiContainer> {
     const transform = async (node: ModuleDefinition): Promise<Module> => {
-      const metadata = await Module.getMetadata(node);
+      const { name, ...metadata } = await Module.getMetadata(node);
       const imports = await Promise.all(metadata.imports.map(transform));
-      return new Module(metadata, imports);
+      return new Module(name, metadata, imports);
     };
 
     const moduleTree = await transform(RootModule);

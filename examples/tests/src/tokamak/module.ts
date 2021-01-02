@@ -1,4 +1,5 @@
 import { DiContainer } from './di-container';
+import { ModuleRef } from './module-ref';
 import { ProviderWrapper } from './provider-wrapper';
 import { Reflector } from './reflection';
 import {
@@ -8,7 +9,6 @@ import {
   isDynamicModule,
   isForwardReference,
 } from './types';
-import { runHooks } from './utils/hooks';
 
 export class Module {
   private readonly _providers: Map<Token, ProviderWrapper<unknown>> = new Map();
@@ -17,13 +17,22 @@ export class Module {
   private _container?: DiContainer;
 
   constructor(
+    private readonly _name: string,
     private readonly _metadata: Required<ModuleMetadata>,
     private readonly _imports: Array<Module>,
-  ) {}
+  ) {
+    const { providers } = this._metadata;
+    const useModuleRefProvider = { provide: ModuleRef, useValue: new ModuleRef(this) };
+
+    for (const provider of [...providers, useModuleRefProvider]) {
+      const wrapper = new ProviderWrapper(this, provider);
+      this._providers.set(wrapper.key, wrapper);
+    }
+  }
 
   public static async getMetadata<T>(
     moduleDef: ModuleDefinition<T>,
-  ): Promise<Required<ModuleMetadata>> {
+  ): Promise<Required<ModuleMetadata> & { name: string }> {
     moduleDef = await moduleDef;
 
     if (isForwardReference(moduleDef)) {
@@ -31,10 +40,10 @@ export class Module {
       return Module.getMetadata(forwardedModule);
     } else if (isDynamicModule(moduleDef)) {
       const { module, ...metadata } = { providers: [], imports: [], exports: [], ...moduleDef };
-      return metadata;
+      return { ...metadata, name: module.name };
     } else {
       const metadata = Reflector.getModuleMetadata(moduleDef);
-      return metadata;
+      return { ...metadata, name: moduleDef.name };
     }
   }
 
@@ -58,12 +67,13 @@ export class Module {
     return this._exports;
   }
 
+  get name() {
+    return this._name;
+  }
+
   public async createInstances(): Promise<void> {
-    const { providers } = this._metadata;
-    for (const provider of providers) {
-      const wrapper = new ProviderWrapper(this, provider);
+    for (const [, wrapper] of this._providers) {
       await wrapper.createInstance();
-      this._providers.set(wrapper.key, wrapper);
     }
   }
 

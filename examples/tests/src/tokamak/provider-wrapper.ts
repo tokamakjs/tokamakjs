@@ -13,7 +13,7 @@ import {
   isValueProvider,
 } from './types';
 import { run } from './utils';
-import { hasHooks, runHooks } from './utils/hooks';
+import { runHooks } from './utils/hooks';
 
 export class ProviderWrapper<T> {
   private readonly _provider: Exclude<Provider<T>, Class<T>>;
@@ -88,13 +88,21 @@ export class ProviderWrapper<T> {
       return value;
     }
 
-    const inst = await this._createInstance(context);
-    // await runHooks(inst, 'onModuleInit');
-    return inst;
+    return await this._createInstance(context);
   }
 
   private async _createInstance(context: InjectionContext): Promise<T> {
+    if (this._instances.has(context)) {
+      return this._instances.get(context)!;
+    }
+
     const deps = await this._resolveDependencies(context);
+
+    // Do this again in case we created the instance when
+    // resolving dependencies
+    if (this._instances.has(context)) {
+      return this._instances.get(context)!;
+    }
 
     const inst: T = await run(async () => {
       if (isClassProvider(this._provider)) {
@@ -120,6 +128,7 @@ export class ProviderWrapper<T> {
 
     for (const dep of [...this.dependencies, ...optionalDependencies]) {
       const depWrapper = await this._resolveDependency(context, dep);
+      await depWrapper._createInstance(context);
       const depValue = await depWrapper.getInstance(context);
       resolvedDependencies.push(depValue);
     }
@@ -155,7 +164,8 @@ export class ProviderWrapper<T> {
 
     // At this point, we tried to resolve from any possible place
     if (depWrapper == null) {
-      throw new UndefinedDependencyException(dependency.toString(), this.name);
+      const name = typeof dependency === 'function' ? dependency.name : dependency.toString();
+      throw new UndefinedDependencyException(name, this.name);
     }
 
     return depWrapper;
@@ -168,7 +178,7 @@ export class ProviderWrapper<T> {
     module: Module = this._hostModule,
   ): Promise<ProviderWrapper<unknown> | undefined> {
     const { imports } = module;
-
+    console.log(imports);
     for (const importedModule of imports) {
       if (!visited.includes(importedModule)) {
         visited.push(importedModule);
