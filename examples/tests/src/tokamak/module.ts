@@ -12,7 +12,6 @@ import {
 
 export class Module {
   private readonly _providers: Map<Token, ProviderWrapper<unknown>> = new Map();
-  private readonly _exports: Map<Token, ProviderWrapper<unknown>> = new Map();
 
   private _container?: DiContainer;
 
@@ -64,7 +63,7 @@ export class Module {
   }
 
   get exports() {
-    return this._exports;
+    return this._metadata.exports;
   }
 
   get name() {

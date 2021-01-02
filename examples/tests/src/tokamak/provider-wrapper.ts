@@ -178,14 +178,20 @@ export class ProviderWrapper<T> {
     module: Module = this._hostModule,
   ): Promise<ProviderWrapper<unknown> | undefined> {
     const { imports } = module;
-    console.log(imports);
+
     for (const importedModule of imports) {
       if (!visited.includes(importedModule)) {
         visited.push(importedModule);
-        const { exports } = importedModule;
+        const { exports, providers } = importedModule;
 
-        if (exports.has(token)) {
-          return exports.get(token);
+        if (exports.includes(token) && !providers.has(token)) {
+          throw new Error(
+            'Exported provided not found. Make sure it is added to the providers array.',
+          );
+        }
+
+        if (exports.includes(token)) {
+          return providers.get(token);
         } else {
           const wrapper = await this._resolveFromImports(context, token, visited, importedModule);
           if (wrapper != null) return wrapper;

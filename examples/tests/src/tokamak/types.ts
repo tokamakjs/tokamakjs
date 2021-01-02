@@ -19,7 +19,7 @@ export function isForwardReference(module: any): module is ForwardReference {
 export interface ModuleMetadata {
   providers?: Array<Provider>;
   imports?: Array<ModuleDefinition>;
-  exports?: Array<Provider>;
+  exports?: Array<Token>;
 }
 
 export interface DynamicModule<T = unknown> extends ModuleMetadata {
