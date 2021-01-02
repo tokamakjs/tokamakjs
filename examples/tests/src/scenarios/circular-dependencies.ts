@@ -14,8 +14,9 @@ class ServiceA {
 
   @onModuleInit()
   public onModuleInit(): void {
-    console.log(this.moduleRef);
-    this.serviceB = this.moduleRef.get(ServiceB);
+    console.log('ServiceA', this.id);
+    console.log('ServiceB', this.moduleRef.container?.get(ServiceB).id);
+    this.serviceB = this.moduleRef.container?.get(ServiceB);
   }
 }
 

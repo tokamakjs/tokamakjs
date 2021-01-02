@@ -24,8 +24,8 @@ export class DiContainer {
 
     const container = new DiContainer(modules);
 
-    container._callOnInit();
-    container._callOnDidInit();
+    await container._callOnInit();
+    await container._callOnDidInit();
 
     return container;
   }

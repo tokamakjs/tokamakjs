@@ -128,8 +128,15 @@ export class ProviderWrapper<T> {
 
     for (const dep of [...this.dependencies, ...optionalDependencies]) {
       const depWrapper = await this._resolveDependency(context, dep);
-      await depWrapper._createInstance(context);
-      const depValue = await depWrapper.getInstance(context);
+
+      let depValue: unknown;
+      try {
+        depValue = await depWrapper.getInstance(context);
+      } catch {
+        await depWrapper._createInstance(context);
+        depValue = await depWrapper.getInstance(context);
+      }
+
       resolvedDependencies.push(depValue);
     }
 

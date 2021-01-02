@@ -1,5 +1,9 @@
-export class ModuleRef {
-  constructor(...args: any) {}
+import { Module } from './module';
 
-  get(...args: any): any {}
+export class ModuleRef {
+  constructor(private readonly _module: Module) {}
+
+  get container() {
+    return this._module.container;
+  }
 }
