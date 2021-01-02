@@ -30,3 +30,8 @@ export async function runHooks(target: any, hookName: string): Promise<void> {
     await hook();
   }
 }
+
+export function hasHooks(target: any, hookName: string): boolean {
+  if (!containsHooks(target)) return false;
+  return target.__hooks__.has(hookName) && target.__hooks__.get(hookName)!.length > 0;
+}

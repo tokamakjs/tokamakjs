@@ -1,7 +1,6 @@
-import { onModuleInit } from 'src/tokamak/decorators/module-life-cycle.decorator';
 import { v4 } from 'uuid';
 
-import { Injectable, Module } from '../tokamak/decorators';
+import { Injectable, Module, onModuleDidInit, onModuleInit } from '../tokamak/decorators';
 import { DiContainer } from '../tokamak/di-container';
 import { Scope, createInjectionContext } from '../tokamak/injection-context';
 
@@ -13,6 +12,11 @@ class ServiceA {
   public doSomething(): void {
     console.log('Doing something!');
   }
+
+  @onModuleDidInit()
+  public doSomethingAfter(): void {
+    console.log('Doing something after init!');
+  }
 }
 
 @Injectable({ scope: Scope.TRANSIENT })
@@ -20,6 +24,11 @@ class ServiceB {
   public readonly id = v4();
 
   constructor(public readonly serviceA: ServiceA) {}
+
+  @onModuleInit()
+  public doSomething(): void {
+    console.log('Doing something on a transient!');
+  }
 }
 
 @Injectable()

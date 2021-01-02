@@ -13,6 +13,7 @@ import {
   isValueProvider,
 } from './types';
 import { run } from './utils';
+import { hasHooks, runHooks } from './utils/hooks';
 
 export class ProviderWrapper<T> {
   private readonly _provider: Exclude<Provider<T>, Class<T>>;
@@ -51,6 +52,16 @@ export class ProviderWrapper<T> {
     return this._provider.provide;
   }
 
+  public async callOnInit(): Promise<void> {
+    const inst = this.getSingleton();
+    runHooks(inst, 'onModuleInit');
+  }
+
+  public async callOnDidInit(): Promise<void> {
+    const inst = this.getSingleton();
+    runHooks(inst, 'onModuleDidInit');
+  }
+
   public async createInstance(): Promise<T> {
     return await this._createInstance(DEFAULT_INJECTION_CONTEXT);
   }
@@ -77,7 +88,9 @@ export class ProviderWrapper<T> {
       return value;
     }
 
-    return await this._createInstance(context);
+    const inst = await this._createInstance(context);
+    // await runHooks(inst, 'onModuleInit');
+    return inst;
   }
 
   private async _createInstance(context: InjectionContext): Promise<T> {

@@ -69,10 +69,13 @@ export class Module {
 
   public async callOnInit(): Promise<void> {
     for (const [, provider] of this._providers) {
-      const inst = provider.getSingleton();
-      runHooks(inst, 'onModuleInit');
+      await provider.callOnInit();
     }
   }
 
-  public async callOnDidInit(): Promise<void> {}
+  public async callOnDidInit(): Promise<void> {
+    for (const [, provider] of this._providers) {
+      await provider.callOnDidInit();
+    }
+  }
 }
