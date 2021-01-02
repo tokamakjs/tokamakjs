@@ -1,3 +1,5 @@
-export function forwardRef(forwardRef: () => any): ForwardReference {
+import { ForwardReference } from './types';
+
+export function forwardRef<T = unknown>(forwardRef: () => T): ForwardReference<T> {
   return { forwardRef };
 }

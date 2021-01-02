@@ -8,6 +8,7 @@ import {
   isDynamicModule,
   isForwardReference,
 } from './types';
+import { runHooks } from './utils/hooks';
 
 export class Module {
   private readonly _providers: Map<Token, ProviderWrapper<unknown>> = new Map();
@@ -65,4 +66,13 @@ export class Module {
       this._providers.set(wrapper.key, wrapper);
     }
   }
+
+  public async callOnInit(): Promise<void> {
+    for (const [, provider] of this._providers) {
+      const inst = provider.getSingleton();
+      runHooks(inst, 'onModuleInit');
+    }
+  }
+
+  public async callOnDidInit(): Promise<void> {}
 }

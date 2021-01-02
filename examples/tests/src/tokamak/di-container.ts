@@ -6,7 +6,6 @@ import { InjectionContext, ModuleDefinition, Token } from './types';
 import { flattenTree } from './utils';
 
 export class DiContainer {
-  private _providers: Map<Token, ProviderWrapper<any>> = new Map();
   private _globalModule: Module;
 
   public static async from<T>(RootModule: Class<T>): Promise<DiContainer> {
@@ -23,7 +22,12 @@ export class DiContainer {
       await module.createInstances();
     }
 
-    return new DiContainer(modules);
+    const container = new DiContainer(modules);
+
+    container._callOnInit();
+    container._callOnDidInit();
+
+    return container;
   }
 
   private constructor(private readonly _modules: Array<Module>) {
@@ -40,7 +44,6 @@ export class DiContainer {
   }
 
   public get<T = unknown, R = T>(token: Token<T>): R {
-    console.log(this.providers);
     const provider = this.providers.get(token) as ProviderWrapper<R>;
 
     if (provider == null) {
@@ -62,5 +65,17 @@ export class DiContainer {
     }
 
     return await provider.getInstance(context);
+  }
+
+  private async _callOnInit(): Promise<void> {
+    for (const module of this._modules) {
+      await module.callOnInit();
+    }
+  }
+
+  private async _callOnDidInit(): Promise<void> {
+    for (const module of this._modules) {
+      await module.callOnDidInit();
+    }
   }
 }
