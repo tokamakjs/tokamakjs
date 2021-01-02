@@ -1,4 +1,4 @@
-import { transform } from 'lodash';
+import { uniq } from 'lodash';
 
 interface RecursiveArray<T> extends Array<T | RecursiveArray<T>> {}
 
@@ -17,7 +17,7 @@ export function flattenTree<T, K extends keyof T>(tree: T, key: K): Array<T> {
   const value = tree[key];
 
   if (Array.isArray(value)) {
-    return [tree, ...value.reduce((memo, x) => [...memo, ...flattenTree(x, key)], [])];
+    return uniq([tree, ...value.reduce((memo, x) => [...memo, ...flattenTree(x, key)], [])]);
   }
 
   return [tree];

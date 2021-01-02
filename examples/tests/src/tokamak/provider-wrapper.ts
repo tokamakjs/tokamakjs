@@ -98,13 +98,13 @@ export class ProviderWrapper<T> {
 
     const deps = await this._resolveDependencies(context);
 
-    // Do this again in case we created the instance when
-    // resolving dependencies
-    if (this._instances.has(context)) {
-      return this._instances.get(context)!;
-    }
-
     const inst: T = await run(async () => {
+      // Do this again in case we created the instance when
+      // resolving dependencies
+      if (this._instances.has(context)) {
+        return this._instances.get(context)!;
+      }
+
       if (isClassProvider(this._provider)) {
         const { useClass: Class } = this._provider;
         return new Class(...deps);
