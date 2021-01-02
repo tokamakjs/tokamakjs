@@ -35,12 +35,7 @@ async function testSingletonInstances() {
 
   const serviceA = container.get(ServiceA);
   const serviceB = await container.resolve(ServiceB, ctx);
-
-  // this should fail:
-  // const serviceC = container.get(ServiceC)
-  // since we have a TRANSIENT dependency
-
-  const serviceC = await container.resolve(ServiceC, ctx);
+  const serviceC = container.get(ServiceC);
 
   console.log('SINGLETON:');
   console.log(' - ServiceA id:', serviceA.id);
