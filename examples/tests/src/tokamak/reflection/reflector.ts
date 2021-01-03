@@ -35,6 +35,14 @@ export class Reflector {
     return dependencies;
   }
 
+  static addManuallyInjectedDeps(
+    target: Object,
+    dependencies: Array<{ index: number; token: any }>,
+  ): void {
+    const existing = Reflector.getManuallyInjectedDeps(target);
+    Reflect.defineMetadata('self:paramtypes', [...existing, ...dependencies], target);
+  }
+
   static getManuallyInjectedDeps(target: Object): Array<{ index: number; token: any }> {
     return Reflect.getMetadata('self:paramtypes', target) ?? [];
   }
