@@ -10,6 +10,7 @@ import { DiContainer } from '../tokamak/di-container';
 
 const ID = '__ID__';
 
+@Injectable()
 class ServiceA {
   public readonly id = v4();
 
@@ -23,12 +24,12 @@ class ServiceB {
   constructor(public readonly serviceA: ServiceA) {}
 }
 
-@Module({ providers: [ServiceB] })
+@Module({ providers: [ServiceB, ServiceA] })
 class AppModule {}
 
 async function test() {
   const container = await DiContainer.from(AppModule, {
-    globalProviders: [],
+    globalProviders: [{ provide: ID, useValue: '__ID_VALUE__' }],
   });
 
   const serviceA = container.get(ServiceA);
@@ -36,10 +37,12 @@ async function test() {
 
   console.log('GLOBAL MODULE TEST:');
   console.log(' - ServiceA id:', serviceA.id);
+  console.log(' - ServiceA id2:', serviceA.id2);
   console.log(' - ServiceB id:', serviceB.id);
   console.log('   - ServiceA id inside ServiceB:', serviceB.serviceA.id);
 
   console.assert(serviceA.id === serviceB.serviceA.id);
+  console.assert(serviceA.id2 === '__ID_VALUE__');
 }
 
 test();

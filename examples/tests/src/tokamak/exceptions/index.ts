@@ -6,3 +6,4 @@ export * from './UnknownElementException';
 export * from './UndefinedDependencyException';
 export * from './IllegalArgumentException';
 export * from './InvalidScopeException';
+export * from './NoProviderMetadataException';
