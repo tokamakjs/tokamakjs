@@ -28,7 +28,7 @@ class ServiceB {
 @Module({ providers: [ServiceA], imports: [forwardRef(() => TestModuleB)], exports: [ServiceA] })
 class TestModuleA {}
 
-@Module({ providers: [ServiceB], imports: [TestModuleA] })
+@Module({ providers: [ServiceB], imports: [TestModuleA], exports: [ServiceB] })
 class TestModuleB {}
 
 @Module({ imports: [TestModuleA, TestModuleB] })
