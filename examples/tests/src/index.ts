@@ -1,2 +1,2 @@
-// import './scenarios/basic';
+import './scenarios/basic';
 import './scenarios/circular-dependencies';

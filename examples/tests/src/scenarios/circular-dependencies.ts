@@ -14,8 +14,6 @@ class ServiceA {
 
   @onModuleInit()
   public onModuleInit(): void {
-    console.log('ServiceA', this.id);
-    console.log('ServiceB', this.moduleRef.container?.get(ServiceB).id);
     this.serviceB = this.moduleRef.container?.get(ServiceB);
   }
 }
@@ -41,9 +39,6 @@ async function test() {
 
   const serviceA = container.get(ServiceA);
   const serviceB = container.get(ServiceB);
-
-  console.log(serviceA);
-  console.log(serviceB);
 
   console.log('CIRCULAR DEPENDENCIES TEST:');
   console.log(' - ServiceA id:', serviceA.id);

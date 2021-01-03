@@ -30,8 +30,6 @@ export class DiContainer {
 
     await transform(RootModule);
 
-    console.log(modules);
-
     for (const [, module] of modules) {
       await module.createInstances();
     }
