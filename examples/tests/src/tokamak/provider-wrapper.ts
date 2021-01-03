@@ -16,7 +16,7 @@ import {
 import { run } from './utils';
 import { runHooks } from './utils/hooks';
 
-export class ProviderWrapper<T> {
+export class ProviderWrapper<T = unknown> {
   private readonly _provider: Exclude<Provider<T>, Class<T>>;
   private readonly _instances: Map<InjectionContext, T> = new Map();
 
@@ -128,12 +128,12 @@ export class ProviderWrapper<T> {
     const resolvedDependencies = [] as Array<unknown>;
 
     for (const dep of [...this.dependencies, ...optionalDependencies]) {
-      const depWrapper = await this._resolveDependency(context, dep);
+      const depWrapper = this._resolveDependency(context, dep);
 
       let depValue: unknown;
       try {
         depValue = await depWrapper.getInstance(context);
-      } catch {
+      } catch (e) {
         await depWrapper._createInstance(context);
         depValue = await depWrapper.getInstance(context);
       }
@@ -144,67 +144,11 @@ export class ProviderWrapper<T> {
     return resolvedDependencies;
   }
 
-  private async _resolveDependency(
-    context: InjectionContext,
-    dependency: Token,
-  ): Promise<ProviderWrapper<unknown>> {
+  private _resolveDependency(context: InjectionContext, dependency: Token): ProviderWrapper {
     if (dependency == null) {
       throw new CircularDependencyException(this.name);
     }
 
-    const { providers } = this._hostModule;
-    let depWrapper: ProviderWrapper<unknown> | undefined;
-
-    // It's a direct provider
-    if (providers.has(dependency)) {
-      depWrapper = providers.get(dependency);
-    }
-
-    // Try to resolve from imported modules
-    if (depWrapper == null) {
-      depWrapper = await this._resolveFromImports(context, dependency);
-    }
-
-    // If wrapper is still null, try to resolve from the global module
-    if (depWrapper == null) {
-      depWrapper = this._hostModule.container?.globalModule.providers.get(dependency);
-    }
-
-    // At this point, we tried to resolve from any possible place
-    if (depWrapper == null) {
-      const name = typeof dependency === 'function' ? dependency.name : dependency.toString();
-      throw new UndefinedDependencyException(name, this.name);
-    }
-
-    return depWrapper;
-  }
-
-  private async _resolveFromImports(
-    context: InjectionContext,
-    token: Token,
-    visited: Array<Module> = [],
-    module: Module = this._hostModule,
-  ): Promise<ProviderWrapper<unknown> | undefined> {
-    const { imports } = module;
-
-    for (const importedModule of imports) {
-      if (!visited.includes(importedModule)) {
-        visited.push(importedModule);
-        const { exports, providers } = importedModule;
-
-        if (exports.includes(token) && !providers.has(token)) {
-          throw new Error(
-            'Exported provided not found. Make sure it is added to the providers array.',
-          );
-        }
-
-        if (exports.includes(token)) {
-          return providers.get(token);
-        } else {
-          const wrapper = await this._resolveFromImports(context, token, visited, importedModule);
-          if (wrapper != null) return wrapper;
-        }
-      }
-    }
+    return this._hostModule.resolveToken(dependency, context);
   }
 }

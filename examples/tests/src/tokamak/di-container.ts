@@ -1,5 +1,6 @@
 import { Class } from 'type-fest';
 
+import { InvalidScopeException } from './exceptions';
 import { Module } from './module';
 import { ProviderWrapper } from './provider-wrapper';
 import { InjectionContext, ModuleDefinition, Token } from './types';
@@ -43,7 +44,11 @@ export class DiContainer {
   }
 
   private constructor(private readonly _modules: Array<Module>) {
-    this._globalModule = null as any; // TODO:
+    this._globalModule = new Module(
+      'GlobalModule',
+      { exports: [], imports: [], providers: [] },
+      [],
+    ); // TODO:
     this._modules.forEach((module) => (module.container = this));
   }
 
@@ -63,7 +68,7 @@ export class DiContainer {
     }
 
     if (provider.isTransient) {
-      throw new Error('Invalid scope');
+      throw new InvalidScopeException(token);
     }
 
     return provider.getSingleton();
