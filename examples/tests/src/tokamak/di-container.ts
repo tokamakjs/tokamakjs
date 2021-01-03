@@ -3,27 +3,33 @@ import { Class } from 'type-fest';
 import { InvalidScopeException } from './exceptions';
 import { Module } from './module';
 import { ProviderWrapper } from './provider-wrapper';
-import { InjectionContext, ModuleDefinition, Token, isForwardReference } from './types';
+import { InjectionContext, ModuleDefinition, Provider, Token, isForwardReference } from './types';
+
+const GLOBAL_MODULE_NAME = '__GLOBAL_MODULE__';
 
 export class DiContainer {
-  private _globalModule: Module;
-
-  public static async from<T>(RootModule: Class<T>): Promise<DiContainer> {
-    const modules: Map<ModuleDefinition, Module> = new Map();
+  public static async from<T>(
+    RootModule: Class<T>,
+    kwargs?: {
+      globalProviders: Array<Provider>;
+    },
+  ): Promise<DiContainer> {
+    kwargs = { globalProviders: [], ...kwargs };
+    const modulesMap: Map<ModuleDefinition, Module> = new Map();
 
     const transform = async (node: ModuleDefinition): Promise<Module> => {
       if (isForwardReference(node)) {
         return await transform(node.forwardRef());
       }
 
-      if (modules.has(node)) {
-        return modules.get(node)!;
+      if (modulesMap.has(node)) {
+        return modulesMap.get(node)!;
       }
 
       const { name, ...metadata } = await Module.getMetadata(node);
 
       const module = new Module(name, metadata);
-      modules.set(node, module);
+      modulesMap.set(node, module);
 
       const imports: Array<Module> = [];
 
@@ -38,12 +44,13 @@ export class DiContainer {
 
     await transform(RootModule);
 
-    for (const [, module] of modules) {
-      await module.createInstances();
-    }
+    const globalModuleMeta = { exports: [], imports: [], providers: kwargs.globalProviders };
+    const globalModule = new Module(GLOBAL_MODULE_NAME, globalModuleMeta);
 
-    const container = new DiContainer([...modules.values()]);
+    const modules = [globalModule, ...modulesMap.values()];
+    const container = new DiContainer(modules);
 
+    await container._createInstances();
     await container._callOnInit();
     await container._callOnDidInit();
 
@@ -51,12 +58,11 @@ export class DiContainer {
   }
 
   private constructor(private readonly _modules: Array<Module>) {
-    this._globalModule = new Module('GlobalModule', { exports: [], imports: [], providers: [] }); // TODO:
     this._modules.forEach((module) => (module.container = this));
   }
 
   get globalModule() {
-    return this._globalModule;
+    return this._modules.find((g) => g.name === GLOBAL_MODULE_NAME)!;
   }
 
   get providers() {
@@ -85,6 +91,12 @@ export class DiContainer {
     }
 
     return await provider.getInstance(context);
+  }
+
+  private async _createInstances(): Promise<void> {
+    for (const module of this._modules) {
+      await module.createInstances();
+    }
   }
 
   private async _callOnInit(): Promise<void> {

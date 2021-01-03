@@ -110,7 +110,7 @@ export class Module {
 
     // If wrapper is still null, try to resolve from the global module
     if (wrapper == null) {
-      wrapper = this._container?.globalModule.providers.get(token);
+      wrapper = this._container?.globalModule.resolveToken(token);
     }
 
     // At this point, we tried to resolve from any possible place

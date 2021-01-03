@@ -15,6 +15,7 @@ class ServiceA {
   @onModuleInit()
   public onModuleInit(): void {
     this.serviceB = this.moduleRef.get(ServiceB); // module scoped
+    // this.serviceB = this.moduleRef.container?.get(ServiceB); // global
   }
 }
 
