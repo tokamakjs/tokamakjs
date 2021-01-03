@@ -1,4 +1,4 @@
-import { CircularDependencyException, UndefinedDependencyException } from './exceptions';
+import { CircularDependencyException, InvalidScopeException } from './exceptions';
 import { DEFAULT_INJECTION_CONTEXT, Scope } from './injection-context';
 import { Module } from './module';
 import { Reflector } from './reflection';
@@ -6,7 +6,6 @@ import {
   Class,
   InjectionContext,
   Provider,
-  ProviderInstance,
   Token,
   isClass,
   isClassProvider,
@@ -54,12 +53,12 @@ export class ProviderWrapper<T = unknown> {
   }
 
   public async callOnInit(): Promise<void> {
-    const inst = this.getSingleton();
+    const inst = this.getSingleton(true);
     runHooks(inst, 'onModuleInit');
   }
 
   public async callOnDidInit(): Promise<void> {
-    const inst = this.getSingleton();
+    const inst = this.getSingleton(true);
     runHooks(inst, 'onModuleDidInit');
   }
 
@@ -67,7 +66,7 @@ export class ProviderWrapper<T = unknown> {
     return await this._createInstance(DEFAULT_INJECTION_CONTEXT);
   }
 
-  public getSingleton(): T {
+  public getSingleton(forced = false): T {
     const inst = this._instances.get(DEFAULT_INJECTION_CONTEXT);
 
     if (inst == null) {
@@ -75,14 +74,14 @@ export class ProviderWrapper<T = unknown> {
       throw new Error();
     }
 
+    if (this.isTransient && !forced) {
+      throw new InvalidScopeException(this.name);
+    }
+
     return inst;
   }
 
   public async getInstance(context: InjectionContext): Promise<T> {
-    if (!this.isTransient) {
-      return this.getSingleton();
-    }
-
     const inst = this._instances.get(context);
 
     if (inst != null) {
