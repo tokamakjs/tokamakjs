@@ -42,6 +42,9 @@ async function test() {
   const serviceA = container.get(ServiceA);
   const serviceB = container.get(ServiceB);
 
+  console.log(serviceA);
+  console.log(serviceB);
+
   console.log('CIRCULAR DEPENDENCIES TEST:');
   console.log(' - ServiceA id:', serviceA.id);
   console.log('   - ServiceB id inside ServiceA:', serviceA.serviceB?.id);

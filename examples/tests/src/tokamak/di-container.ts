@@ -16,14 +16,21 @@ export class DiContainer {
       }
 
       const { name, ...metadata } = await Module.getMetadata(node);
-      const imports = await Promise.all(metadata.imports.map(transform));
+
+      const imports: Array<Module> = [];
+
+      for (const imported of metadata.imports) {
+        imports.push(await transform(imported));
+      }
 
       const module = new Module(name, metadata, imports);
-      modules.set(node, new Module(name, metadata, imports));
+      modules.set(node, module);
       return module;
     };
 
     await transform(RootModule);
+
+    console.log(modules);
 
     for (const [, module] of modules) {
       await module.createInstances();

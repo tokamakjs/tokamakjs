@@ -6,6 +6,7 @@ import {
   Class,
   InjectionContext,
   Provider,
+  ProviderInstance,
   Token,
   isClass,
   isClassProvider,
@@ -67,14 +68,14 @@ export class ProviderWrapper<T> {
   }
 
   public getSingleton(): T {
-    const value = this._instances.get(DEFAULT_INJECTION_CONTEXT);
+    const inst = this._instances.get(DEFAULT_INJECTION_CONTEXT);
 
-    if (value == null) {
+    if (inst == null) {
       // This should never happen as we always create the DEFAULT_INJECTION_CONTEXT
       throw new Error();
     }
 
-    return value;
+    return inst;
   }
 
   public async getInstance(context: InjectionContext): Promise<T> {
@@ -82,10 +83,10 @@ export class ProviderWrapper<T> {
       return this.getSingleton();
     }
 
-    const value = this._instances.get(context);
+    const inst = this._instances.get(context);
 
-    if (value != null) {
-      return value;
+    if (inst != null) {
+      return inst;
     }
 
     return await this._createInstance(context);

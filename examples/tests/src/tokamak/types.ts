@@ -92,3 +92,8 @@ export function isFactoryProvider(p: any): p is FactoryProvider {
 export interface ProviderMetadata {
   scope?: Scope;
 }
+
+export interface ProviderInstance<T = unknown> {
+  value: T;
+  isResolved: boolean;
+}
