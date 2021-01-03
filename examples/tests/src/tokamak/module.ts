@@ -1,27 +1,27 @@
 import { DiContainer } from './di-container';
-import { CircularDependencyException, UndefinedDependencyException } from './exceptions';
+import { UndefinedDependencyException } from './exceptions';
 import { DEFAULT_INJECTION_CONTEXT } from './injection-context';
 import { ModuleRef } from './module-ref';
 import { ProviderWrapper } from './provider-wrapper';
 import { Reflector } from './reflection';
 import {
+  ForwardReference,
   InjectionContext,
   ModuleDefinition,
   ModuleMetadata,
   Token,
   isDynamicModule,
-  isForwardReference,
 } from './types';
 
 export class Module {
   private readonly _providers: Map<Token, ProviderWrapper<unknown>> = new Map();
 
+  private _imports: Array<Module> = [];
   private _container?: DiContainer;
 
   constructor(
     private readonly _name: string,
     private readonly _metadata: Required<ModuleMetadata>,
-    private readonly _imports: Array<Module>,
   ) {
     const { providers } = this._metadata;
     const useModuleRefProvider = { provide: ModuleRef, useValue: new ModuleRef(this) };
@@ -33,14 +33,11 @@ export class Module {
   }
 
   public static async getMetadata<T>(
-    moduleDef: ModuleDefinition<T>,
+    moduleDef: Exclude<ModuleDefinition<T>, ForwardReference>,
   ): Promise<Required<ModuleMetadata> & { name: string }> {
     moduleDef = await moduleDef;
 
-    if (isForwardReference(moduleDef)) {
-      const forwardedModule = moduleDef.forwardRef();
-      return Module.getMetadata(forwardedModule);
-    } else if (isDynamicModule(moduleDef)) {
+    if (isDynamicModule(moduleDef)) {
       const { module, ...metadata } = { providers: [], imports: [], exports: [], ...moduleDef };
       return { ...metadata, name: module.name };
     } else {
@@ -63,6 +60,10 @@ export class Module {
 
   get imports() {
     return this._imports;
+  }
+
+  set imports(imports: Array<Module>) {
+    this._imports = imports;
   }
 
   get exports() {

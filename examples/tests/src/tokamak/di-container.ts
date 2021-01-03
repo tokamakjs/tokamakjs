@@ -3,7 +3,7 @@ import { Class } from 'type-fest';
 import { InvalidScopeException } from './exceptions';
 import { Module } from './module';
 import { ProviderWrapper } from './provider-wrapper';
-import { InjectionContext, ModuleDefinition, Token } from './types';
+import { InjectionContext, ModuleDefinition, Token, isForwardReference } from './types';
 
 export class DiContainer {
   private _globalModule: Module;
@@ -12,11 +12,18 @@ export class DiContainer {
     const modules: Map<ModuleDefinition, Module> = new Map();
 
     const transform = async (node: ModuleDefinition): Promise<Module> => {
+      if (isForwardReference(node)) {
+        return await transform(node.forwardRef());
+      }
+
       if (modules.has(node)) {
         return modules.get(node)!;
       }
 
       const { name, ...metadata } = await Module.getMetadata(node);
+
+      const module = new Module(name, metadata);
+      modules.set(node, module);
 
       const imports: Array<Module> = [];
 
@@ -24,8 +31,8 @@ export class DiContainer {
         imports.push(await transform(imported));
       }
 
-      const module = new Module(name, metadata, imports);
-      modules.set(node, module);
+      module.imports = imports;
+
       return module;
     };
 
@@ -44,11 +51,7 @@ export class DiContainer {
   }
 
   private constructor(private readonly _modules: Array<Module>) {
-    this._globalModule = new Module(
-      'GlobalModule',
-      { exports: [], imports: [], providers: [] },
-      [],
-    ); // TODO:
+    this._globalModule = new Module('GlobalModule', { exports: [], imports: [], providers: [] }); // TODO:
     this._modules.forEach((module) => (module.container = this));
   }
 

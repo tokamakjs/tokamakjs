@@ -25,7 +25,7 @@ class ServiceB {
   constructor(public readonly serviceA: ServiceA) {}
 }
 
-@Module({ providers: [ServiceA], imports: [], exports: [ServiceA] })
+@Module({ providers: [ServiceA], imports: [forwardRef(() => TestModuleB)], exports: [ServiceA] })
 class TestModuleA {}
 
 @Module({ providers: [ServiceB], imports: [TestModuleA] })
