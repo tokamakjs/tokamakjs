@@ -1,5 +1,3 @@
-// Test dynamic module
-
 import { Scope } from 'src/tokamak/injection-context';
 import { DynamicModule } from 'src/tokamak/types';
 
@@ -82,6 +80,7 @@ async function test() {
 
   const serviceA = container.get(ServiceA);
   const serviceB = container.get(ServiceB);
+  const serviceC = container.get(ServiceC);
 
   console.log('COMPLETE TEST:');
 
@@ -94,6 +93,7 @@ async function test() {
     serviceA.tExternalService.id !== serviceB.tExternalService.id,
     'TransientExternalServices ids are the same.',
   );
+  console.assert(serviceB.serviceC.id == serviceC.id, 'ServiceC ids do not match.');
 }
 
 test();
