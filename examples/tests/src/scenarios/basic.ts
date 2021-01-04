@@ -10,12 +10,12 @@ class ServiceA {
 
   @onModuleInit()
   public doSomething(): void {
-    console.log('Doing something!');
+    console.log('ServiceA :: OnModuleInit');
   }
 
   @onModuleDidInit()
   public doSomethingAfter(): void {
-    console.log('Doing something after init!');
+    console.log('ServiceA :: OnModuleDidInit');
   }
 }
 
@@ -27,7 +27,12 @@ class ServiceB {
 
   @onModuleInit()
   public doSomething(): void {
-    console.log('Doing something on a transient!');
+    console.log('ServiceB :: OnModuleInit');
+  }
+
+  @onModuleDidInit()
+  public doSomethingAfter(): void {
+    console.log('ServiceB :: OnModuleDidInit');
   }
 }
 
@@ -36,6 +41,16 @@ class ServiceC {
   public readonly id = v4();
 
   constructor(public readonly serviceA: ServiceA, public readonly serviceB: ServiceB) {}
+
+  @onModuleInit()
+  public doSomething(): void {
+    console.log('ServiceC :: OnModuleInit');
+  }
+
+  @onModuleDidInit()
+  public doSomethingAfter(): void {
+    console.log('ServiceC :: OnModuleDidInit');
+  }
 }
 
 @Module({ providers: [ServiceA, ServiceB, ServiceC] })

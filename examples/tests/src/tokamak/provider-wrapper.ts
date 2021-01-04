@@ -61,12 +61,12 @@ export class ProviderWrapper<T = unknown> {
   public async callOnInit(): Promise<void> {
     if (this.isSingleton) {
       const inst = this._getSingleton(DEFAULT_INJECTION_CONTEXT);
-      runHooks(inst, 'onModuleInit');
+      await runHooks(inst, 'onModuleInit');
     } else {
       const visited: Array<unknown> = [this._getSingleton(DEFAULT_INJECTION_CONTEXT)];
       for (const inst of this._instances.get(DEFAULT_INJECTION_CONTEXT)?.values() ?? []) {
         if (!visited.includes(inst)) {
-          runHooks(inst, 'onModuleInit');
+          await runHooks(inst, 'onModuleInit');
           visited.push(inst);
         }
       }
@@ -76,12 +76,12 @@ export class ProviderWrapper<T = unknown> {
   public async callOnDidInit(): Promise<void> {
     if (this.isSingleton) {
       const inst = this._getSingleton(DEFAULT_INJECTION_CONTEXT);
-      runHooks(inst, 'onModuleDidInit');
+      await runHooks(inst, 'onModuleDidInit');
     } else {
       const visited: Array<unknown> = [this._getSingleton(DEFAULT_INJECTION_CONTEXT)];
       for (const inst of this._instances.get(DEFAULT_INJECTION_CONTEXT)?.values() ?? []) {
         if (!visited.includes(inst)) {
-          runHooks(inst, 'onModuleDidInit');
+          await runHooks(inst, 'onModuleDidInit');
           visited.push(inst);
         }
       }

@@ -8,6 +8,6 @@ export function onModuleInit(): MethodDecorator {
 
 export function onModuleDidInit(): MethodDecorator {
   return (target, propertyKey) => {
-    addHook(target, 'onModuleInit', (target as any)[propertyKey]);
+    addHook(target, 'onModuleDidInit', (target as any)[propertyKey]);
   };
 }
