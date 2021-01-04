@@ -20,7 +20,6 @@ type Inquirer = ProviderWrapper<unknown>;
 export class ProviderWrapper<T = unknown> {
   private readonly _provider: Exclude<Provider<T>, Class<T>>;
   private readonly _instances: Map<InjectionContext, Map<Inquirer, T>> = new Map();
-  private readonly _singletons: Map<InjectionContext, T> = new Map();
 
   constructor(private readonly _hostModule: Module, provider: Provider<T>) {
     if (isClass(provider)) {
@@ -60,15 +59,33 @@ export class ProviderWrapper<T = unknown> {
   }
 
   public async callOnInit(): Promise<void> {
-    const inst = this._singletons.get(DEFAULT_INJECTION_CONTEXT);
-    // TODO: Do the same for DEFAULT_INJECTION_CONTEXT transients
-    runHooks(inst, 'onModuleInit');
+    if (this.isSingleton) {
+      const inst = this.getSingleton(DEFAULT_INJECTION_CONTEXT);
+      runHooks(inst, 'onModuleInit');
+    } else {
+      const visited: Array<unknown> = [this.getSingleton(DEFAULT_INJECTION_CONTEXT)];
+      for (const inst of this._instances.get(DEFAULT_INJECTION_CONTEXT)?.values() ?? []) {
+        if (!visited.includes(inst)) {
+          runHooks(inst, 'onModuleInit');
+          visited.push(inst);
+        }
+      }
+    }
   }
 
   public async callOnDidInit(): Promise<void> {
-    const inst = this._singletons.get(DEFAULT_INJECTION_CONTEXT);
-    // TODO: Do the same for DEFAULT_INJECTION_CONTEXT transients
-    runHooks(inst, 'onModuleDidInit');
+    if (this.isSingleton) {
+      const inst = this.getSingleton(DEFAULT_INJECTION_CONTEXT);
+      runHooks(inst, 'onModuleDidInit');
+    } else {
+      const visited: Array<unknown> = [this.getSingleton(DEFAULT_INJECTION_CONTEXT)];
+      for (const inst of this._instances.get(DEFAULT_INJECTION_CONTEXT)?.values() ?? []) {
+        if (!visited.includes(inst)) {
+          runHooks(inst, 'onModuleDidInit');
+          visited.push(inst);
+        }
+      }
+    }
   }
 
   public async createInstance(): Promise<T> {
@@ -95,6 +112,10 @@ export class ProviderWrapper<T = unknown> {
     return inst;
   }
 
+  public getSingleton(context: InjectionContext): T {
+    return this.getInstance(context, this);
+  }
+
   public hasInstance(context: InjectionContext, inquirer: Inquirer): boolean {
     return this._instances.get(context)?.get(inquirer) != null;
   }
@@ -107,8 +128,8 @@ export class ProviderWrapper<T = unknown> {
     const deps = await this._resolveDependencies(context, inquirer);
 
     const inst: T = await run(async () => {
-      if (this.isSingleton && this._singletons.has(context)) {
-        return this._singletons.get(context)!;
+      if (this.isSingleton && this.hasInstance(context, this)) {
+        return this.getSingleton(context);
       }
 
       // Do this again in case we created the instance when
@@ -128,10 +149,6 @@ export class ProviderWrapper<T = unknown> {
       }
     });
 
-    if (this.isSingleton) {
-      this._singletons.set(context, inst);
-    }
-
     let inquirerInstances = this._instances.get(context);
 
     if (inquirerInstances == null) {
@@ -140,6 +157,7 @@ export class ProviderWrapper<T = unknown> {
 
     inquirerInstances.set(inquirer, inst);
     this._instances.set(context, inquirerInstances);
+
     return inst;
   }
 
