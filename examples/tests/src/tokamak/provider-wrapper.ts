@@ -1,4 +1,4 @@
-import { CircularDependencyException, InvalidScopeException } from './exceptions';
+import { CircularDependencyException } from './exceptions';
 import { DEFAULT_INJECTION_CONTEXT, Scope } from './injection-context';
 import { Module } from './module';
 import { Reflector } from './reflection';
