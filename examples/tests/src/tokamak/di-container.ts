@@ -1,6 +1,7 @@
 import { Class } from 'type-fest';
 
 import { InvalidScopeException } from './exceptions';
+import { DEFAULT_INJECTION_CONTEXT } from './injection-context';
 import { Module } from './module';
 import { ProviderWrapper } from './provider-wrapper';
 import { InjectionContext, ModuleDefinition, Provider, Token, isForwardReference } from './types';
@@ -83,7 +84,10 @@ export class DiContainer {
     return provider.getSingleton();
   }
 
-  public async resolve<T = unknown, R = T>(token: Token<T>, context: InjectionContext): Promise<R> {
+  public async resolve<T = unknown, R = T>(
+    token: Token<T>,
+    context: InjectionContext = DEFAULT_INJECTION_CONTEXT,
+  ): Promise<R> {
     const provider = this.providers.get(token) as ProviderWrapper<R>;
 
     if (provider == null) {

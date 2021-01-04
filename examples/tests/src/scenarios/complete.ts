@@ -10,12 +10,16 @@ import { DiContainer } from '../tokamak/di-container';
 
 const ID = '__ID__';
 
+@Injectable()
 class ExternalService {
   public readonly id = v4();
 }
 
+@Injectable()
 class TransientExternalService {
   public readonly id = v4();
+
+  constructor(public readonly externalService: ExternalService) {}
 }
 
 @Injectable()
@@ -24,7 +28,6 @@ class ServiceA {
 
   constructor(
     @inject(ID) public readonly id2: string,
-    public readonly externalService: ExternalService,
     public readonly tExternalService: TransientExternalService,
   ) {}
 }
@@ -35,7 +38,6 @@ class ServiceB {
 
   constructor(
     public readonly serviceA: ServiceA,
-    public readonly externalService: ExternalService,
     public readonly tExternalService: TransientExternalService,
   ) {}
 }
@@ -59,25 +61,37 @@ async function test() {
     globalProviders: [{ provide: ID, useValue: '__ID_VALUE__' }],
   });
 
-  const contextA = createInjectionContext();
-  const serviceA = await container.resolve(ServiceA, contextA);
-  const contextB = createInjectionContext();
-  const serviceB = await container.resolve(ServiceB, contextB);
+  const serviceA = await container.resolve(ServiceA);
+  const serviceB = await container.resolve(ServiceB);
 
-  console.log(container);
-  console.log('GLOBAL MODULE TEST:');
-  console.log(' - ServiceA id:', serviceA.id);
-  console.log(' - ServiceA id2:', serviceA.id2);
-  console.log('   - ExternalService id inside ServiceA:', serviceA.externalService.id);
-  console.log('   - TransientExternalService id inside ServiceA:', serviceA.tExternalService.id);
-  console.log(' - ServiceB id:', serviceB.id);
-  console.log('   - ServiceA id inside ServiceB:', serviceB.serviceA.id);
-  console.log('   - ExternalService id inside ServiceB:', serviceB.externalService.id);
-  console.log('   - TransientExternalService id inside ServiceA:', serviceB.tExternalService.id);
+  // How do I tell the resolver that ExternalService has to be resolved
+  // as a singleton if the only thing I have is the context?
+  //
+  // If context is different than { id: 1 }, then, a new instance is gonna
+  // be created for TransientExternalService, however,
 
-  console.assert(serviceA.id2 === '__ID_VALUE__');
-  console.assert(serviceA.externalService.id === serviceB.externalService.id);
-  console.assert(serviceA.tExternalService.id !== serviceB.tExternalService.id);
+  // console.log(container);
+  // console.log('COMPLETE TEST:');
+  // console.log(' - ServiceA id:', serviceA.id);
+  // console.log(' - ServiceA id2:', serviceA.id2);
+  // console.log('   - TransientExternalService id inside ServiceA:', serviceA.tExternalService.id);
+  // console.log(
+  //   '     - ExternalService id inside TransientExternalService:',
+  //   serviceA.tExternalService.externalService.id,
+  // );
+  // console.log(' - ServiceB id:', serviceB.id);
+  // console.log('   - ServiceA id inside ServiceB:', serviceB.serviceA.id);
+  // console.log('   - TransientExternalService id inside ServiceA:', serviceB.tExternalService.id);
+  // console.log(
+  //   '     - ExternalService id inside TransientExternalService:',
+  //   serviceB.tExternalService.externalService.id,
+  // );
+
+  // console.assert(serviceA.id2 === '__ID_VALUE__');
+  // console.assert(
+  //   serviceA.tExternalService.externalService.id === serviceB.tExternalService.externalService.id,
+  // );
+  // console.assert(serviceA.tExternalService.id !== serviceB.tExternalService.id);
 }
 
 test();
