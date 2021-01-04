@@ -27,7 +27,7 @@ export class ProviderWrapper<T = unknown> {
       const { scope } = Reflector.getProviderMetadata(provider);
       this._provider = { useClass: provider, scope, provide: provider };
     } else {
-      this._provider = provider;
+      this._provider = { scope: Scope.SINGLETON, ...provider };
     }
   }
 
@@ -36,7 +36,7 @@ export class ProviderWrapper<T = unknown> {
   }
 
   get isSingleton() {
-    return this._provider.scope === Scope.SINGLETON;
+    return this._provider.scope !== Scope.TRANSIENT;
   }
 
   get dependencies() {
@@ -107,14 +107,14 @@ export class ProviderWrapper<T = unknown> {
     const deps = await this._resolveDependencies(context, inquirer);
 
     const inst: T = await run(async () => {
+      if (this.isSingleton && this._singletons.has(context)) {
+        return this._singletons.get(context)!;
+      }
+
       // Do this again in case we created the instance when
       // resolving dependencies
       if (this.hasInstance(context, inquirer)) {
         return this.getInstance(context, inquirer);
-      }
-
-      if (this.isSingleton && this._singletons.has(context)) {
-        return this._singletons.get(context)!;
       }
 
       if (isClassProvider(this._provider)) {

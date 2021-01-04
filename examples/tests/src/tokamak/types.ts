@@ -49,7 +49,7 @@ export interface ClassProvider<T = unknown> {
 export interface ValueProvider<T = unknown> {
   provide: Token;
   useValue: T;
-  scope?: Scope.TRANSIENT;
+  scope?: Scope.SINGLETON;
 }
 
 export interface FactoryProvider<T = unknown> {

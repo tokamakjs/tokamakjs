@@ -1,8 +1,7 @@
-// Test custom providers
 // Test dynamic module
 
-import { Scope, createInjectionContext } from 'src/tokamak/injection-context';
-import { v4 } from 'uuid';
+import { Scope } from 'src/tokamak/injection-context';
+import { DynamicModule } from 'src/tokamak/types';
 
 import { Injectable, Module } from '../tokamak/decorators';
 import { inject } from '../tokamak/decorators/inject.decorator';
@@ -10,21 +9,25 @@ import { DiContainer } from '../tokamak/di-container';
 
 const ID = '__ID__';
 
+const createId = (prefix: string): string => {
+  return `${prefix}_${Math.floor(Math.random() * 10)}`;
+};
+
 @Injectable()
 class ExternalService {
-  public readonly id = v4();
+  public readonly id = createId('ExternalService');
 }
 
 @Injectable()
 class TransientExternalService {
-  public readonly id = v4();
+  public readonly id = createId('TransientExternalService');
 
   constructor(public readonly externalService: ExternalService) {}
 }
 
 @Injectable()
 class ServiceA {
-  public readonly id = v4();
+  public readonly id = createId('ServiceA');
 
   constructor(
     @inject(ID) public readonly id2: string,
@@ -33,16 +36,32 @@ class ServiceA {
 }
 
 @Injectable()
+class ServiceC {
+  public readonly id = createId('ServiceC');
+}
+
+@Injectable()
 class ServiceB {
-  public readonly id = v4();
+  public readonly id = createId('ServiceB');
 
   constructor(
-    public readonly serviceA: ServiceA,
     public readonly tExternalService: TransientExternalService,
+    public readonly serviceC: ServiceC,
   ) {}
 }
 
+class TestDynamicModule {
+  static createModule(): DynamicModule<TestDynamicModule> {
+    return {
+      module: TestDynamicModule,
+      providers: [ServiceC],
+      exports: [ServiceC],
+    };
+  }
+}
+
 @Module({
+  imports: [TestDynamicModule.createModule()],
   providers: [
     ServiceB,
     ServiceA,
@@ -64,7 +83,6 @@ async function test() {
   const serviceA = container.get(ServiceA);
   const serviceB = container.get(ServiceB);
 
-  console.log(container);
   console.log('COMPLETE TEST:');
 
   console.assert(serviceA.id2 === '__ID_VALUE__');
