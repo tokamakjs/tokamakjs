@@ -4,6 +4,7 @@
     { "path": "./packages/dev-utils" },
     { "path": "./packages/cli" },
     { "path": "./packages/core" },
-    { "path": "./packages/common" }
+    { "path": "./packages/common" },
+    { "path": "./packages/injection" }
   ]
 }

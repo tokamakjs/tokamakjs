@@ -14,11 +14,11 @@ export async function createRouteComponent(
 
   const ctx = createContextId();
   const controllerInstance = await context.resolve(controller, ctx);
-  console.log(controllerInstance);
   const guardInstances = guards.map((guard) => context.get(guard));
   const wrapper = new ControllerWrapper(controllerInstance);
 
   // const errorElement = states?.error != null ? createElement(states.error) : null;
+  // @ts-ignore
   const loadingView = states?.loading != null ? createElement(states.loading) : null;
 
   const ViewHolder = () => {
@@ -44,6 +44,7 @@ export async function createRouteComponent(
       return null;
     }
 
+    // @ts-ignore
     return <ViewHolder />;
   };
 
