@@ -27,9 +27,6 @@ async function test() {
   const serviceB = container.get(ServiceB);
 
   console.log('GLOBAL MODULE TEST:');
-  console.log(' - ServiceA id:', serviceA.id);
-  console.log(' - ServiceB id:', serviceB.id);
-  console.log('   - ServiceA id inside ServiceB:', serviceB.serviceA.id);
 
   console.assert(serviceA.id === serviceB.serviceA.id);
 }

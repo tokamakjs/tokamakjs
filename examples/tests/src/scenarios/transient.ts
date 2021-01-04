@@ -1,6 +1,6 @@
 import { Injectable, Module } from 'src/tokamak/decorators';
 import { DiContainer } from 'src/tokamak/di-container';
-import { Scope } from 'src/tokamak/injection-context';
+import { Scope, createInjectionContext } from 'src/tokamak/injection-context';
 import { v4 } from 'uuid';
 
 @Injectable()
@@ -36,13 +36,11 @@ async function test() {
   const container = await DiContainer.from(AppModule);
 
   const serviceA = container.get(ServiceA);
-  const serviceB = await container.resolve(ServiceB);
-  const serviceC = await container.resolve(ServiceC);
-  const serviceD = await container.resolve(ServiceD);
+  const serviceB = container.get(ServiceB);
+  const serviceC = container.get(ServiceC);
+  const serviceD = container.get(ServiceD);
 
-  console.log(serviceA);
-  console.log(serviceC);
-  console.log(serviceD);
+  console.log('TRANSIENT TEST:');
 
   console.assert(serviceA.id == serviceB.serviceA.id, 'ServiceA ids do not match.');
   console.assert(serviceC.serviceB.id !== serviceD.serviceB.id, 'ServiceB ids are the same.');

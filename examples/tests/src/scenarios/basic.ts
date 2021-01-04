@@ -2,7 +2,7 @@ import { v4 } from 'uuid';
 
 import { Injectable, Module, onModuleDidInit, onModuleInit } from '../tokamak/decorators';
 import { DiContainer } from '../tokamak/di-container';
-import { Scope, createInjectionContext } from '../tokamak/injection-context';
+import { Scope } from '../tokamak/injection-context';
 
 @Injectable()
 class ServiceA {
@@ -45,20 +45,13 @@ class TestModule {}
 class AppModule {}
 
 async function testSingletonInstances() {
-  const ctx = createInjectionContext();
   const container = await DiContainer.from(AppModule);
 
   const serviceA = container.get(ServiceA);
-  const serviceB = await container.resolve(ServiceB, ctx);
+  const serviceB = container.get(ServiceB);
   const serviceC = container.get(ServiceC);
 
   console.log('BASIC TEST:');
-  console.log(' - ServiceA id:', serviceA.id);
-  console.log(' - ServiceB id:', serviceB.id);
-  console.log('   - ServiceA id inside ServiceB:', serviceB.serviceA.id);
-  console.log(' - ServiceC id:', serviceC.id);
-  console.log('   - ServiceA id inside ServiceC:', serviceC.serviceA.id);
-  console.log('   - ServiceB id inside ServiceC:', serviceC.serviceB.id);
 
   console.assert(serviceA.id === serviceB.serviceA.id && serviceA.id === serviceC.serviceA.id);
   console.assert(serviceB.id !== serviceC.serviceB.id);

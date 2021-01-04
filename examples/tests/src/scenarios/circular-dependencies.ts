@@ -42,10 +42,6 @@ async function test() {
   const serviceB = container.get(ServiceB);
 
   console.log('CIRCULAR DEPENDENCIES TEST:');
-  console.log(' - ServiceA id:', serviceA.id);
-  console.log('   - ServiceB id inside ServiceA:', serviceA.serviceB?.id);
-  console.log(' - ServiceB id:', serviceB.id);
-  console.log('   - ServiceA id inside ServiceB:', serviceB.serviceA.id);
 
   console.assert(serviceA.id === serviceB.serviceA.id);
   console.assert(serviceB.id === serviceA.serviceB?.id);

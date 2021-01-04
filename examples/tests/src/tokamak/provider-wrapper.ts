@@ -15,9 +15,12 @@ import {
 import { run } from './utils';
 import { runHooks } from './utils/hooks';
 
+type Inquirer = ProviderWrapper<unknown>;
+
 export class ProviderWrapper<T = unknown> {
   private readonly _provider: Exclude<Provider<T>, Class<T>>;
-  private readonly _instances: Map<InjectionContext, T> = new Map();
+  private readonly _instances: Map<InjectionContext, Map<Inquirer, T>> = new Map();
+  private readonly _singletons: Map<InjectionContext, T> = new Map();
 
   constructor(private readonly _hostModule: Module, provider: Provider<T>) {
     if (isClass(provider)) {
@@ -30,6 +33,10 @@ export class ProviderWrapper<T = unknown> {
 
   get isTransient() {
     return this._provider.scope === Scope.TRANSIENT;
+  }
+
+  get isSingleton() {
+    return this._provider.scope === Scope.SINGLETON;
   }
 
   get dependencies() {
@@ -53,56 +60,61 @@ export class ProviderWrapper<T = unknown> {
   }
 
   public async callOnInit(): Promise<void> {
-    const inst = this.getSingleton(true);
+    const inst = this._singletons.get(DEFAULT_INJECTION_CONTEXT);
+    // TODO: Do the same for DEFAULT_INJECTION_CONTEXT transients
     runHooks(inst, 'onModuleInit');
   }
 
   public async callOnDidInit(): Promise<void> {
-    const inst = this.getSingleton(true);
+    const inst = this._singletons.get(DEFAULT_INJECTION_CONTEXT);
+    // TODO: Do the same for DEFAULT_INJECTION_CONTEXT transients
     runHooks(inst, 'onModuleDidInit');
   }
 
   public async createInstance(): Promise<T> {
-    return await this._createInstance(DEFAULT_INJECTION_CONTEXT);
+    return await this.resolveInstance(DEFAULT_INJECTION_CONTEXT);
   }
 
-  public getSingleton(forced = false): T {
-    const inst = this._instances.get(DEFAULT_INJECTION_CONTEXT);
-
-    if (inst == null) {
-      // This should never happen as we always create the DEFAULT_INJECTION_CONTEXT
-      throw new Error();
+  public async resolveInstance(context: InjectionContext, inquirer?: Inquirer): Promise<T> {
+    inquirer = inquirer == null ? this : inquirer;
+    if (this.hasInstance(context, inquirer)) {
+      return this.getInstance(context, inquirer);
     }
 
-    if (this.isTransient && !forced) {
-      throw new InvalidScopeException(this.name);
+    return await this._createInstance(context, inquirer);
+  }
+
+  public getInstance(context: InjectionContext, inquirer?: Inquirer): T {
+    inquirer = inquirer == null ? this : inquirer;
+    const inst = this._instances.get(context)?.get(inquirer);
+
+    if (inst == null) {
+      throw new Error('No instance found.');
     }
 
     return inst;
   }
 
-  public async getInstance(context: InjectionContext): Promise<T> {
-    const inst = this._instances.get(context);
-
-    if (inst != null) {
-      return inst;
-    }
-
-    return await this._createInstance(context);
+  public hasInstance(context: InjectionContext, inquirer: Inquirer): boolean {
+    return this._instances.get(context)?.get(inquirer) != null;
   }
 
-  private async _createInstance(context: InjectionContext): Promise<T> {
-    if (this._instances.has(context)) {
-      return this._instances.get(context)!;
+  private async _createInstance(context: InjectionContext, inquirer: Inquirer): Promise<T> {
+    if (this.hasInstance(context, inquirer)) {
+      return this.getInstance(context, inquirer);
     }
 
-    const deps = await this._resolveDependencies(context);
+    const deps = await this._resolveDependencies(context, inquirer);
 
     const inst: T = await run(async () => {
       // Do this again in case we created the instance when
       // resolving dependencies
-      if (this._instances.has(context)) {
-        return this._instances.get(context)!;
+      if (this.hasInstance(context, inquirer)) {
+        return this.getInstance(context, inquirer);
+      }
+
+      if (this.isSingleton && this._singletons.has(context)) {
+        return this._singletons.get(context)!;
       }
 
       if (isClassProvider(this._provider)) {
@@ -116,25 +128,38 @@ export class ProviderWrapper<T = unknown> {
       }
     });
 
-    this._instances.set(context, inst);
+    if (this.isSingleton) {
+      this._singletons.set(context, inst);
+    }
+
+    let inquirerInstances = this._instances.get(context);
+
+    if (inquirerInstances == null) {
+      inquirerInstances = new Map();
+    }
+
+    inquirerInstances.set(inquirer, inst);
+    this._instances.set(context, inquirerInstances);
     return inst;
   }
 
-  private async _resolveDependencies(context: InjectionContext): Promise<Array<unknown>> {
+  private async _resolveDependencies(
+    context: InjectionContext,
+    inquirer: Inquirer,
+  ): Promise<Array<unknown>> {
     // TODO: Add support for optional dependencies marked with @optional
     const optionalDependencies = [] as Array<Token>;
 
     const resolvedDependencies = [] as Array<unknown>;
 
     for (const dep of [...this.dependencies, ...optionalDependencies]) {
-      const depWrapper = this._resolveDependency(context, dep);
+      const depWrapper = this._resolveDependency(dep, context);
 
       let depValue: unknown;
-      try {
-        depValue = await depWrapper.getInstance(context);
-      } catch (e) {
-        await depWrapper._createInstance(context);
-        depValue = await depWrapper.getInstance(context);
+      if (depWrapper.hasInstance(context, inquirer)) {
+        depValue = depWrapper.getInstance(context, inquirer);
+      } else {
+        depValue = await depWrapper.resolveInstance(context, inquirer);
       }
 
       resolvedDependencies.push(depValue);
@@ -143,7 +168,7 @@ export class ProviderWrapper<T = unknown> {
     return resolvedDependencies;
   }
 
-  private _resolveDependency(context: InjectionContext, dependency: Token): ProviderWrapper {
+  private _resolveDependency(dependency: Token, context: InjectionContext): ProviderWrapper {
     if (dependency == null) {
       throw new CircularDependencyException(this.name);
     }

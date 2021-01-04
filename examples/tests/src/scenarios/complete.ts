@@ -61,37 +61,21 @@ async function test() {
     globalProviders: [{ provide: ID, useValue: '__ID_VALUE__' }],
   });
 
-  const serviceA = await container.resolve(ServiceA);
-  const serviceB = await container.resolve(ServiceB);
+  const serviceA = container.get(ServiceA);
+  const serviceB = container.get(ServiceB);
 
-  // How do I tell the resolver that ExternalService has to be resolved
-  // as a singleton if the only thing I have is the context?
-  //
-  // If context is different than { id: 1 }, then, a new instance is gonna
-  // be created for TransientExternalService, however,
+  console.log(container);
+  console.log('COMPLETE TEST:');
 
-  // console.log(container);
-  // console.log('COMPLETE TEST:');
-  // console.log(' - ServiceA id:', serviceA.id);
-  // console.log(' - ServiceA id2:', serviceA.id2);
-  // console.log('   - TransientExternalService id inside ServiceA:', serviceA.tExternalService.id);
-  // console.log(
-  //   '     - ExternalService id inside TransientExternalService:',
-  //   serviceA.tExternalService.externalService.id,
-  // );
-  // console.log(' - ServiceB id:', serviceB.id);
-  // console.log('   - ServiceA id inside ServiceB:', serviceB.serviceA.id);
-  // console.log('   - TransientExternalService id inside ServiceA:', serviceB.tExternalService.id);
-  // console.log(
-  //   '     - ExternalService id inside TransientExternalService:',
-  //   serviceB.tExternalService.externalService.id,
-  // );
-
-  // console.assert(serviceA.id2 === '__ID_VALUE__');
-  // console.assert(
-  //   serviceA.tExternalService.externalService.id === serviceB.tExternalService.externalService.id,
-  // );
-  // console.assert(serviceA.tExternalService.id !== serviceB.tExternalService.id);
+  console.assert(serviceA.id2 === '__ID_VALUE__');
+  console.assert(
+    serviceA.tExternalService.externalService.id === serviceB.tExternalService.externalService.id,
+    'ExternalService ids do not match.',
+  );
+  console.assert(
+    serviceA.tExternalService.id !== serviceB.tExternalService.id,
+    'TransientExternalServices ids are the same.',
+  );
 }
 
 test();

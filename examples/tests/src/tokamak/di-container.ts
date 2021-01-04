@@ -77,11 +77,11 @@ export class DiContainer {
       throw new Error('Provider null');
     }
 
-    if (provider.isTransient) {
-      throw new InvalidScopeException(token);
-    }
+    // if (provider.isTransient) {
+    //   throw new InvalidScopeException(token);
+    // }
 
-    return provider.getSingleton();
+    return provider.getInstance(DEFAULT_INJECTION_CONTEXT);
   }
 
   public async resolve<T = unknown, R = T>(
@@ -94,7 +94,7 @@ export class DiContainer {
       throw new Error('Provider null');
     }
 
-    return await provider.getInstance(context);
+    return await provider.resolveInstance(context);
   }
 
   private async _createInstances(): Promise<void> {

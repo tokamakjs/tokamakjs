@@ -1,4 +1,5 @@
 import { InvalidScopeException } from './exceptions';
+import { DEFAULT_INJECTION_CONTEXT } from './injection-context';
 import { Module } from './module';
 import { ProviderWrapper } from './provider-wrapper';
 import { Token } from './types';
@@ -21,6 +22,6 @@ export class ModuleRef {
       throw new InvalidScopeException(token);
     }
 
-    return provider.getSingleton();
+    return provider.getInstance(DEFAULT_INJECTION_CONTEXT);
   }
 }
