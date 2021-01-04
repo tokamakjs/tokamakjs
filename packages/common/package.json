@@ -28,7 +28,7 @@
     "graphql": "^15.3.0"
   },
   "peerDependencies": {
-    "@babel/runtime-corejs3": "*",
+    "@babel/runtime": "*",
     "graphql": "^15.x"
   },
   "gitHead": "1ad2efd4f2f2aa2c1516a13393582c44d875368c"

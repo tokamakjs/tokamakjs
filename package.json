@@ -34,7 +34,7 @@
     "@babel/plugin-transform-runtime": "^7.12.1",
     "@babel/preset-env": "^7.10.2",
     "@babel/preset-react": "^7.10.1",
-    "@babel/runtime-corejs3": "^7.12.1",
+    "@babel/runtime": "^7.12.5",
     "@types/classnames": "^2.2.10",
     "@types/copy-webpack-plugin": "^6.0.0",
     "@types/friendly-errors-webpack-plugin": "^0.1.2",
