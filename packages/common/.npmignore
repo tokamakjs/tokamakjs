@@ -1,4 +1,12 @@
+# Node dependencies
 node_modules
-.env
+
+# Logs
 *.log
+
+# Source code
 src
+
+# Misc
+.DS_Store
+.env

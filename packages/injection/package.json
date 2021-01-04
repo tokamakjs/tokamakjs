@@ -1,0 +1,26 @@
+{
+  "name": "@tokamakjs/injection",
+  "version": "0.1.0-alpha.41",
+  "description": "Tokamak dependency injection system.",
+  "author": "Lars <lars.bs@hotmail.com>",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tokamakjs/tokamak",
+    "directory": "packages/injection"
+  },
+  "scripts": {
+    "build": "gulp",
+    "build:watch": "gulp watch"
+  },
+  "peerDependencies": {
+    "@babel/runtime": "*"
+  },
+  "dependencies": {
+    "reflect-metadata": "^0.1.13"
+  }
+}
