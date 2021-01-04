@@ -6,7 +6,8 @@
     "paths": {
       "~/*": ["./src/app/*"],
       "@tokamakjs/core": ["../../packages/core"],
-      "@tokamakjs/common": ["../../packages/common"]
+      "@tokamakjs/common": ["../../packages/common"],
+      "@tokamakjs/injection": ["../../packages/injection"]
     }
   },
   "exclude": ["node_modules", "dist"],

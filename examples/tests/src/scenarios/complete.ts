@@ -1,9 +1,11 @@
-import { Scope } from 'src/tokamak/injection-context';
-import { DynamicModule } from 'src/tokamak/types';
-
-import { Injectable, Module } from '../tokamak/decorators';
-import { inject } from '../tokamak/decorators/inject.decorator';
-import { DiContainer } from '../tokamak/di-container';
+import {
+  DiContainer,
+  DynamicModule,
+  Injectable,
+  Module,
+  Scope,
+  inject,
+} from '@tokamakjs/injection';
 
 const ID = '__ID__';
 

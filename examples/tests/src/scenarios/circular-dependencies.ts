@@ -1,9 +1,12 @@
-import { ModuleRef } from 'src/tokamak/module-ref';
+import {
+  DiContainer,
+  Injectable,
+  Module,
+  ModuleRef,
+  forwardRef,
+  onModuleInit,
+} from '@tokamakjs/injection';
 import { v4 } from 'uuid';
-
-import { Injectable, Module, onModuleInit } from '../tokamak/decorators';
-import { DiContainer } from '../tokamak/di-container';
-import { forwardRef } from '../tokamak/forward-ref';
 
 @Injectable()
 class ServiceA {

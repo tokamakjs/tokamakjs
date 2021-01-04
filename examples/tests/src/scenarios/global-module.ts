@@ -1,7 +1,5 @@
+import { DiContainer, Injectable, Module } from '@tokamakjs/injection';
 import { v4 } from 'uuid';
-
-import { Injectable, Module } from '../tokamak/decorators';
-import { DiContainer } from '../tokamak/di-container';
 
 class ServiceA {
   public readonly id = v4();

@@ -1,8 +1,12 @@
+import {
+  DiContainer,
+  Injectable,
+  Module,
+  Scope,
+  onModuleDidInit,
+  onModuleInit,
+} from '@tokamakjs/injection';
 import { v4 } from 'uuid';
-
-import { Injectable, Module, onModuleDidInit, onModuleInit } from '../tokamak/decorators';
-import { DiContainer } from '../tokamak/di-container';
-import { Scope } from '../tokamak/injection-context';
 
 @Injectable()
 class ServiceA {

@@ -1,6 +1,4 @@
-import { Injectable, Module } from 'src/tokamak/decorators';
-import { DiContainer } from 'src/tokamak/di-container';
-import { Scope, createInjectionContext } from 'src/tokamak/injection-context';
+import { DiContainer, Injectable, Module, Scope } from '@tokamakjs/injection';
 import { v4 } from 'uuid';
 
 @Injectable()
