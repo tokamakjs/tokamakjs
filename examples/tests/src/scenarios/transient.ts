@@ -34,14 +34,17 @@ async function test() {
   const container = await DiContainer.from(AppModule);
 
   const serviceA = container.get(ServiceA);
-  const serviceB = container.get(ServiceB);
+  const serviceB = await container.resolve(ServiceB);
   const serviceC = container.get(ServiceC);
   const serviceD = container.get(ServiceD);
 
   console.log('TRANSIENT TEST:');
 
   console.assert(serviceA.id == serviceB.serviceA.id, 'ServiceA ids do not match.');
-  console.assert(serviceC.serviceB.id !== serviceD.serviceB.id, 'ServiceB ids are the same.');
+  console.assert(
+    serviceC.serviceB.id !== serviceD.serviceB.id && serviceC.serviceB.id !== serviceB.id,
+    'ServiceB ids are the same.',
+  );
 }
 
 test();

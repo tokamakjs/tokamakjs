@@ -20,18 +20,32 @@ export function addHook(target: any, hookName: string, hookFn: Function): void {
   target.__hooks__.set(hookName, [...existingHooks, hookFn]);
 }
 
-export async function runHooks(target: any, hookName: string): Promise<void> {
-  if (!containsHooks(target)) return;
+export async function runHooks(target: any, hookName: string): Promise<Array<any>> {
+  if (!containsHooks(target)) return [];
 
   const hooks = target.__hooks__.get(hookName);
-  if (hooks == null) return;
+  if (hooks == null) return [];
+
+  const results = [];
 
   for (const hook of hooks) {
-    await hook.call(target);
+    results.push(await hook.call(target));
   }
+
+  return results;
 }
 
-export function hasHooks(target: any, hookName: string): boolean {
+export function runHooksSync(target: any, hookName: string): Array<any> {
+  if (!containsHooks(target)) return [];
+
+  const hooks = target.__hooks__.get(hookName);
+  if (hooks == null) return [];
+
+  return hooks.map((hook) => hook.call(target));
+}
+
+export function hasHooks(target: any, hookName?: string): target is WithHooks {
+  if (hookName == null) return containsHooks(target);
   if (!containsHooks(target)) return false;
   return target.__hooks__.has(hookName) && target.__hooks__.get(hookName)!.length > 0;
 }
