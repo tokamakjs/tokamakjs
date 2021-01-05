@@ -1,7 +1,18 @@
 import { Injectable } from '@tokamakjs/injection';
 import React from 'react';
+import { createRedirection } from 'src/react/routing/routes';
+import { useAppContext } from 'src/react/tokamak-app';
 
-import { Controller, Outlet, SubApp, TokamakApp, createRoute, observable } from '../react';
+import {
+  Controller,
+  Outlet,
+  SubApp,
+  TokamakApp,
+  createRoute,
+  observable,
+  onDidMount,
+  onDidRender,
+} from '../react';
 
 @Injectable()
 export class ServiceA {
@@ -28,16 +39,29 @@ export class TestControllerA {
 
   constructor(public readonly serviceA: ServiceA) {}
 
+  @onDidMount()
+  public onDidMount() {
+    console.log('TestControllerA :: onDidMount');
+  }
+
+  @onDidRender()
+  public onDidRender() {
+    console.log('TestControllerA :: onDidRender');
+  }
+
   public increase() {
     this.value += 1;
   }
 }
 
 export const TestViewB = (ctrl: TestControllerB) => {
+  const appContext = useAppContext() as { hello: string };
   return (
     <div>
       <h1>TestViewB</h1>
       <h2>ServiceA: {ctrl.serviceA.id}</h2>
+      <h3>App Context:</h3>
+      <pre>{JSON.stringify(appContext, null, 2)}</pre>
     </div>
   );
 };
@@ -52,14 +76,14 @@ export class TestControllerB {
   routing: [
     createRoute('/test-a', TestControllerA, [createRoute('/test-b', TestControllerB)]),
     createRoute('/test-b', TestControllerB),
-    createRoute('/', TestControllerA),
+    createRedirection('/', '/test-a'),
   ],
 })
 export class TestModule {}
 
 async function test() {
   const app = await TokamakApp.create(TestModule, {
-    historyMode: 'browser',
+    historyMode: 'hash',
   });
 
   app.setAppContext({ hello: 'world' });

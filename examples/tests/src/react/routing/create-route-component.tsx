@@ -1,4 +1,4 @@
-import { Class, DiContainer, createInjectionContext } from '@tokamakjs/injection';
+import { Class, DiContainer } from '@tokamakjs/injection';
 import React, { ComponentType } from 'react';
 
 import { Reflector } from '../reflection';
@@ -11,9 +11,7 @@ export async function createRouteComponent(
 ): Promise<{ Route: ComponentType; controllerInstance: any }> {
   const { view: useView } = Reflector.getControllerMetadata(controller);
 
-  const context = createInjectionContext();
-  const controllerInstance = await container.resolve(controller, context);
-  console.log(controllerInstance);
+  const controllerInstance = await container.resolve(controller);
   const wrapper = new ControllerWrapper(controllerInstance);
 
   const ViewHolder = () => {
