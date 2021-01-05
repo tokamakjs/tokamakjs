@@ -1,18 +1,17 @@
-import { Injectable } from '@tokamakjs/injection';
-import React from 'react';
-import { createRedirection } from 'src/react/routing/routes';
-import { useAppContext } from 'src/react/tokamak-app';
-
 import {
   Controller,
+  Injectable,
   Outlet,
   SubApp,
   TokamakApp,
+  createRedirection,
   createRoute,
   observable,
   onDidMount,
   onDidRender,
-} from '../react';
+  useAppContext,
+} from '@tokamakjs/react';
+import React from 'react';
 
 @Injectable()
 export class ServiceA {
