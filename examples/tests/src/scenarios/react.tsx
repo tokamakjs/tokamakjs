@@ -51,6 +51,7 @@ export class TestControllerB {
   providers: [ServiceA],
   routing: [
     createRoute('/test-a', TestControllerA, [createRoute('/test-b', TestControllerB)]),
+    createRoute('/test-b', TestControllerB),
     createRoute('/', TestControllerA),
   ],
 })
@@ -58,7 +59,7 @@ export class TestModule {}
 
 async function test() {
   const app = await TokamakApp.create(TestModule, {
-    historyMode: 'hash',
+    historyMode: 'browser',
   });
 
   app.setAppContext({ hello: 'world' });
