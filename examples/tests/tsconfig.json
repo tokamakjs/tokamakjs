@@ -7,7 +7,8 @@
       "~/*": ["./src/app/*"],
       "@tokamakjs/core": ["../../packages/core"],
       "@tokamakjs/common": ["../../packages/common"],
-      "@tokamakjs/injection": ["../../packages/injection"]
+      "@tokamakjs/injection": ["../../packages/injection"],
+      "@tokamakjs/react": ["../../packages/react"]
     }
   },
   "exclude": ["node_modules", "dist"],

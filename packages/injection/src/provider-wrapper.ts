@@ -15,7 +15,7 @@ import {
 import { run } from './utils';
 import { runHooks } from './utils/hooks';
 
-type Inquirer = ProviderWrapper<unknown>;
+type Inquirer = ProviderWrapper<unknown> | { id: number };
 
 export class ProviderWrapper<T = unknown> {
   private readonly _provider: Exclude<Provider<T>, Class<T>>;
@@ -92,8 +92,7 @@ export class ProviderWrapper<T = unknown> {
     return await this.resolveInstance(DEFAULT_INJECTION_CONTEXT);
   }
 
-  public async resolveInstance(context: InjectionContext, inquirer?: Inquirer): Promise<T> {
-    inquirer = inquirer == null ? this : inquirer;
+  public async resolveInstance(context: InjectionContext, inquirer: Inquirer = this): Promise<T> {
     if (this.hasInstance(context, inquirer)) {
       return this.getInstance(context, inquirer);
     }
@@ -101,8 +100,7 @@ export class ProviderWrapper<T = unknown> {
     return await this._createInstance(context, inquirer);
   }
 
-  public getInstance(context: InjectionContext, inquirer?: Inquirer): T {
-    inquirer = inquirer == null ? this : inquirer;
+  public getInstance(context: InjectionContext, inquirer: Inquirer = this): T {
     const inst = this._instances.get(context)?.get(inquirer);
 
     if (inst == null) {
