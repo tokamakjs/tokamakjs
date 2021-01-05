@@ -1,9 +1,9 @@
 import 'reflect-metadata';
 
-import { Injectable, Module, Scope } from '@tokamakjs/injection';
+import { Class, Injectable, Module, Scope } from '@tokamakjs/injection';
 
 import { NoControllerMetadataException, NoSubAppMetadataException } from '../exceptions';
-import { ControllerMetadata, SubAppMetadata } from '../types';
+import { ControllerMetadata, RouteDefinition, SubAppMetadata } from '../types';
 
 export class Reflector {
   static addControllerMetadata(target: Function, metadata: ControllerMetadata): void {
@@ -23,7 +23,15 @@ export class Reflector {
 
   static addSubAppMetadata(target: Function, metadata: SubAppMetadata): void {
     const { routing, providers = [], ...moduleMetadata } = metadata;
-    Module({ ...moduleMetadata, providers: [...providers, ...routing.map((r) => r.controller)] })(
+
+    const extractControllers = (routing: Array<RouteDefinition>): Array<Class> => {
+      return routing.reduce((memo, r) => {
+        const childrenCtrls = extractControllers(r.children);
+        return [...memo, r.controller, ...childrenCtrls];
+      }, [] as Array<Class>);
+    };
+
+    Module({ ...moduleMetadata, providers: [...providers, ...extractControllers(routing)] })(
       target,
     );
     Reflect.defineMetadata('self:subapp', metadata, target);

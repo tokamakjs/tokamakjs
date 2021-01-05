@@ -50,8 +50,8 @@ export class TestControllerB {
 @SubApp({
   providers: [ServiceA],
   routing: [
-    createRoute('/', TestControllerA),
     createRoute('/test-a', TestControllerA, [createRoute('/test-b', TestControllerB)]),
+    createRoute('/', TestControllerA),
   ],
 })
 export class TestModule {}

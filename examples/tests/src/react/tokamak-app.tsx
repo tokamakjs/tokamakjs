@@ -3,7 +3,7 @@ import { History, createBrowserHistory, createHashHistory, createMemoryHistory }
 import React, { ElementType, createContext, useContext } from 'react';
 import ReactDom from 'react-dom';
 
-import { HISTORY, MATCH_BAG, MatchBag, buildRoutes, useRoutes } from './routing';
+import { HISTORY, MATCH_BAG, MatchBag, Router, buildRoutes, useRoutes } from './routing';
 import { TokamakAppConfig } from './types';
 
 const historyByMode = {
@@ -54,9 +54,11 @@ export class TokamakApp {
   public render(selector: string): void {
     const RootNode = this._RootNode;
     ReactDom.render(
-      <AppContext.Provider value={this._appContext}>
-        <RootNode />
-      </AppContext.Provider>,
+      <Router history={this._history}>
+        <AppContext.Provider value={this._appContext}>
+          <RootNode />
+        </AppContext.Provider>
+      </Router>,
       document.querySelector(selector),
     );
   }
