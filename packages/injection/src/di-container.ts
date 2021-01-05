@@ -87,6 +87,7 @@ export class DiContainer {
   public async resolve<T = unknown, R = T>(
     token: Token<T>,
     context: InjectionContext = DEFAULT_INJECTION_CONTEXT,
+    inquirer: any = { id: Math.random() },
   ): Promise<R> {
     const provider = this.providers.get(token) as ProviderWrapper<R>;
 
@@ -94,7 +95,7 @@ export class DiContainer {
       throw new UnknownElementException(token);
     }
 
-    return await provider.resolveInstance(context);
+    return await provider.resolveInstance(context, inquirer);
   }
 
   private async _createInstances(): Promise<void> {
