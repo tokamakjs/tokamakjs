@@ -40,7 +40,6 @@ describe('utils', () => {
       expect(result).toEqual({
         path: '/home',
         controller: RootController,
-        isIncluded: false,
         children: [
           { path: '/login', controller: LoginController, children: [] },
           { path: '/sign-up', controller: SignUpController, children: [] },
@@ -64,20 +63,18 @@ describe('utils', () => {
       path: '/login',
       controller: LoginController,
       children: [],
-      isIncluded: false,
     };
 
     const signUpRoute = {
       path: '/sign-up',
       controller: LoginController,
       children: [],
-      isIncluded: false,
     };
 
     beforeAll(() => {
       Reflect.defineMetadata('self:controller', {}, LoginController);
       Reflect.defineMetadata('self:controller', {}, SignUpController);
-      Reflect.defineMetadata('self:module', { routing: [loginRoute, signUpRoute] }, TestModule);
+      Reflect.defineMetadata('self:subapp', { routing: [loginRoute, signUpRoute] }, TestModule);
     });
 
     it('should generate a prefixed array of routes with isIncluded as true', () => {

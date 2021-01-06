@@ -1,4 +1,4 @@
-import { Token } from 'src/types';
+import { Token } from '../types';
 
 export class UnknownElementException extends Error {
   constructor(token?: Token) {

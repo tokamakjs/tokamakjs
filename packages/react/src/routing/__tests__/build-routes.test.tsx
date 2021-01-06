@@ -30,12 +30,12 @@ describe('buildRoutes', () => {
       ],
     };
 
-    Reflect.defineMetadata('self:module', fakeSubAppMetadata, TestModule);
+    Reflect.defineMetadata('self:subapp', fakeSubAppMetadata, TestModule);
   });
 
-  it('should return a routes config', () => {
+  it('should return a routes config', async () => {
     const fakeAppContext = {} as any;
-    const routes = buildRoutes(TestModule, fakeAppContext);
+    const routes = await buildRoutes(TestModule, fakeAppContext);
 
     expect(routes).toMatchInlineSnapshot(`
       Array [

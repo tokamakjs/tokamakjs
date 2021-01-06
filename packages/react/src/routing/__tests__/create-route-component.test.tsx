@@ -1,12 +1,14 @@
+import { DiContainer } from '@tokamakjs/injection';
 import React, { ComponentType, useEffect } from 'react';
 import renderer from 'react-test-renderer';
 
 import { ControllerMetadata } from '../../types';
 import { ControllerWrapper } from '../controller-wrapper';
+import { createRouteComponent } from '../create-route-component';
 
 jest.mock('../controller-wrapper');
 
-function _createFakeAppContext() {
+function _createFakeContainer(): DiContainer {
   const instanceCache = new Map();
   return {
     get: (metatype: any) => {
@@ -16,7 +18,14 @@ function _createFakeAppContext() {
 
       return instanceCache.get(metatype);
     },
-  };
+    resolve: (metatype: any) => {
+      if (!instanceCache.has(metatype)) {
+        instanceCache.set(metatype, new metatype());
+      }
+
+      return instanceCache.get(metatype);
+    },
+  } as DiContainer;
 }
 
 function _resetLifeCycleMocks(instance: any): void {
@@ -34,7 +43,7 @@ describe('createRouteComponent', () => {
     ]);
   }
 
-  const fakeAppContext = _createFakeAppContext();
+  const fakeContainer = _createFakeContainer();
   const fakeControllerWrapper = {
     setRefreshViewFunction: jest.fn(),
     __hooks__: new Map([
@@ -43,7 +52,7 @@ describe('createRouteComponent', () => {
       ['onDidRender', [jest.fn()]],
     ]),
   };
-  const fakeController = fakeAppContext.get(RouteController);
+  const fakeController = fakeContainer.get(RouteController);
   const insideUseEffectMock = jest.fn();
   const FakeView = () => {
     useEffect(() => {
@@ -54,7 +63,7 @@ describe('createRouteComponent', () => {
 
   let Route: ComponentType;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     const fakeControllerMetadata: ControllerMetadata = {
       view: FakeView,
     };
@@ -64,7 +73,7 @@ describe('createRouteComponent', () => {
     });
 
     Reflect.defineMetadata('self:controller', fakeControllerMetadata, RouteController);
-    // Route = createRouteComponent(fakeAppContext, RouteController).Route;
+    Route = (await createRouteComponent(fakeContainer, RouteController)).Route;
   });
 
   it('wraps the route controller in a ControllerWrapper', () => {

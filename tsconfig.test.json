@@ -2,10 +2,15 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "baseUrl": "./",
-    "rootDir": "./packages",
+    "rootDir": "./",
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "module": "ESNext"
+    "module": "ESNext",
+    "paths": {
+      "@tokamakjs/injection": ["./packages/injection/src"],
+      "@tokamakjs/common": ["./packages/common/src"],
+      "@tokamakjs/react": ["./packages/react/src"]
+    }
   },
   "exclude": ["node_modules"]
 }

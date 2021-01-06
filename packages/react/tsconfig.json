@@ -6,7 +6,11 @@
     "baseUrl": "./",
     "outDir": "./lib",
     "rootDir": "./src",
-    "tsBuildInfoFile": "./lib/react.tsbuildinfo"
+    "tsBuildInfoFile": "./lib/react.tsbuildinfo",
+    "paths": {
+      "@tokamakjs/injection": ["../injection"],
+    }
   },
-  "exclude": ["node_modules", "lib"]
+  "exclude": ["node_modules", "lib"],
+  "references": [{ "path": "../injection" }]
 }

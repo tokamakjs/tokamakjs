@@ -25,7 +25,7 @@ describe('Reflector', () => {
 
     it('adds defaults to undefined metadata entries', () => {
       const addedMetadata = Reflect.getMetadata('self:module', EmptyTestModule);
-      expect(addedMetadata).toEqual({ routing: [], providers: [], imports: [], exports: [] });
+      expect(addedMetadata).toEqual({ providers: [], imports: [], exports: [] });
     });
   });
 
