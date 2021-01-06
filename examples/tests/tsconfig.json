@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "jsx": "react",
+    "paths": {
+      "~/*": ["./src/app/*"],
+      "@tokamakjs/core": ["../../packages/core"],
+      "@tokamakjs/common": ["../../packages/common"],
+      "@tokamakjs/injection": ["../../packages/injection"],
+      "@tokamakjs/react": ["../../packages/react"]
+    }
+  },
+  "exclude": ["node_modules", "dist"],
+  "references": [{ "path": "../../packages/core" }, { "path": "../../packages/common" }]
+}

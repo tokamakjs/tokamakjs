@@ -1,4 +1,5 @@
-import { HISTORY, Injectable, MATCH_BAG, MatchBag, inject } from '@tokamakjs/core';
+import { Injectable, inject } from '@tokamakjs/injection';
+import { HISTORY, MATCH_BAG, MatchBag } from '@tokamakjs/react';
 import { History, Location } from 'history';
 import qs from 'query-string';
 

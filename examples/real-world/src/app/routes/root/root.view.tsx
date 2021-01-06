@@ -1,4 +1,4 @@
-import { Outlet, useAppContext } from '@tokamakjs/core';
+import { Outlet, useAppContext } from '@tokamakjs/react';
 import React, { Fragment } from 'react';
 
 import { RootController } from './root.controller';

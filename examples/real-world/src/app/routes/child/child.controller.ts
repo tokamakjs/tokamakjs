@@ -1,5 +1,5 @@
 import { RouterService } from '@tokamakjs/common';
-import { Controller, onDidMount, onDidRender } from '@tokamakjs/core';
+import { Controller, onDidMount, onDidRender } from '@tokamakjs/react';
 
 import { ServiceA, ServiceB } from '../../services';
 import { ChildView } from './child.view';

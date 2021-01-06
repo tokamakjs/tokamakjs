@@ -1,14 +1,15 @@
-import { Injectable, ModuleRef, OnModuleInit } from '@tokamakjs/core';
+import { Injectable, ModuleRef, onModuleInit } from '@tokamakjs/react';
 
 import { ServiceA } from './service-a.service';
 
 @Injectable()
-export class ServiceB implements OnModuleInit {
+export class ServiceB {
   name = 'Service B';
   private serviceA?: ServiceA;
 
   constructor(private readonly moduleRef: ModuleRef) {}
 
+  @onModuleInit()
   onModuleInit() {
     this.serviceA = this.moduleRef.get(ServiceA);
   }

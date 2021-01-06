@@ -1,9 +1,9 @@
-import { tokamak } from '@tokamakjs/core';
+import { TokamakApp } from '@tokamakjs/react';
 
 import { AppModule } from './app/app.module';
 
 async function bootstrap() {
-  const app = await tokamak(AppModule);
+  const app = await TokamakApp.create(AppModule);
 
   app.setAppContext({ hello: 'world' });
 
