@@ -1,6 +1,6 @@
 {
   "name": "tokamak-real-world-example",
-  "version": "0.1.0-alpha.41",
+  "version": "0.1.0-alpha.42",
   "description": "Tokamak real world app example.",
   "author": "Lars <lars.bs@hotmail.com>",
   "license": "MIT",
@@ -18,10 +18,10 @@
   "dependencies": {
     "@babel/preset-env": "^7.10.2",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.2.0",
-    "@tokamakjs/common": "^0.1.0-alpha.41",
-    "@tokamakjs/dev-utils": "^0.1.0-alpha.39",
-    "@tokamakjs/injection": "^0.1.0-alpha.41",
-    "@tokamakjs/react": "^0.1.0-alpha.41",
+    "@tokamakjs/common": "^0.1.0-alpha.42",
+    "@tokamakjs/dev-utils": "^0.1.0-alpha.42",
+    "@tokamakjs/injection": "^0.1.0-alpha.42",
+    "@tokamakjs/react": "^0.1.0-alpha.42",
     "babel-loader": "^8.1.0",
     "css-loader": "^5.0.0",
     "extract-loader": "^5.1.0",

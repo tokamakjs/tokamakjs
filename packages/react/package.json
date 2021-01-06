@@ -1,6 +1,6 @@
 {
   "name": "@tokamakjs/react",
-  "version": "0.1.0-alpha.41",
+  "version": "0.1.0-alpha.42",
   "description": "React flavor of Tokamak.",
   "author": "Lars <lars.bs@hotmail.com>",
   "license": "MIT",
@@ -23,7 +23,7 @@
     "react-dom": ">=16"
   },
   "dependencies": {
-    "@tokamakjs/injection": "^0.1.0-alpha.41",
+    "@tokamakjs/injection": "^0.1.0-alpha.42",
     "history": "^5.0.0",
     "query-string": "^6.13.8",
     "reflect-metadata": "^0.1.13",
