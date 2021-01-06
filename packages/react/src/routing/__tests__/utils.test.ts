@@ -101,7 +101,7 @@ describe('utils', () => {
       const { controller: Controller } = createRedirection('/from', '/to');
       const replaceMock = jest.fn();
       const fakeHistory = { replace: replaceMock };
-      const controller = new Controller(fakeHistory);
+      const controller = new Controller(fakeHistory) as any;
       controller.onDidMount();
       expect(fakeHistory.replace).toHaveBeenCalledTimes(1);
       expect(fakeHistory.replace).toHaveBeenCalledWith('/to');

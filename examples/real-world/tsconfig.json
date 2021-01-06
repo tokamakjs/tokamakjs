@@ -5,10 +5,11 @@
     "jsx": "react",
     "paths": {
       "~/*": ["./src/app/*"],
-      "@tokamakjs/core": ["../../packages/core"],
+      "@tokamakjs/injection": ["../../packages/injection"],
+      "@tokamakjs/react": ["../../packages/react"],
       "@tokamakjs/common": ["../../packages/common"]
     }
   },
   "exclude": ["node_modules", "dist"],
-  "references": [{ "path": "../../packages/core" }, { "path": "../../packages/common" }]
+  "references": [{ "path": "../../packages/injection" }, { "path": "../../packages/common" }, { "path": "../../packages/react" }]
 }

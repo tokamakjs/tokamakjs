@@ -1,4 +1,4 @@
-import { Injectable } from '@tokamakjs/core';
+import { Injectable } from '@tokamakjs/react';
 
 import { ServiceB } from './service-b.service';
 

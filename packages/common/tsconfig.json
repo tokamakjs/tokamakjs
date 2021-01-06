@@ -8,9 +8,10 @@
     "rootDir": "./src",
     "tsBuildInfoFile": "./lib/common.tsbuildinfo",
     "paths": {
-      "@tokamakjs/core": ["../core"]
+      "@tokamakjs/injection": ["../injection"],
+      "@tokamakjs/react": ["../react"]
     }
   },
   "exclude": ["node_modules", "lib"],
-  "references": [{ "path": "../core" }]
+  "references": [{ "path": "../injection" }, { "path": "../react" }]
 }

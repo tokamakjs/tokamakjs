@@ -30,5 +30,8 @@
   "peerDependencies": {
     "webpack": ">= 4.x"
   },
-  "gitHead": "1ad2efd4f2f2aa2c1516a13393582c44d875368c"
+  "gitHead": "1ad2efd4f2f2aa2c1516a13393582c44d875368c",
+  "devDependencies": {
+    "webpack": "4"
+  }
 }

@@ -1,4 +1,4 @@
-import { Module } from '@tokamakjs/core';
+import { Module } from '@tokamakjs/injection';
 
 import { RouterService } from './router.service';
 
