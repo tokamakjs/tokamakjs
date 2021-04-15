@@ -33,7 +33,6 @@ export function useRoutes(
 
   return matches.reduceRight((outlet, match) => {
     const { route, params, pathname } = match;
-    matchBag.addMatch(route.controller, match);
     return (
       <RouteContext.Provider
         value={{

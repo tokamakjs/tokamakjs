@@ -5,9 +5,7 @@ import { Controller } from '../controller.decorator';
 jest.mock('../../reflection');
 
 describe('@controller', () => {
-  const controllerMetadata: ControllerMetadata = {
-    view: () => null,
-  };
+  const controllerMetadata: ControllerMetadata = {};
 
   @Controller(controllerMetadata)
   class TestController {}

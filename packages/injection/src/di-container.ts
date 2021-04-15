@@ -4,6 +4,7 @@ import { InvalidScopeException, UnknownElementException } from './exceptions';
 import { DEFAULT_INJECTION_CONTEXT } from './injection-context';
 import { Module } from './module';
 import { ProviderWrapper } from './provider-wrapper';
+import { Reflector } from './reflection';
 import { InjectionContext, ModuleDefinition, Provider, Token, isForwardReference } from './types';
 
 const GLOBAL_MODULE_NAME = '__GLOBAL_MODULE__';
@@ -96,6 +97,12 @@ export class DiContainer {
     }
 
     return await provider.resolveInstance(context, inquirer);
+  }
+
+  public resolveDependencies<T>(Class: Class<T>): T {
+    const deps = Reflector.getConstructorDependencies(Class);
+    const resolvedDependencies = deps.map((token) => this.get(token));
+    return new Class(...resolvedDependencies);
   }
 
   private async _createInstances(): Promise<void> {

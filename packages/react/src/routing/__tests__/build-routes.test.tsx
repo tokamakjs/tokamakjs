@@ -11,9 +11,9 @@ jest.mock('../create-route-component', () => {
 });
 
 describe('buildRoutes', () => {
-  class RootController {}
-  class LoginController {}
-  class SignUpController {}
+  const RootView = () => null;
+  const LoginView = () => null;
+  const SignUpView = () => null;
   class TestModule {}
 
   beforeEach(() => {
@@ -21,10 +21,10 @@ describe('buildRoutes', () => {
       routing: [
         {
           path: '/',
-          controller: RootController,
+          Component: RootView,
           children: [
-            { path: '/login', controller: LoginController, children: [] },
-            { path: '/sign-up', controller: SignUpController, children: [] },
+            { path: '/login', Component: LoginView, children: [] },
+            { path: '/sign-up', Component: SignUpView, children: [] },
           ],
         },
       ],
@@ -33,9 +33,9 @@ describe('buildRoutes', () => {
     Reflect.defineMetadata('self:subapp', fakeSubAppMetadata, TestModule);
   });
 
-  it('should return a routes config', async () => {
+  it('should return a routes config', () => {
     const fakeAppContext = {} as any;
-    const routes = await buildRoutes(TestModule, fakeAppContext);
+    const routes = buildRoutes(TestModule, fakeAppContext);
 
     expect(routes).toMatchInlineSnapshot(`
       Array [

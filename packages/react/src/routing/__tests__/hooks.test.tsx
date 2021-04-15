@@ -1,5 +1,5 @@
 import React from 'react';
-import renderer, { act } from 'react-test-renderer';
+import renderer from 'react-test-renderer';
 import { Subject } from 'rxjs';
 
 import { useForceUpdate, useMountLifeCycle, useRenderLifeCycle } from '../hooks';

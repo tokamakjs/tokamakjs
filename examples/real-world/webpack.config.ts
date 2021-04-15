@@ -93,11 +93,11 @@ const config: Configuration = {
 // @ts-ignore
 config.devServer = {
   host: '0.0.0.0',
-  port: 8080,
+  port: 4200,
   historyApiFallback: true,
   hot: true,
   inline: true,
-  quiet: true,
+  // quiet: true,
 };
 
 export default config;

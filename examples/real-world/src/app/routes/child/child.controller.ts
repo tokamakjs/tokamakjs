@@ -2,20 +2,19 @@ import { RouterService } from '@tokamakjs/common';
 import { Controller, onDidMount, onDidRender } from '@tokamakjs/react';
 
 import { ServiceA, ServiceB } from '../../services';
-import { ChildView } from './child.view';
 
-@Controller({ view: ChildView })
+@Controller()
 export class ChildController {
   constructor(
-    private readonly serviceA: ServiceA,
-    private readonly serviceB: ServiceB,
-    private readonly router: RouterService,
+    private readonly _serviceA: ServiceA,
+    private readonly _serviceB: ServiceB,
+    private readonly _router: RouterService,
   ) {}
 
   public doStuff() {
-    console.log('FROM A', this.serviceA.hello());
-    console.log('FROM B', this.serviceB.bye());
-    this.router.push('/15');
+    console.log('FROM A', this._serviceA.hello());
+    console.log('FROM B', this._serviceB.bye());
+    // this.router.push('/15');
   }
 
   @onDidMount()
@@ -29,7 +28,7 @@ export class ChildController {
 
   @onDidRender()
   public doStuffAfterRender() {
-    const params = this.router.getParams(this);
-    console.log('Child params:', params.projectId);
+    // const params = this.router.getParams(this);
+    // console.log('Child params:', params.projectId);
   }
 }

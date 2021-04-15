@@ -1,17 +1,21 @@
-import { Outlet, useAppContext } from '@tokamakjs/react';
+import { Outlet, useAppContext, useController } from '@tokamakjs/react';
 import React, { Fragment } from 'react';
 
 import { RootController } from './root.controller';
 
-export const RootView = (ctrl: RootController) => {
+export const RootView = () => {
   const context = useAppContext();
+  const ctrl = useController(RootController);
 
-  console.log(context);
+  console.log('App Context', context);
 
   return (
     <Fragment>
       <div>
         Hello Tokamak (root) <button onClick={() => ctrl.doStuff()}>Click</button>
+      </div>
+      <div>
+        {ctrl.counter} - <button onClick={() => ctrl.counter++}>Increase Counter</button>
       </div>
       <Outlet />
     </Fragment>

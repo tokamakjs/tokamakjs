@@ -1,8 +1,11 @@
+import { useController } from '@tokamakjs/react';
 import React from 'react';
 
 import { ChildController } from './child.controller';
 
-export const ChildView = (ctrl: ChildController) => {
+export const ChildView = () => {
+  const ctrl = useController(ChildController);
+
   return (
     <div>
       Hello Tokamak (child) <button onClick={() => ctrl.doStuff()}>Click</button>

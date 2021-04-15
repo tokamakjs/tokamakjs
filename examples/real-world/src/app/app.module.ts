@@ -1,14 +1,14 @@
 import { RouterModule } from '@tokamakjs/common';
 import { SubApp, createRoute } from '@tokamakjs/react';
 
-import { ChildController } from './routes/child/child.controller';
-import { RootController } from './routes/root';
+import { ChildView } from './routes/child';
+import { RootView } from './routes/root';
 import { ServiceA, ServiceB } from './services';
 
 @SubApp({
   routing: [
-    createRoute('/', RootController, [createRoute('/:projectId', ChildController)]),
-    createRoute('/:projectId', RootController, [createRoute('/:projectId', ChildController)]),
+    createRoute('/', RootView, [createRoute('/:projectId', ChildView)]),
+    createRoute('/:projectId', RootView, [createRoute('/:projectId', ChildView)]),
   ],
   providers: [ServiceA, ServiceB],
   imports: [RouterModule],
