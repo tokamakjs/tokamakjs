@@ -1,5 +1,13 @@
 import { RouterService } from '@tokamakjs/common';
-import { Controller, effect, onDidMount, onDidRender, ref, state } from '@tokamakjs/react';
+import {
+  Controller,
+  effect,
+  onDidMount,
+  onDidRender,
+  ref,
+  state,
+  useParams,
+} from '@tokamakjs/react';
 
 import { ServiceA, ServiceB } from '../../services';
 
@@ -9,6 +17,8 @@ export class RootController {
   @state public name = 'Root';
 
   @ref public counterRef = 0;
+
+  private readonly _params = useParams();
 
   constructor(
     private readonly _serviceA: ServiceA,
@@ -27,6 +37,7 @@ export class RootController {
 
   @onDidRender()
   public doStuffAfterRender() {
+    console.log(this._params);
     // const params = this._router.getParams(this);
     // console.log('Root params:', params.projectId);
   }
