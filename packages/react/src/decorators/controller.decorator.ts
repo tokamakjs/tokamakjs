@@ -39,7 +39,7 @@ function _createAccessProxy(
 }
 
 function _createConstructProxy(Target: Function): Function {
-  return new Proxy(Target, {
+  const proxy = new Proxy(Target, {
     construct(Target: any, args) {
       const instance = new Target(...args);
 
@@ -65,6 +65,10 @@ function _createConstructProxy(Target: Function): Function {
       return proxiedInstance;
     },
   });
+
+  Reflector.copyMetadata(Target, proxy);
+
+  return proxy;
 }
 
 export function Controller(metadata: ControllerMetadata = {}): ClassDecorator {

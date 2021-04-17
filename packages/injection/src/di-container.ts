@@ -99,7 +99,15 @@ export class DiContainer {
     return await provider.resolveInstance(context, inquirer);
   }
 
-  public resolveDependencies<T>(Class: Class<T>): T {
+  public async resolveDependencies<T>(Class: Class<T>): Promise<T> {
+    const deps = Reflector.getConstructorDependencies(Class);
+    const resolvedDependencies = await Promise.all(
+      deps.map(async (token) => await this.resolve(token)),
+    );
+    return new Class(...resolvedDependencies);
+  }
+
+  public resolveDependenciesSync<T>(Class: Class<T>): T {
     const deps = Reflector.getConstructorDependencies(Class);
     const resolvedDependencies = deps.map((token) => this.get(token));
     return new Class(...resolvedDependencies);

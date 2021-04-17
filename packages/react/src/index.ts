@@ -4,4 +4,4 @@ export * from './decorators';
 export { TokamakApp } from './tokamak-app';
 export * from './routing';
 export * from './interfaces';
-export { useController, useAppContext } from './hooks';
+export { useController, useAppContext, useResolve } from './hooks';

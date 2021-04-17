@@ -1,9 +1,9 @@
 import 'reflect-metadata';
 
-import { Class, Injectable, Module, Scope } from '@tokamakjs/injection';
+import { Injectable, Module, Scope } from '@tokamakjs/injection';
 
 import { NoControllerMetadataException, NoSubAppMetadataException } from '../exceptions';
-import { ControllerMetadata, DepsFn, RouteDefinition, SubAppMetadata } from '../types';
+import { ControllerMetadata, DepsFn, SubAppMetadata } from '../types';
 
 export class Reflector {
   static addControllerMetadata(target: Function, metadata: ControllerMetadata): void {
@@ -81,5 +81,10 @@ export class Reflector {
     }
 
     refKeys.push(key);
+  }
+
+  static copyMetadata(Source: Function, Target: Function): void {
+    const keys = Reflect.getMetadataKeys(Source);
+    keys.forEach((key) => Reflect.defineMetadata(key, Reflect.getMetadata(key, Source), Target));
   }
 }
