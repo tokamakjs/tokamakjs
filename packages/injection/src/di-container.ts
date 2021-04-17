@@ -56,8 +56,12 @@ export class DiContainer {
     await container._callOnInit();
     await container._callOnDidInit();
 
+    container._isInitialized = true;
+
     return container;
   }
+
+  private _isInitialized = false;
 
   private constructor(private readonly _modules: Array<Module>) {
     this._modules.forEach((module) => (module.container = this));
@@ -69,6 +73,10 @@ export class DiContainer {
 
   get providers() {
     return this._modules.reduce((memo, m) => new Map([...memo, ...m.providers]), new Map());
+  }
+
+  get isInitialized() {
+    return this._isInitialized;
   }
 
   public get<T = unknown, R = T>(token: Token<T>): R {

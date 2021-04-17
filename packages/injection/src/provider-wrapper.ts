@@ -62,7 +62,7 @@ export class ProviderWrapper<T = unknown> {
       const inst = this._getSingleton(DEFAULT_INJECTION_CONTEXT);
       await runHooks(inst, 'onModuleInit');
     } else {
-      const visited: Array<unknown> = [this._getSingleton(DEFAULT_INJECTION_CONTEXT)];
+      const visited: Array<unknown> = [];
       for (const inst of this._instances.get(DEFAULT_INJECTION_CONTEXT)?.values() ?? []) {
         if (!visited.includes(inst)) {
           await runHooks(inst, 'onModuleInit');
@@ -77,7 +77,7 @@ export class ProviderWrapper<T = unknown> {
       const inst = this._getSingleton(DEFAULT_INJECTION_CONTEXT);
       await runHooks(inst, 'onModuleDidInit');
     } else {
-      const visited: Array<unknown> = [this._getSingleton(DEFAULT_INJECTION_CONTEXT)];
+      const visited: Array<unknown> = [];
       for (const inst of this._instances.get(DEFAULT_INJECTION_CONTEXT)?.values() ?? []) {
         if (!visited.includes(inst)) {
           await runHooks(inst, 'onModuleDidInit');
@@ -177,6 +177,12 @@ export class ProviderWrapper<T = unknown> {
 
     inquirerInstances.set(inquirer, inst);
     this._instances.set(context, inquirerInstances);
+
+    if (this._hostModule.container?.isInitialized) {
+      // We already initialized the container, call life-cycle methods manually.
+      await runHooks(inst, 'onModuleInit');
+      await runHooks(inst, 'onModuleDidInit');
+    }
 
     return inst;
   }

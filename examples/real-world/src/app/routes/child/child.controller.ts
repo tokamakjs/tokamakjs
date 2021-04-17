@@ -1,28 +1,24 @@
 import { RouterService } from '@tokamakjs/common';
 import { Controller, onDidMount, onDidRender } from '@tokamakjs/react';
 
-import { ServiceA, ServiceB } from '../../services';
+import { ServiceA } from '../../services';
 
 @Controller()
 export class ChildController {
-  constructor(
-    private readonly _serviceA: ServiceA,
-    private readonly _serviceB: ServiceB,
-    private readonly _router: RouterService,
-  ) {}
+  constructor(private readonly _serviceA: ServiceA, private readonly _router: RouterService) {}
 
   public doStuff() {
+    console.log(this._serviceA);
     console.log('FROM A', this._serviceA.hello());
-    console.log('FROM B', this._serviceB.bye());
     // this.router.push('/15');
   }
 
   @onDidMount()
   public async doStuffOnMount() {
-    console.log('Hello mount');
+    // console.log('Hello mount');
 
     return () => {
-      console.log('Hello unmount');
+      // console.log('Hello unmount');
     };
   }
 
