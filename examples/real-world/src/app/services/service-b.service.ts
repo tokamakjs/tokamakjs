@@ -9,15 +9,15 @@ export class ServiceB {
   private serviceA?: ServiceA;
 
   constructor(private readonly moduleRef: ModuleRef) {
-    console.log(
-      'A transient instance will always be instantiated before being injected. This message can appear more than once.',
-    );
+    // console.log(
+    //   'A transient instance will always be instantiated before being injected. This message can appear more than once.',
+    // );
   }
 
   @onModuleInit()
   public onModuleInit() {
     this.serviceA = this.moduleRef.get(ServiceA);
-    console.log('THIS SHOULD BE CALLED', this.serviceA);
+    // console.log('THIS SHOULD BE CALLED', this.serviceA);
   }
 
   public bye() {

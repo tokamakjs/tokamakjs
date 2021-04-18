@@ -5,3 +5,4 @@ export { TokamakApp } from './tokamak-app';
 export * from './routing';
 export * from './interfaces';
 export { useController, useAppContext, useResolve } from './hooks';
+export { hook } from './utils';

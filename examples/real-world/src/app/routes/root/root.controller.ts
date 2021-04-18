@@ -1,7 +1,7 @@
-import { RouterService } from '@tokamakjs/common';
 import {
   Controller,
   effect,
+  hook,
   onDidMount,
   onDidRender,
   ref,
@@ -19,10 +19,12 @@ export class RootController {
 
   @ref public counterRef = 0;
 
-  private readonly _params = useParams();
-  private readonly _serviceB = useResolve(ServiceB);
+  private readonly _params = hook(() => useParams());
+  private readonly _serviceB = hook(() => useResolve(ServiceB));
 
-  constructor(private readonly _serviceA: ServiceA, private readonly _router: RouterService) {}
+  constructor(private readonly _serviceA: ServiceA) {
+    console.log('how many times');
+  }
 
   @onDidMount()
   public doStuffOnMount() {
@@ -35,7 +37,7 @@ export class RootController {
 
   @onDidRender()
   public doStuffAfterRender() {
-    // console.log(this._params);
+    console.log(this._params);
     // console.log('Root params:', this._params.projectId);
   }
 
@@ -47,11 +49,6 @@ export class RootController {
 
   public doStuff() {
     console.log('FROM A', this._serviceA.hello());
-
-    console.log(this._serviceB);
-
-    if (!this._serviceB[0]) {
-      console.log('FROM B', this._serviceB[1].bye());
-    }
+    console.log('FROM B', this._serviceB?.bye());
   }
 }
