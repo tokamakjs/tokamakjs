@@ -44,15 +44,15 @@ function _createConstructProxy(Target: Function): Function {
     construct(Target: any, args: Array<any>): DecoratedController {
       const instance = new Target(...args);
 
-      // Create useState keys
+      // useState keys
       const stateKeys = Reflector.getStateKeys(instance) ?? [];
       const stateMap = new Map<PropertyKey, ReturnType<typeof useState>>();
 
-      // Create useRef keys
+      // useRef keys
       const refKeys = Reflector.getRefKeys(instance) ?? [];
       const refMap = new Map<PropertyKey, ReturnType<typeof useRef>>();
 
-      // Create useEffect methods
+      // useEffect methods
       const effectKeys = Reflector.getEffectKeysMap(instance) ?? new Map<PropertyKey, DepsFn>();
 
       const proxiedInstance = _createAccessProxy(instance, stateMap, refMap) as DecoratedController;
@@ -62,7 +62,20 @@ function _createConstructProxy(Target: Function): Function {
           stateKeys.forEach((key) => stateMap.set(key, useState(instance[key])));
           refKeys.forEach((key) => refMap.set(key, useRef(instance[key])));
           [...effectKeys.keys()].forEach((key) => {
-            useEffect(instance[key].bind(proxiedInstance), effectKeys!.get(key)!(proxiedInstance));
+            const hookBody = instance[key].bind(proxiedInstance);
+            const deps = effectKeys.get(key)!(proxiedInstance);
+
+            useEffect(() => {
+              const unmountCb = hookBody();
+
+              return () => {
+                if (typeof unmountCb === 'function') {
+                  return unmountCb();
+                } else if (unmountCb instanceof Promise) {
+                  return unmountCb.then((cb) => cb());
+                }
+              };
+            }, deps);
           });
           HookService.callHooks(proxiedInstance);
         },

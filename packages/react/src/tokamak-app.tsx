@@ -41,14 +41,15 @@ export class TokamakApp {
 
   public render(selector: string, appContext: unknown = {}): void {
     const RootNode = this._RootNode;
+    const Router = this._Router;
     ReactDom.render(
-      <this._Router>
+      <Router>
         <DiContainerContext.Provider value={this._container}>
           <AppContext.Provider value={appContext}>
             <RootNode />
           </AppContext.Provider>
         </DiContainerContext.Provider>
-      </this._Router>,
+      </Router>,
       document.querySelector(selector),
     );
   }
