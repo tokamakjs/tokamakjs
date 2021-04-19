@@ -2,13 +2,14 @@ import { RouterService } from '@tokamakjs/common';
 import { Location, To } from 'history';
 
 import { HookService } from '../../decorators/hook-service.decorator';
-import { useLocation, useParams } from '../../routing';
+import { useLocation, useNavigate, useParams } from '../../routing';
 import { hook } from '../../utils';
 
 @HookService()
 export class RouterHookService extends RouterService {
   private readonly _params = hook(() => useParams());
   private readonly _location = hook(() => useLocation());
+  private readonly _navigate = hook(() => useNavigate());
 
   get location(): Location {
     return this._location;
@@ -23,10 +24,10 @@ export class RouterHookService extends RouterService {
   }
 
   public push(to: To, state?: object | null | undefined): void {
-    throw new Error('Method not implemented.');
+    this._navigate(to, { state });
   }
 
   public replace(to: To, state?: object | null | undefined): void {
-    throw new Error('Method not implemented.');
+    this._navigate(to, { state, replace: true });
   }
 }

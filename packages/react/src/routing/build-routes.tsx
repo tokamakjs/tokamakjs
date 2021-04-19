@@ -2,8 +2,8 @@ import { Class, DiContainer } from '@tokamakjs/injection';
 import React from 'react';
 
 import { Reflector } from '../reflection';
+import { RouteObject } from '../routing';
 import { RouteDefinition } from '../types';
-import { RouteObject } from './router';
 
 function _transformRoutes(
   routing: Array<RouteDefinition>,
@@ -17,6 +17,7 @@ function _transformRoutes(
       path,
       element: <Component />,
       children: _transformRoutes(children, context),
+      caseSensitive: false,
     });
   }
 

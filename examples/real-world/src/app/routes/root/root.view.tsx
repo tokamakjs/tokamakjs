@@ -17,6 +17,7 @@ export const RootView = () => {
       <div>
         {ctrl.counter} - <button onClick={() => ctrl.counter++}>Increase Counter</button>
       </div>
+      <h2>Children starts from here: </h2>
       <Outlet />
     </Fragment>
   );

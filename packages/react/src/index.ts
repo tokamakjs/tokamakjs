@@ -3,7 +3,6 @@ export { Injectable, onModuleInit, onModuleDidInit, ModuleRef } from '@tokamakjs
 export * from './decorators';
 export { TokamakApp } from './tokamak-app';
 export * from './routing';
-export * from './interfaces';
 export { useController, useAppContext, useResolve } from './hooks';
 export { hook } from './utils';
 export { RouterModule } from './modules';
