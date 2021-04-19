@@ -28,14 +28,14 @@ export class TokamakApp {
     });
 
     const routes = buildRoutes(RootApp, container);
-    const RootNode = () => useRoutes(routes);
+    const RootNode = () => useRoutes(routes, config.basePath);
 
     return new TokamakApp(RootNode, Router, container);
   }
 
   private constructor(
     private readonly _RootNode: ElementType,
-    private readonly _Router: ElementType,
+    private readonly _Router: typeof BrowserRouter | typeof HashRouter | typeof MemoryRouter,
     private readonly _container: DiContainer,
   ) {}
 

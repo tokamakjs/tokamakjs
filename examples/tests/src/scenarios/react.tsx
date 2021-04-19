@@ -89,7 +89,7 @@ export const TestViewB = () => {
   routing: [
     createRoute('/test-a', TestViewA, [createRoute('/test-b', TestViewB)]),
     createRoute('/test-b', TestViewB),
-    createRedirection('/', '/test-a'),
+    createRedirection('/', '/my-basepath/test-a'),
   ],
   imports: [RouterModule],
 })
@@ -98,6 +98,7 @@ export class TestModule {}
 async function test() {
   const app = await TokamakApp.create(TestModule, {
     historyMode: 'hash',
+    basePath: '/my-basepath',
   });
 
   app.render('#root', { hello: 'world' });
