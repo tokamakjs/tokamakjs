@@ -2,14 +2,16 @@ import {
   Controller,
   Injectable,
   Outlet,
+  RouterModule,
   SubApp,
   TokamakApp,
   createRedirection,
   createRoute,
-  observable,
   onDidMount,
   onDidRender,
+  state,
   useAppContext,
+  useController,
 } from '@tokamakjs/react';
 import React from 'react';
 
@@ -18,23 +20,9 @@ export class ServiceA {
   public readonly id = 'ServiceA';
 }
 
-export const TestViewA = (ctrl: TestControllerA) => {
-  return (
-    <div>
-      <h1>TestViewA</h1>
-      <h2>ServiceA: {ctrl.serviceA.id}</h2>
-      <h2>Value: {ctrl.value}</h2>
-      <button onClick={() => ctrl.increase()}>Increase value</button>
-      <br />
-      <br />
-      <Outlet />
-    </div>
-  );
-};
-
-@Controller({ view: TestViewA })
+@Controller()
 export class TestControllerA {
-  @observable public value: number = 0;
+  @state public value: number = 0;
 
   constructor(public readonly serviceA: ServiceA) {}
 
@@ -53,8 +41,39 @@ export class TestControllerA {
   }
 }
 
-export const TestViewB = (ctrl: TestControllerB) => {
+export const TestViewA = () => {
+  const ctrl = useController(TestControllerA);
+  return (
+    <div>
+      <h1>TestViewA</h1>
+      <h2>ServiceA: {ctrl.serviceA.id}</h2>
+      <h2>Value: {ctrl.value}</h2>
+      <button onClick={() => ctrl.increase()}>Increase value</button>
+      <br />
+      <br />
+      <Outlet />
+    </div>
+  );
+};
+
+@Controller()
+export class TestControllerB {
+  constructor(public readonly serviceA: ServiceA) {}
+
+  @onDidMount()
+  public onDidMount() {
+    console.log('TestControllerB :: onDidMount');
+  }
+
+  @onDidRender()
+  public onDidRender() {
+    console.log('TestControllerB :: onDidRender');
+  }
+}
+
+export const TestViewB = () => {
   const appContext = useAppContext() as { hello: string };
+  const ctrl = useController(TestControllerB);
   return (
     <div>
       <h1>TestViewB</h1>
@@ -65,18 +84,14 @@ export const TestViewB = (ctrl: TestControllerB) => {
   );
 };
 
-@Controller({ view: TestViewB })
-export class TestControllerB {
-  constructor(public readonly serviceA: ServiceA) {}
-}
-
 @SubApp({
   providers: [ServiceA],
   routing: [
-    createRoute('/test-a', TestControllerA, [createRoute('/test-b', TestControllerB)]),
-    createRoute('/test-b', TestControllerB),
+    createRoute('/test-a', TestViewA, [createRoute('/test-b', TestViewB)]),
+    createRoute('/test-b', TestViewB),
     createRedirection('/', '/test-a'),
   ],
+  imports: [RouterModule],
 })
 export class TestModule {}
 
@@ -85,9 +100,7 @@ async function test() {
     historyMode: 'hash',
   });
 
-  app.setAppContext({ hello: 'world' });
-
-  app.render('#root');
+  app.render('#root', { hello: 'world' });
 }
 
 test();

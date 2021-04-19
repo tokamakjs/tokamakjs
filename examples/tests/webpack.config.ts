@@ -60,7 +60,7 @@ const config: Configuration = {
         test: /\.js$/,
         loader: 'source-map-loader',
         // These packages don't provide their source
-        exclude: [/react-mapbox-wrapper/, /urql-computed-exchange/, /use-filters/],
+        exclude: [/react-mapbox-wrapper/, /urql-computed-exchange/, /use-filters/, /react-router/],
       },
       {
         test: /\.css$/,
