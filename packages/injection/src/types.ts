@@ -65,18 +65,6 @@ export type Provider<T = unknown> =
   | ValueProvider<T>
   | FactoryProvider<T>;
 
-export function isClass(fn: any): fn is Class {
-  try {
-    new fn();
-  } catch (err) {
-    if (err.message.indexOf('is not a constructor') >= 0) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
 export function isClassProvider(p: any): p is ClassProvider {
   return p?.useClass != null;
 }

@@ -7,7 +7,6 @@ import {
   InjectionContext,
   Provider,
   Token,
-  isClass,
   isClassProvider,
   isFactoryProvider,
   isValueProvider,
@@ -22,7 +21,7 @@ export class ProviderWrapper<T = unknown> {
   private readonly _instances: Map<InjectionContext, Map<Inquirer, T>> = new Map();
 
   constructor(private readonly _hostModule: Module, provider: Provider<T>) {
-    if (isClass(provider)) {
+    if (typeof provider === 'function') {
       const { scope } = Reflector.getProviderMetadata(provider);
       this._provider = { useClass: provider, scope, provide: provider };
     } else {
@@ -63,7 +62,7 @@ export class ProviderWrapper<T = unknown> {
       const inst = this._getSingleton(DEFAULT_INJECTION_CONTEXT);
       await runHooks(inst, 'onModuleInit');
     } else {
-      const visited: Array<unknown> = [this._getSingleton(DEFAULT_INJECTION_CONTEXT)];
+      const visited: Array<unknown> = [];
       for (const inst of this._instances.get(DEFAULT_INJECTION_CONTEXT)?.values() ?? []) {
         if (!visited.includes(inst)) {
           await runHooks(inst, 'onModuleInit');
@@ -78,7 +77,7 @@ export class ProviderWrapper<T = unknown> {
       const inst = this._getSingleton(DEFAULT_INJECTION_CONTEXT);
       await runHooks(inst, 'onModuleDidInit');
     } else {
-      const visited: Array<unknown> = [this._getSingleton(DEFAULT_INJECTION_CONTEXT)];
+      const visited: Array<unknown> = [];
       for (const inst of this._instances.get(DEFAULT_INJECTION_CONTEXT)?.values() ?? []) {
         if (!visited.includes(inst)) {
           await runHooks(inst, 'onModuleDidInit');
@@ -93,7 +92,7 @@ export class ProviderWrapper<T = unknown> {
   }
 
   public async resolveInstance(context: InjectionContext, inquirer: Inquirer = this): Promise<T> {
-    if (this.hasInstance(context, inquirer)) {
+    if (this._hasInstance(context, inquirer)) {
       return this.getInstance(context, inquirer);
     }
 
@@ -101,7 +100,9 @@ export class ProviderWrapper<T = unknown> {
   }
 
   public getInstance(context: InjectionContext, inquirer: Inquirer = this): T {
-    const inst = this._instances.get(context)?.get(inquirer);
+    const inst = this.isSingleton
+      ? this._getSingleton(context)
+      : this._instances.get(context)?.get(inquirer);
 
     if (inst == null) {
       throw new Error('No instance found.');
@@ -110,12 +111,22 @@ export class ProviderWrapper<T = unknown> {
     return inst;
   }
 
-  public hasInstance(context: InjectionContext, inquirer: Inquirer): boolean {
+  private _hasInstance(context: InjectionContext, inquirer: Inquirer): boolean {
+    if (this.isSingleton) {
+      return this._instances.get(context)?.get(this) != null;
+    }
+
     return this._instances.get(context)?.get(inquirer) != null;
   }
 
   private _getSingleton(context: InjectionContext): T {
-    return this.getInstance(context, this);
+    const inst = this._instances.get(context)?.get(this);
+
+    if (inst == null) {
+      throw new Error('No instance found.');
+    }
+
+    return inst;
   }
 
   private _setSingleton(context: InjectionContext, singleton: T): void {
@@ -130,20 +141,16 @@ export class ProviderWrapper<T = unknown> {
   }
 
   private async _createInstance(context: InjectionContext, inquirer: Inquirer): Promise<T> {
-    if (this.hasInstance(context, inquirer)) {
+    if (this._hasInstance(context, inquirer)) {
       return this.getInstance(context, inquirer);
     }
 
     const deps = await this._resolveDependencies(context, inquirer);
 
     const inst: T = await run(async () => {
-      if (this.isSingleton && this.hasInstance(context, this)) {
-        return this._getSingleton(context);
-      }
-
       // Do this again in case we created the instance when
       // resolving dependencies
-      if (this.hasInstance(context, inquirer)) {
+      if (this._hasInstance(context, inquirer)) {
         return this.getInstance(context, inquirer);
       }
 
@@ -171,6 +178,12 @@ export class ProviderWrapper<T = unknown> {
     inquirerInstances.set(inquirer, inst);
     this._instances.set(context, inquirerInstances);
 
+    if (this._hostModule.container?.isInitialized) {
+      // We already initialized the container, call life-cycle methods manually.
+      await runHooks(inst, 'onModuleInit');
+      await runHooks(inst, 'onModuleDidInit');
+    }
+
     return inst;
   }
 
@@ -187,7 +200,7 @@ export class ProviderWrapper<T = unknown> {
       const depWrapper = this._resolveDependency(dep, context);
 
       let depValue: unknown;
-      if (depWrapper.hasInstance(context, inquirer)) {
+      if (depWrapper._hasInstance(context, inquirer)) {
         depValue = depWrapper.getInstance(context, inquirer);
       } else {
         depValue = await depWrapper.resolveInstance(context, inquirer);

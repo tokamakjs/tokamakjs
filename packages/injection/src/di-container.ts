@@ -4,6 +4,7 @@ import { InvalidScopeException, UnknownElementException } from './exceptions';
 import { DEFAULT_INJECTION_CONTEXT } from './injection-context';
 import { Module } from './module';
 import { ProviderWrapper } from './provider-wrapper';
+import { Reflector } from './reflection';
 import { InjectionContext, ModuleDefinition, Provider, Token, isForwardReference } from './types';
 
 const GLOBAL_MODULE_NAME = '__GLOBAL_MODULE__';
@@ -55,8 +56,12 @@ export class DiContainer {
     await container._callOnInit();
     await container._callOnDidInit();
 
+    container._isInitialized = true;
+
     return container;
   }
+
+  private _isInitialized = false;
 
   private constructor(private readonly _modules: Array<Module>) {
     this._modules.forEach((module) => (module.container = this));
@@ -68,6 +73,10 @@ export class DiContainer {
 
   get providers() {
     return this._modules.reduce((memo, m) => new Map([...memo, ...m.providers]), new Map());
+  }
+
+  get isInitialized() {
+    return this._isInitialized;
   }
 
   public get<T = unknown, R = T>(token: Token<T>): R {
@@ -96,6 +105,20 @@ export class DiContainer {
     }
 
     return await provider.resolveInstance(context, inquirer);
+  }
+
+  public async resolveDependencies<T>(Class: Class<T>): Promise<T> {
+    const deps = Reflector.getConstructorDependencies(Class);
+    const resolvedDependencies = await Promise.all(
+      deps.map(async (token) => await this.resolve(token)),
+    );
+    return new Class(...resolvedDependencies);
+  }
+
+  public resolveDependenciesSync<T>(Class: Class<T>): T {
+    const deps = Reflector.getConstructorDependencies(Class);
+    const resolvedDependencies = deps.map((token) => this.get(token));
+    return new Class(...resolvedDependencies);
   }
 
   private async _createInstances(): Promise<void> {

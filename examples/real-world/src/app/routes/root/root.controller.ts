@@ -1,21 +1,28 @@
 import { RouterService } from '@tokamakjs/common';
-import { Controller, onDidMount, onDidRender } from '@tokamakjs/react';
+import {
+  Controller,
+  effect,
+  hook,
+  onDidMount,
+  onDidRender,
+  ref,
+  state,
+  useResolve,
+} from '@tokamakjs/react';
 
 import { ServiceA, ServiceB } from '../../services';
-import { RootView } from './root.view';
 
-@Controller({ view: RootView })
+@Controller()
 export class RootController {
-  constructor(
-    private readonly serviceA: ServiceA,
-    private readonly serviceB: ServiceB,
-    private readonly router: RouterService,
-  ) {}
+  @state public counter = 0;
+  @state public name = 'Root';
 
-  public doStuff() {
-    console.log('FROM A', this.serviceA.hello());
-    console.log('FROM B', this.serviceB.bye());
-    this.router.push('/15/12');
+  @ref public counterRef = 0;
+
+  private readonly _serviceB = hook(() => useResolve(ServiceB));
+
+  constructor(private readonly _serviceA: ServiceA, private readonly _router: RouterService) {
+    console.log('how many times');
   }
 
   @onDidMount()
@@ -29,7 +36,18 @@ export class RootController {
 
   @onDidRender()
   public doStuffAfterRender() {
-    const params = this.router.getParams(this);
-    console.log('Root params:', params.projectId);
+    console.log('Root params:', this._router.getParams(this));
+  }
+
+  @effect((inst: RootController) => [inst.name])
+  public onNameChange() {
+    console.log('name change');
+    this.counter = this.counter + 1;
+  }
+
+  public doStuff() {
+    console.log('FROM A', this._serviceA.hello());
+    console.log('FROM B', this._serviceB?.bye());
+    this._router.push('/child/12');
   }
 }
