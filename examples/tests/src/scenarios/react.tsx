@@ -1,3 +1,4 @@
+import { delay, tracked } from '@tokamakjs/common';
 import {
   Controller,
   Injectable,
@@ -58,28 +59,41 @@ export const TestViewA = () => {
 
 @Controller()
 export class TestControllerB {
+  @state public isLoading = false;
+
   constructor(public readonly serviceA: ServiceA) {}
 
   @onDidMount()
-  public onDidMount() {
+  public onDidMount(): void {
     console.log('TestControllerB :: onDidMount');
   }
 
   @onDidRender()
-  public onDidRender() {
+  public onDidRender(): void {
     console.log('TestControllerB :: onDidRender');
+  }
+
+  @tracked((self: TestControllerB, v) => (self.isLoading = v))
+  public async doSomethingAsync(): Promise<void> {
+    await delay(1000);
   }
 }
 
 export const TestViewB = () => {
   const appContext = useAppContext() as { hello: string };
   const ctrl = useController(TestControllerB);
+
+  if (ctrl.isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div>
       <h1>TestViewB</h1>
       <h2>ServiceA: {ctrl.serviceA.id}</h2>
       <h3>App Context:</h3>
       <pre>{JSON.stringify(appContext, null, 2)}</pre>
+      <button onClick={() => ctrl.doSomethingAsync()}>Do Something Async</button>
     </div>
   );
 };
