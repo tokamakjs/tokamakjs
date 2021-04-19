@@ -59,6 +59,9 @@ function _createConstructProxy(Target: Function): Function {
 
       proxiedInstance.__controller__ = {
         callHooks: () => {
+          // Make sure we call hooks from dependencies as fast as we can
+          HookService.callHooks(proxiedInstance);
+
           stateKeys.forEach((key) => stateMap.set(key, useState(instance[key])));
           refKeys.forEach((key) => refMap.set(key, useRef(instance[key])));
           [...effectKeys.keys()].forEach((key) => {
@@ -77,7 +80,6 @@ function _createConstructProxy(Target: Function): Function {
               };
             }, deps);
           });
-          HookService.callHooks(proxiedInstance);
         },
       };
 
