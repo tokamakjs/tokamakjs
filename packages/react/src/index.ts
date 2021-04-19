@@ -6,3 +6,4 @@ export * from './routing';
 export * from './interfaces';
 export { useController, useAppContext, useResolve } from './hooks';
 export { hook } from './utils';
+export { RouterModule } from './modules';

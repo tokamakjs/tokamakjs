@@ -1,3 +1,4 @@
+import { RouterService } from '@tokamakjs/common';
 import {
   Controller,
   effect,
@@ -6,7 +7,6 @@ import {
   onDidRender,
   ref,
   state,
-  useParams,
   useResolve,
 } from '@tokamakjs/react';
 
@@ -19,10 +19,9 @@ export class RootController {
 
   @ref public counterRef = 0;
 
-  private readonly _params = hook(() => useParams());
   private readonly _serviceB = hook(() => useResolve(ServiceB));
 
-  constructor(private readonly _serviceA: ServiceA) {
+  constructor(private readonly _serviceA: ServiceA, private readonly _router: RouterService) {
     console.log('how many times');
   }
 
@@ -37,13 +36,12 @@ export class RootController {
 
   @onDidRender()
   public doStuffAfterRender() {
-    console.log(this._params);
-    // console.log('Root params:', this._params.projectId);
+    console.log('Root params:', this._router.getParams(this));
   }
 
   @effect((inst: RootController) => [inst.name])
   public onNameChange() {
-    // console.log('name change');
+    console.log('name change');
     this.counter = this.counter + 1;
   }
 

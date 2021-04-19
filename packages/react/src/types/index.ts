@@ -30,12 +30,22 @@ export type DepsFn = (instance: any) => Array<any> | undefined;
  * The final type of a class after being decorated with
  * the @Controller() decorator.
  */
-export type DecoratedController<T = any> = {
+export type DecoratedController<T = any> = T & {
   __controller__: {
     callHooks: () => void;
   };
-} & { [K in keyof T]: T[K] };
+};
 
-export function isDecoratedController(controller: any): controller is DecoratedController {
-  return controller?.__controller__ != null;
+export function isDecoratedController<T>(controller: T): controller is DecoratedController<T> {
+  return (controller as any)?.__controller__ != null;
+}
+
+export type DecoratedHookService<T = any> = T & {
+  __hookService__: {
+    callHooks: () => void;
+  };
+};
+
+export function isDecoratedHookService<T>(service: T): service is DecoratedHookService<T> {
+  return (service as any)?.__hookService__ != null;
 }

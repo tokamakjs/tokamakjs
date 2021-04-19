@@ -9,8 +9,9 @@
     "tsBuildInfoFile": "./lib/react.tsbuildinfo",
     "paths": {
       "@tokamakjs/injection": ["../injection"],
+      "@tokamakjs/common": ["../common"],
     }
   },
   "exclude": ["node_modules", "lib"],
-  "references": [{ "path": "../injection" }]
+  "references": [{ "path": "../injection" }, { "path": "../common" }]
 }

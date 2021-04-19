@@ -1,7 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { Reflector } from '../reflection';
-import { ControllerMetadata, DecoratedController } from '../types';
+import {
+  ControllerMetadata,
+  DecoratedController,
+  DecoratedHookService,
+  DepsFn,
+  isDecoratedHookService,
+} from '../types';
+import { HookService } from './hook-service.decorator';
 
 function _createAccessProxy(
   target: Object,
@@ -49,7 +56,7 @@ function _createAccessProxy(
 
 function _createConstructProxy(Target: Function): Function {
   const proxy = new Proxy(Target, {
-    construct(Target: any, args): DecoratedController {
+    construct(Target: any, args: Array<any>): DecoratedController {
       const instance = new Target(...args);
 
       // Create useState keys
@@ -61,13 +68,16 @@ function _createConstructProxy(Target: Function): Function {
       const refMap = new Map<PropertyKey, ReturnType<typeof useRef>>();
 
       // Create useEffect methods
-      const effectKeys = Reflector.getEffectKeysMap(instance);
+      const effectKeys = Reflector.getEffectKeysMap(instance) ?? new Map<PropertyKey, DepsFn>();
 
       // Collect hook calls
       const hooksKeys = Object.entries(instance)
         .filter((e: [string, any]) => e[1].__hookCb__ != null)
         .map((e: [string, any]) => e[0]);
       const hooksMap = new Map<PropertyKey, { __hookCb__: Function }>();
+
+      // Collect hook dependencies (HookServices)
+      const hookDeps: Array<DecoratedHookService> = args.filter((a) => isDecoratedHookService(a));
 
       const proxiedInstance = _createAccessProxy(
         instance,
@@ -78,16 +88,15 @@ function _createConstructProxy(Target: Function): Function {
 
       proxiedInstance.__controller__ = {
         callHooks: () => {
-          for (const key of effectKeys?.keys() ?? []) {
-            stateKeys.forEach((key) => stateMap.set(key, useState(instance[key])));
-            refKeys.forEach((key) => refMap.set(key, useRef(instance[key])));
+          stateKeys.forEach((key) => stateMap.set(key, useState(instance[key])));
+          refKeys.forEach((key) => refMap.set(key, useRef(instance[key])));
+          [...effectKeys.keys()].forEach((key) => {
             useEffect(instance[key].bind(proxiedInstance), effectKeys!.get(key)!(proxiedInstance));
-            hooksKeys.forEach((key) => hooksMap.set(key, instance[key].__hookCb__()));
-          }
+          });
+          hooksKeys.forEach((key) => hooksMap.set(key, instance[key].__hookCb__()));
+          hookDeps.forEach((dep) => HookService.callHooks(dep));
         },
       };
-
-      proxiedInstance.__controller__.callHooks();
 
       return proxiedInstance;
     },

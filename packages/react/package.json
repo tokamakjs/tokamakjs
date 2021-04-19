@@ -23,6 +23,7 @@
     "react-dom": ">=16"
   },
   "dependencies": {
+    "@tokamakjs/common": "^0.1.0-alpha.42",
     "@tokamakjs/injection": "^0.1.0-alpha.42",
     "history": "^5.0.0",
     "query-string": "^6.13.8",

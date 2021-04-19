@@ -1,5 +1,4 @@
-import { RouterModule } from '@tokamakjs/common';
-import { SubApp, createRoute } from '@tokamakjs/react';
+import { RouterModule, SubApp, createRoute } from '@tokamakjs/react';
 
 import { ChildView } from './routes/child';
 import { RootView } from './routes/root';

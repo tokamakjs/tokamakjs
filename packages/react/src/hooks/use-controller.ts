@@ -28,9 +28,9 @@ export function useController<T>(Controller: Class<T>): T {
 
       throw err;
     }
-  } else {
-    instanceRef.current?.__controller__.callHooks();
   }
+
+  instanceRef.current?.__controller__.callHooks();
 
   return instanceRef.current;
 }
