@@ -27,10 +27,10 @@ export class RootController {
 
   @onDidMount()
   public doStuffOnMount() {
-    // console.log('Hello mount');
+    console.log('Hello mount');
 
     return () => {
-      // console.log('Hello unmount');
+      console.log('Hello unmount');
     };
   }
 
@@ -48,5 +48,6 @@ export class RootController {
   public doStuff() {
     console.log('FROM A', this._serviceA.hello());
     console.log('FROM B', this._serviceB?.bye());
+    this._router.push('/child/12');
   }
 }

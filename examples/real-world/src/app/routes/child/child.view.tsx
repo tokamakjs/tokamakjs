@@ -8,6 +8,7 @@ export const ChildView = () => {
 
   return (
     <div>
+      <h1>I'm the child</h1>
       Hello Tokamak (child) <button onClick={() => ctrl.doStuff()}>Click</button>
     </div>
   );

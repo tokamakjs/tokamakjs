@@ -1,12 +1,11 @@
-import { Class, inject } from '@tokamakjs/injection';
-import { History } from 'history';
+import { RouterService } from '@tokamakjs/common';
+import { Class } from '@tokamakjs/injection';
 import urljoin from 'url-join';
 
 import { Controller, onDidMount } from '../decorators';
 import { useController } from '../hooks';
 import { Reflector } from '../reflection';
 import { RouteDefinition, RouteHandler } from '../types';
-import { HISTORY } from './constants';
 
 function _isArrayOfArrays<T>(value: Array<any>): value is Array<Array<T>> {
   return value.length > 0 && Array.isArray(value[0]);
@@ -28,13 +27,13 @@ export function includeRoutes(basepath: string, SubApp: Class): Array<RouteDefin
 }
 
 export function createRedirection(from: string, to: string): RouteDefinition {
-  @Controller({ view: () => null })
+  @Controller()
   class RedirectionController {
-    constructor(@inject(HISTORY) private readonly _history: History) {}
+    constructor(private readonly _router: RouterService) {}
 
     @onDidMount()
     onDidMount() {
-      this._history.replace(to);
+      this._router.replace(to);
     }
   }
 
