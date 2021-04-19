@@ -3,9 +3,16 @@ import { Controller, onDidMount, onDidRender } from '@tokamakjs/react';
 
 import { ServiceA } from '../../services';
 
+interface Params {
+  projectId: string;
+}
+
 @Controller()
 export class ChildController {
-  constructor(private readonly _serviceA: ServiceA, private readonly _router: RouterService) {}
+  constructor(
+    private readonly _serviceA: ServiceA,
+    private readonly _router: RouterService<Params>,
+  ) {}
 
   @onDidMount()
   public async doStuffOnMount() {
