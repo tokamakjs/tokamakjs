@@ -1,20 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { Reflector } from '../reflection';
-import {
-  ControllerMetadata,
-  DecoratedController,
-  DecoratedHookService,
-  DepsFn,
-  isDecoratedHookService,
-} from '../types';
+import { ControllerMetadata, DecoratedController, DepsFn } from '../types';
 import { HookService } from './hook-service.decorator';
 
 function _createAccessProxy(
   target: Object,
   stateMap: Map<PropertyKey, ReturnType<typeof useState>>,
   refMap: Map<PropertyKey, ReturnType<typeof useRef>>,
-  hooksMap: Map<PropertyKey, { __hookCb__: Function }>,
 ): Object {
   return new Proxy(target, {
     get(target: any, p: PropertyKey) {
@@ -24,10 +17,6 @@ function _createAccessProxy(
 
       if (refMap.has(p)) {
         return refMap.get(p)!.current;
-      }
-
-      if (hooksMap.has(p)) {
-        return hooksMap.get(p)!;
       }
 
       return target[p];
@@ -42,10 +31,6 @@ function _createAccessProxy(
       if (refMap.has(p)) {
         refMap.get(p)!.current = value;
         return true;
-      }
-
-      if (hooksMap.has(p)) {
-        return false;
       }
 
       target[p] = value;
@@ -70,21 +55,7 @@ function _createConstructProxy(Target: Function): Function {
       // Create useEffect methods
       const effectKeys = Reflector.getEffectKeysMap(instance) ?? new Map<PropertyKey, DepsFn>();
 
-      // Collect hook calls
-      const hooksKeys = Object.entries(instance)
-        .filter((e: [string, any]) => e[1].__hookCb__ != null)
-        .map((e: [string, any]) => e[0]);
-      const hooksMap = new Map<PropertyKey, { __hookCb__: Function }>();
-
-      // Collect hook dependencies (HookServices)
-      const hookDeps: Array<DecoratedHookService> = args.filter((a) => isDecoratedHookService(a));
-
-      const proxiedInstance = _createAccessProxy(
-        instance,
-        stateMap,
-        refMap,
-        hooksMap,
-      ) as DecoratedController;
+      const proxiedInstance = _createAccessProxy(instance, stateMap, refMap) as DecoratedController;
 
       proxiedInstance.__controller__ = {
         callHooks: () => {
@@ -93,8 +64,7 @@ function _createConstructProxy(Target: Function): Function {
           [...effectKeys.keys()].forEach((key) => {
             useEffect(instance[key].bind(proxiedInstance), effectKeys!.get(key)!(proxiedInstance));
           });
-          hooksKeys.forEach((key) => hooksMap.set(key, instance[key].__hookCb__()));
-          hookDeps.forEach((dep) => HookService.callHooks(dep));
+          HookService.callHooks(proxiedInstance);
         },
       };
 
@@ -107,9 +77,14 @@ function _createConstructProxy(Target: Function): Function {
   return proxy;
 }
 
+/**
+ * A class decorated with @Controller() is just a @HookService() that also
+ * allows the use of @state, @ref, @effect, etc... (basically, a deeper integration
+ * with the view layer)
+ */
 export function Controller(metadata: ControllerMetadata = {}): ClassDecorator {
-  return (target: Function) => {
-    Reflector.addControllerMetadata(target, metadata);
-    return _createConstructProxy(target) as any;
+  return (Target: Function) => {
+    Reflector.addControllerMetadata(Target, metadata);
+    return _createConstructProxy(HookService()(Target) as Function) as any;
   };
 }
