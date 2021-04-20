@@ -1,5 +1,5 @@
 import { DiContainer } from './di-container';
-import { UndefinedDependencyException } from './exceptions';
+import { UndefinedDependencyError } from './errors';
 import { DEFAULT_INJECTION_CONTEXT } from './injection-context';
 import { ModuleRef } from './module-ref';
 import { ProviderWrapper } from './provider-wrapper';
@@ -116,7 +116,7 @@ export class Module {
     // At this point, we tried to resolve from any possible place
     if (wrapper == null) {
       const name = typeof token === 'function' ? token.name : token.toString();
-      throw new UndefinedDependencyException(name, this.name);
+      throw new UndefinedDependencyError(name, this.name);
     }
 
     return wrapper;

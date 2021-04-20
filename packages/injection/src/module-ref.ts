@@ -1,4 +1,4 @@
-import { InvalidScopeException } from './exceptions';
+import { InvalidScopeError } from './errors';
 import { DEFAULT_INJECTION_CONTEXT } from './injection-context';
 import { Module } from './module';
 import { ProviderWrapper } from './provider-wrapper';
@@ -19,7 +19,7 @@ export class ModuleRef {
     }
 
     if (provider.isTransient) {
-      throw new InvalidScopeException(token);
+      throw new InvalidScopeError(token);
     }
 
     return provider.getInstance(DEFAULT_INJECTION_CONTEXT);

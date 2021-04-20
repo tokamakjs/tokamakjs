@@ -1,4 +1,4 @@
-import { CircularDependencyException } from './exceptions';
+import { CircularDependencyError } from './errors';
 import { DEFAULT_INJECTION_CONTEXT, Scope } from './injection-context';
 import { Module } from './module';
 import { Reflector } from './reflection';
@@ -214,7 +214,7 @@ export class ProviderWrapper<T = unknown> {
 
   private _resolveDependency(dependency: Token, context: InjectionContext): ProviderWrapper {
     if (dependency == null) {
-      throw new CircularDependencyException(this.name);
+      throw new CircularDependencyError(this.name);
     }
 
     return this._hostModule.resolveToken(dependency, context);

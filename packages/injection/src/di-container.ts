@@ -1,6 +1,6 @@
 import { Class } from 'type-fest';
 
-import { InvalidScopeException, UnknownElementException } from './exceptions';
+import { InvalidScopeError, UnknownElementError } from './errors';
 import { DEFAULT_INJECTION_CONTEXT } from './injection-context';
 import { Module } from './module';
 import { ProviderWrapper } from './provider-wrapper';
@@ -83,11 +83,11 @@ export class DiContainer {
     const provider = this.providers.get(token) as ProviderWrapper<R>;
 
     if (provider == null) {
-      throw new UnknownElementException(token);
+      throw new UnknownElementError(token);
     }
 
     if (provider.isTransient) {
-      throw new InvalidScopeException(token);
+      throw new InvalidScopeError(token);
     }
 
     return provider.getInstance(DEFAULT_INJECTION_CONTEXT);
@@ -101,7 +101,7 @@ export class DiContainer {
     const provider = this.providers.get(token) as ProviderWrapper<R>;
 
     if (provider == null) {
-      throw new UnknownElementException(token);
+      throw new UnknownElementError(token);
     }
 
     return await provider.resolveInstance(context, inquirer);

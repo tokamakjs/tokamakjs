@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 
-import { NoProviderMetadataException } from '../exceptions';
+import { NoProviderMetadataError } from '../errors';
 import { Scope } from '../injection-context';
 import { Class, ModuleMetadata, ProviderMetadata, Token } from '../types';
 
@@ -23,7 +23,7 @@ export class Reflector {
     const metadata = Reflect.getMetadata('self:provider', metatype);
 
     if (metadata == null) {
-      throw new NoProviderMetadataException(metatype.name);
+      throw new NoProviderMetadataError(metatype.name);
     }
 
     return metadata;

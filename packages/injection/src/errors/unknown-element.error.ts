@@ -1,6 +1,6 @@
 import { Token } from '../types';
 
-export class UnknownElementException extends Error {
+export class UnknownElementError extends Error {
   constructor(token?: Token) {
     const name = typeof token === 'function' ? token.name : token?.toString();
     super(

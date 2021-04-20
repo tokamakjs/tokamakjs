@@ -1,4 +1,4 @@
-export class NoProviderMetadataException extends Error {
+export class NoProviderMetadataError extends Error {
   constructor(name: string) {
     super(
       `Could not resolve provider ${name} metadata. Make sure it's decorated with @Injectable().`,

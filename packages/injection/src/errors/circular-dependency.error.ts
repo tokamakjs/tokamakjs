@@ -1,4 +1,4 @@
-export class CircularDependencyException extends Error {
+export class CircularDependencyError extends Error {
   constructor(context?: string) {
     const ctx = context ? ` inside ${context}` : ``;
     super(

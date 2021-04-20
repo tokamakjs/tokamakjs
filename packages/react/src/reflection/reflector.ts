@@ -2,7 +2,7 @@ import 'reflect-metadata';
 
 import { Injectable, Module, Scope } from '@tokamakjs/injection';
 
-import { NoControllerMetadataException, NoSubAppMetadataException } from '../exceptions';
+import { NoControllerMetadataError, NoSubAppMetadataError } from '../errors';
 import { ControllerMetadata, DepsFn, SubAppMetadata } from '../types';
 
 export class Reflector {
@@ -15,7 +15,7 @@ export class Reflector {
     const metadata = Reflect.getMetadata('self:controller', target);
 
     if (metadata == null) {
-      throw new NoControllerMetadataException(target.name);
+      throw new NoControllerMetadataError(target.name);
     }
 
     return metadata;
@@ -32,7 +32,7 @@ export class Reflector {
     const metadata = Reflect.getMetadata('self:subapp', target);
 
     if (metadata == null) {
-      throw new NoSubAppMetadataException(target.name);
+      throw new NoSubAppMetadataError(target.name);
     }
 
     return metadata;

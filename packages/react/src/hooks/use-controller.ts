@@ -1,10 +1,7 @@
-import { Class, InvalidScopeException } from '@tokamakjs/injection';
+import { Class, InvalidScopeError } from '@tokamakjs/injection';
 import { useRef } from 'react';
 
-import {
-  InvalidControllerDependencyException,
-  NoDecoratedControllerException,
-} from '../exceptions';
+import { InvalidControllerDependencyError, NoDecoratedControllerError } from '../errors';
 import { DecoratedController, isDecoratedController } from '../types';
 import { useDiContainer } from './use-di-container';
 
@@ -19,11 +16,11 @@ export function useController<T>(Controller: Class<T>): T {
       if (isDecoratedController(instance)) {
         instanceRef.current = instance;
       } else {
-        throw new NoDecoratedControllerException(Controller.name);
+        throw new NoDecoratedControllerError(Controller.name);
       }
     } catch (err) {
-      if (err instanceof InvalidScopeException) {
-        throw new InvalidControllerDependencyException(Controller.name);
+      if (err instanceof InvalidScopeError) {
+        throw new InvalidControllerDependencyError(Controller.name);
       }
 
       throw err;
