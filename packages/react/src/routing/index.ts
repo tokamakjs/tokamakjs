@@ -10,3 +10,4 @@ export { BrowserRouter, HashRouter, MemoryRouter, Outlet } from 'react-router-do
 
 export * from './routes';
 export * from './build-routes';
+export * from './components';

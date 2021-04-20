@@ -1,4 +1,4 @@
-import { useController } from '@tokamakjs/react';
+import { Link, useController } from '@tokamakjs/react';
 import React from 'react';
 
 import { ChildController } from './child.controller';
@@ -10,7 +10,7 @@ export const ChildView = () => {
     <div>
       <h1>I'm the child</h1>
       Hello Tokamak (child) <button onClick={() => ctrl.doStuff()}>Click</button>
-      <button onClick={() => ctrl.back()}>Back to root</button>
+      <Link href="/root">Go Back to Root</Link>
     </div>
   );
 };

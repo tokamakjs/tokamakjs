@@ -7,7 +7,7 @@ import { ServiceA, ServiceB } from './services';
 @SubApp({
   routing: [
     createRoute('/root', RootView, [createRoute('/child/:projectId', ChildView)]),
-    createRoute('/:projectId', RootView, [createRoute('/:projectId', ChildView)]),
+    createRoute('/root/:projectId', RootView, [createRoute('/:projectId', ChildView)]),
   ],
   providers: [ServiceA, ServiceB],
   imports: [RouterModule],
