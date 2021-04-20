@@ -12,15 +12,15 @@ const rb = chalk.grey('└');
 const lb = chalk.grey('┘');
 const ss = ' ';
 
-function _repeat(times: number, char: string) {
+function _repeat(times: number, char: string): string {
   return times < 0 ? char : new Array(times).fill(char).join('');
 }
 
-function _join(...args: Array<any>) {
+function _join(...args: Array<any>): string {
   return args.join('');
 }
 
-function _spaced(width: number, text: string) {
+function _spaced(width: number, text: string): string {
   text = truncate(text, width - 3);
   const textLength = stripAnsi(text).length;
   const spaceLength = width - 3 - textLength;

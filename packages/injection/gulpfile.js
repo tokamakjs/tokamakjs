@@ -9,7 +9,7 @@ const ts = gulpTypescript.createProject('tsconfig.json', {
   noUnusedParameters: process.env.NODE_ENV !== 'development',
 });
 
-function cleanPackages() {
+function clean() {
   return new Promise((r) => rimraf('./lib', r));
 }
 
@@ -27,5 +27,5 @@ function watchPackages() {
 }
 
 // Tasks
-module.exports.default = series(cleanPackages, buildLib);
+module.exports.default = series(clean, buildLib);
 module.exports.watch = series(watchPackages);
