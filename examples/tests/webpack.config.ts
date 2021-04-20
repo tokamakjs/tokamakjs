@@ -97,7 +97,8 @@ config.devServer = {
   historyApiFallback: true,
   hot: true,
   inline: true,
-  quiet: true,
+  quiet: false, // odly enough, if quiet is enabled, logs will appear
+  noInfo: true,
 };
 
 export default config;

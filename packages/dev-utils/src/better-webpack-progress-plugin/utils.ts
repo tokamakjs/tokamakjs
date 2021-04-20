@@ -16,6 +16,10 @@ export function parseModuleProgress(moduleProgress?: string) {
 }
 
 export function getModulesMessage(moduleProgress?: string, moduleName?: string): string {
+  if (moduleProgress != null && moduleName == null) {
+    return parseModuleProgress(moduleProgress);
+  }
+
   return moduleProgress == null && moduleName == null
     ? ''
     : `${parseModuleProgress(moduleProgress)} :: ${getShortenedPath(moduleName)}`;
@@ -24,4 +28,27 @@ export function getModulesMessage(moduleProgress?: string, moduleName?: string):
 export function truncate(message: string): string {
   const width = process.stdout.columns != null ? process.stdout.columns - 10 : 50;
   return cliTruncate(message, width, { position: 'middle' });
+}
+
+type FunctionKeys<T> = { [K in keyof T]: T[K] extends Function ? K : never }[keyof T];
+
+export function hookTo<T, K extends FunctionKeys<T>>(
+  target: T,
+  method: K,
+  callback: T[K],
+): VoidFunction {
+  const originalMethod = target[method];
+
+  const { proxy, revoke } = Proxy.revocable(target[method] as Function, {
+    apply(_target, _thisArg, args) {
+      callback(...args);
+    },
+  });
+
+  (target as any)[method] = proxy;
+
+  return () => {
+    (target as any)[method] = originalMethod;
+    revoke();
+  };
 }
