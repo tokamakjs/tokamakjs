@@ -1,4 +1,4 @@
-import { delay, tracked } from '@tokamakjs/common';
+import { delay, tracked, ze } from '@tokamakjs/common';
 import {
   Controller,
   Injectable,
@@ -15,10 +15,39 @@ import {
   useController,
 } from '@tokamakjs/react';
 import React from 'react';
+import { z } from 'zod';
+
+const UserSchema = z.object({
+  id: z.number(),
+  firstName: z.string(),
+  lastName: z.string(),
+});
+
+// @ts-ignore Type instantiation is excessively deep and possibly infinite.
+class UserDto extends ze.ClassFrom(UserSchema) {
+  get fullName(): string {
+    return `${this.firstName} ${this.lastName}`;
+  }
+}
+
+@Injectable()
+export class TestApi {
+  public async fetchData(): Promise<UserDto> {
+    const data: unknown = { id: 1, firstName2: 'test', lastName: 'last' };
+    return ze.validate(data, UserDto);
+  }
+}
 
 @Injectable()
 export class ServiceA {
   public readonly id = 'ServiceA';
+
+  constructor(public readonly api: TestApi) {}
+
+  public async fetchData(): Promise<void> {
+    const data = await this.api.fetchData();
+    console.log('api data', data.fullName);
+  }
 }
 
 @Controller()
@@ -40,6 +69,10 @@ export class TestControllerA {
   public increase() {
     this.value += 1;
   }
+
+  public fetchData() {
+    this.serviceA.fetchData();
+  }
 }
 
 export const TestViewA = () => {
@@ -50,6 +83,9 @@ export const TestViewA = () => {
       <h2>ServiceA: {ctrl.serviceA.id}</h2>
       <h2>Value: {ctrl.value}</h2>
       <button onClick={() => ctrl.increase()}>Increase value</button>
+      <br />
+      <br />
+      <button onClick={() => ctrl.fetchData()}>Fetch data</button>
       <br />
       <br />
       <Outlet />
@@ -99,7 +135,7 @@ export const TestViewB = () => {
 };
 
 @SubApp({
-  providers: [ServiceA],
+  providers: [ServiceA, TestApi],
   routing: [
     createRoute('/test-a', TestViewA, [createRoute('/test-b', TestViewB)]),
     createRoute('/test-b', TestViewB),

@@ -39,7 +39,7 @@ export class RootController {
     console.log('Root params:', this._router.getParams(this));
   }
 
-  @effect((inst: RootController) => [inst.name])
+  @effect((self: RootController) => [self.name])
   public onNameChange() {
     console.log('name change');
     this.counter = this.counter + 1;

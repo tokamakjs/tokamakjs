@@ -24,11 +24,15 @@
     "react": "^16.13.1"
   },
   "devDependencies": {
-    "graphql": "^15.3.0"
+    "class-transformer": "^0.4.0",
+    "graphql": "^15.3.0",
+    "zod": "^3.0.0-alpha.33"
   },
   "peerDependencies": {
     "@babel/runtime": "*",
-    "graphql": "^15.x"
+    "class-transformer": ">=0.4.0",
+    "graphql": "^15.x",
+    "zod": ">3.0.0-alpha"
   },
   "gitHead": "1ad2efd4f2f2aa2c1516a13393582c44d875368c"
 }
