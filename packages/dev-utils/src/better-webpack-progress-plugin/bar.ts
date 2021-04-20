@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+import c from 'chalk';
 import figures from 'figures';
 import logUpdate from 'log-update';
 import { ProgressBar } from 'ongoing';
@@ -9,11 +9,11 @@ import { capitalize, getModulesMessage, truncate } from './utils';
 process.on('SIGINT', () => process.exit());
 
 export function barProgress(): ProgressPlugin.Handler {
-  const format = `${chalk.bold(':msg')}  :bar  ${chalk.green(':percent')} :mpr`;
+  const format = `${c.bold(':msg')}  :bar  ${c.green(':percent')} :mpr`;
 
   const progressBar = new ProgressBar(format, {
-    completedChar: chalk.green('═'),
-    incompletedChar: chalk.grey('─'),
+    completedChar: c.green('═'),
+    incompletedChar: c.grey('─'),
   });
 
   return (
@@ -28,7 +28,7 @@ export function barProgress(): ProgressPlugin.Handler {
     logUpdate(
       progressBar.update(percentage, {
         msg: capitalize(message),
-        mpr: `\n ${chalk.grey(`${figures.arrowRight} ${moduleMessage}`)}`,
+        mpr: `\n ${c.grey(`${figures.arrowRight} ${moduleMessage}`)}`,
       }),
     );
 

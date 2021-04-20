@@ -1,15 +1,15 @@
-import chalk from 'chalk';
+import c from 'chalk';
 import truncate from 'cli-truncate';
 import stripAnsi from 'strip-ansi';
 
-const rt = chalk.grey('┌');
-const lt = chalk.grey('┐');
-const vv = chalk.grey('│');
-const hh = chalk.grey('─');
-const rm = chalk.grey('├');
-const lm = chalk.grey('┤');
-const rb = chalk.grey('└');
-const lb = chalk.grey('┘');
+const rt = c.grey('┌');
+const lt = c.grey('┐');
+const vv = c.grey('│');
+const hh = c.grey('─');
+const rm = c.grey('├');
+const lm = c.grey('┤');
+const rb = c.grey('└');
+const lb = c.grey('┘');
 const ss = ' ';
 
 function _repeat(times: number, char: string): string {

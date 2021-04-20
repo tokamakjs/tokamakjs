@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+import c from 'chalk';
 import figures from 'figures';
 import { ProgressPlugin } from 'webpack';
 
@@ -36,7 +36,7 @@ function _writeToStdout(text: string): void {
 }
 
 export function detailedProgress(): ProgressPlugin.Handler {
-  _writeToStdout(chalk.bold('Webpack starting...'));
+  _writeToStdout(c.bold('Webpack starting...'));
 
   let latestMessage: string;
 
@@ -52,7 +52,7 @@ export function detailedProgress(): ProgressPlugin.Handler {
     if (newMessage === latestMessage) {
       const logMessage = _getLogMessage(percentage, moduleProgress, moduleName);
       if (logMessage) {
-        _writeToStdout(chalk.grey(truncate(logMessage)));
+        _writeToStdout(c.grey(truncate(logMessage)));
       }
     } else if (percentage >= 1 && newMessage) {
       _writeToStdout(figures.pointer + ' ' + newMessage);
@@ -63,7 +63,7 @@ export function detailedProgress(): ProgressPlugin.Handler {
 
       const logMessage = _getLogMessage(percentage, moduleProgress, moduleName);
       if (logMessage) {
-        _writeToStdout(chalk.grey(truncate(logMessage)));
+        _writeToStdout(c.grey(truncate(logMessage)));
       }
     }
 
