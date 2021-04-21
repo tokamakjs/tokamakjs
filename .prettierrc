@@ -7,5 +7,7 @@
   "trailingComma": "all",
   "bracketSpacing": true,
   "jsxBracketSameLine": true,
-  "arrowParens": "always"
+  "quoteProps": "consistent",
+  "arrowParens": "always",
+  "htmlWhitespaceSensitivity": "strict"
 }
