@@ -40,11 +40,13 @@ export class BetterProgressPlugin extends ProgressPlugin {
       process.stdout.write(clearScreen);
       this._summary();
 
-      this._capturedLogMessages.forEach((message) => {
-        process.stderr.write(message + '\n');
-      });
+      if (this._capturedLogMessages.length > 0) {
+        this._capturedLogMessages.forEach((message) => {
+          process.stderr.write(message + '\n');
+        });
 
-      process.stdout.write('\n\n');
+        process.stdout.write('\n\n');
+      }
     });
   }
 }
