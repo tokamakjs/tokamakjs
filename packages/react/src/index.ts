@@ -10,6 +10,7 @@ export {
   includeRoutes,
   useNavigate,
   useLocation,
+  useParams,
 } from './routing';
 export { useController, useAppContext, useResolve } from './hooks';
 export { hook } from './utils';
