@@ -9,10 +9,8 @@ export function useResolve<T = unknown, R = T>(token: Token<T>): R | undefined {
 
   useEffect(() => {
     const _resolve = async () => {
-      if (instance == null) {
-        const instance = await container.resolve<T, R>(token);
-        setInstance(instance);
-      }
+      const instance = await container.resolve<T, R>(token);
+      setInstance(instance);
     };
 
     _resolve();
