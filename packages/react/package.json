@@ -1,6 +1,6 @@
 {
   "name": "@tokamakjs/react",
-  "version": "0.1.0-alpha.42",
+  "version": "0.2.0-alpha.0",
   "description": "React flavor of Tokamak.",
   "author": "Lars <lars.bs@hotmail.com>",
   "license": "MIT",
@@ -24,8 +24,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.13.17",
-    "@tokamakjs/common": "^0.1.0-alpha.42",
-    "@tokamakjs/injection": "^0.1.0-alpha.42",
+    "@tokamakjs/common": "^0.2.0-alpha.0",
+    "@tokamakjs/injection": "^0.2.0-alpha.0",
     "history": "^5.0.0",
     "query-string": "^6.13.8",
     "react-router": "^6.0.0-beta.0",
