@@ -23,6 +23,7 @@
     "react-dom": ">=16"
   },
   "dependencies": {
+    "@babel/runtime": "^7.13.17",
     "@tokamakjs/common": "^0.1.0-alpha.42",
     "@tokamakjs/injection": "^0.1.0-alpha.42",
     "history": "^5.0.0",
@@ -33,6 +34,17 @@
     "url-join": "^4.0.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.10.2",
+    "@babel/plugin-transform-runtime": "^7.12.1",
+    "@babel/preset-env": "^7.10.2",
+    "@babel/preset-react": "^7.13.13",
+    "@types/react": "^17.0.3",
+    "@types/react-dom": "^17.0.3",
+    "@types/url-join": "^4.0.0",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "merge-stream": "^2.0.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-test-renderer": "^17.0.1"

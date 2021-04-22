@@ -20,7 +20,6 @@
     "@pmmmwh/react-refresh-webpack-plugin": "^0.2.0",
     "@tokamakjs/common": "^0.1.0-alpha.42",
     "@tokamakjs/core": "^0.1.0-alpha.41",
-    "@tokamakjs/dev-utils": "^0.1.0-alpha.43",
     "@tokamakjs/injection": "^0.1.0-alpha.42",
     "@tokamakjs/react": "^0.1.0-alpha.42",
     "babel-loader": "^8.1.0",
