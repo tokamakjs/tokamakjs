@@ -11,6 +11,7 @@
   "scripts": {
     "example:real-world": "lerna run --scope tokamak-real-world-example start",
     "clean": "rimraf packages/*/lib",
+    "clean:full": "npm run clean && rimraf packages/*/node_modules && rimraf examples/*/node_modules",
     "build": "NODE_ENV=production lerna run build --scope @tokamakjs/*",
     "build:watch": "NODE_ENV=development tsc -b && NODE_ENV=development lerna run --parallel build:watch",
     "publish": "npm run clean && npm run test && npm run build && lerna publish",
