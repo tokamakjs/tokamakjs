@@ -9,11 +9,11 @@ const ts = gulpTypescript.createProject('tsconfig.json', {
   noUnusedParameters: process.env.NODE_ENV !== 'development',
 });
 
-function cleanPackages() {
+function clean() {
   return new Promise((r) => rimraf('./lib', r));
 }
 
-function buildPackages() {
+function buildLib() {
   const buildTs = src(['./src/**/*.{ts,tsx}', '!./src/**/*.test.*']).pipe(ts());
   return merge(buildTs.js.pipe(gulpBabel()), buildTs.dts).pipe(dest('./lib'));
 }
@@ -22,10 +22,10 @@ function watchPackages() {
   watch(
     ['./src/**/*.{ts,tsx}', '!./src/**/*.test.{ts,tsx}'],
     { ignoreInitial: false },
-    series(buildPackages),
+    series(buildLib),
   );
 }
 
 // Tasks
-module.exports.default = series(cleanPackages, buildPackages);
+module.exports.default = series(clean, buildLib);
 module.exports.watch = series(watchPackages);
