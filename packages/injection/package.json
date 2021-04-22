@@ -10,7 +10,7 @@
   "main": "lib/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tokamakjs/tokamak",
+    "url": "https://github.com/tokamakjs/tokamakjs",
     "directory": "packages/injection"
   },
   "scripts": {
@@ -32,5 +32,6 @@
     "gulp-babel": "^8.0.0",
     "gulp-typescript": "^6.0.0-alpha.1",
     "merge-stream": "^2.0.0"
-  }
+  },
+  "gitHead": "1ef81c290ab7981c48a2022de5eedb6efa84fc42"
 }

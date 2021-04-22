@@ -10,7 +10,7 @@
   "main": "lib/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tokamakjs/tokamak",
+    "url": "https://github.com/tokamakjs/tokamakjs",
     "directory": "packages/common"
   },
   "scripts": {
@@ -43,5 +43,5 @@
     "graphql": "^15.x",
     "zod": ">3.0.0-alpha"
   },
-  "gitHead": "1ad2efd4f2f2aa2c1516a13393582c44d875368c"
+  "gitHead": "1ef81c290ab7981c48a2022de5eedb6efa84fc42"
 }
