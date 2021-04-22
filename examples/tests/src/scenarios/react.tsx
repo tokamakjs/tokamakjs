@@ -52,7 +52,11 @@ export class ServiceA {
 
 @Controller()
 export class TestControllerA {
-  @state public value: number = 0;
+  @state private _value: number = 0;
+
+  get value() {
+    return this._value;
+  }
 
   constructor(public readonly serviceA: ServiceA) {}
 
@@ -67,7 +71,7 @@ export class TestControllerA {
   }
 
   public increase() {
-    this.value += 1;
+    this._value += 1;
   }
 
   public fetchData() {

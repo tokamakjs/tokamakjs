@@ -19,22 +19,21 @@ function _createAccessProxy(
         return refMap.get(p)!.current;
       }
 
-      return target[p];
+      return Reflect.get(target, p);
     },
     set(target: any, p: PropertyKey, value: any) {
       if (stateMap.has(p)) {
         const dispatch = stateMap.get(p)![1];
         dispatch(value);
-        return true;
+        return Reflect.set(target, p, value);
       }
 
       if (refMap.has(p)) {
         refMap.get(p)!.current = value;
-        return true;
+        return Reflect.set(target, p, value);
       }
 
-      target[p] = value;
-      return true;
+      return Reflect.set(target, p, value);
     },
   });
 }

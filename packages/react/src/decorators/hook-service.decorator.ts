@@ -13,15 +13,14 @@ function _createAccessProxy(
         return hooksMap.get(p)!;
       }
 
-      return target[p];
+      return Reflect.get(target, p);
     },
     set(target: any, p: PropertyKey, value: any) {
       if (hooksMap.has(p)) {
         return false;
       }
 
-      target[p] = value;
-      return true;
+      return Reflect.set(target, p, value);
     },
   });
 }
