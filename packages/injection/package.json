@@ -21,6 +21,16 @@
     "@babel/runtime": "*"
   },
   "dependencies": {
+    "@babel/runtime": "^7.13.17",
     "reflect-metadata": "^0.1.13"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.2",
+    "@babel/plugin-transform-runtime": "^7.12.1",
+    "@babel/preset-env": "^7.10.2",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "merge-stream": "^2.0.0"
   }
 }

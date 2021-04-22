@@ -1,9 +1,12 @@
-import { Class } from '@tokamakjs/injection';
 import { plainToClassFromExist } from 'class-transformer';
 import { z } from 'zod';
 
 import { InstantiatedDtoError, ValidationError } from '../errors';
 import { SchemaClass, isSchemaClass } from '../types';
+
+interface Class<T> {
+  new (...args: Array<any>): T;
+}
 
 const VALIDATE_USED = Symbol();
 
