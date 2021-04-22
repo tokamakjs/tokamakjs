@@ -7,6 +7,10 @@ node_modules
 # Source code
 src
 
+# Dev environment
+tsconfig.json
+gulpfile.js
+babel.config.json
+
 # Misc
 .DS_Store
-.env
