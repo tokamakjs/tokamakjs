@@ -2,7 +2,6 @@ import path from 'path';
 
 // @ts-ignore
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
-import { BetterProgressPlugin, initialAppMessage } from '@tokamakjs/dev-utils';
 // @ts-ignore
 import FriendlyErrorsWebpackPlugin from 'friendly-errors-webpack-plugin';
 import HtmlPlugin from 'html-webpack-plugin';
@@ -27,10 +26,6 @@ const config: Configuration = {
     new HtmlPlugin({ filename: 'index.html', template: 'public/index.html' }),
     new EnvironmentPlugin(['NODE_ENV']),
     new ReactRefreshWebpackPlugin({ disableRefreshCheck: true, overlay: false }),
-    new BetterProgressPlugin({
-      mode: 'bar',
-      summary: () => console.log(initialAppMessage('TOKAMAK SCENARIOS', 4200)),
-    }),
     new FriendlyErrorsWebpackPlugin({ clearConsole: false }),
   ],
   module: {
@@ -97,8 +92,8 @@ config.devServer = {
   historyApiFallback: true,
   hot: true,
   inline: true,
-  quiet: false, // odly enough, if quiet is enabled, logs will appear
-  noInfo: true,
+  // quiet: false, // odly enough, if quiet is enabled, logs will appear
+  // noInfo: true,
 };
 
 export default config;
