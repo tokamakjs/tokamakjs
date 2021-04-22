@@ -1,6 +1,6 @@
 {
   "name": "tokamak-tests",
-  "version": "0.2.0-alpha.2",
+  "version": "0.2.0-alpha.3",
   "description": "Tokamak tests.",
   "author": "Lars <lars.bs@hotmail.com>",
   "license": "MIT",
@@ -16,9 +16,9 @@
     "start": "NODE_ENV=development webpack-dev-server --config webpack.config.ts --hot --useLocalIp --host 0.0.0.0 --port 4200"
   },
   "dependencies": {
-    "@tokamakjs/common": "^0.2.0-alpha.1",
-    "@tokamakjs/injection": "^0.2.0-alpha.1",
-    "@tokamakjs/react": "^0.2.0-alpha.2",
+    "@tokamakjs/common": "^0.2.0-alpha.3",
+    "@tokamakjs/injection": "^0.2.0-alpha.3",
+    "@tokamakjs/react": "^0.2.0-alpha.3",
     "history": "^5.0.0",
     "modern-normalize": "^0.6.0",
     "query-string": "^6.13.8",
