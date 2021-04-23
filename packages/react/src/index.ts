@@ -1,4 +1,4 @@
-export { onModuleInit, onModuleDidInit, ModuleRef, inject } from '@tokamakjs/injection';
+export { onModuleInit, onModuleDidInit, ModuleRef, inject, Module } from '@tokamakjs/injection';
 
 export {
   Controller,
