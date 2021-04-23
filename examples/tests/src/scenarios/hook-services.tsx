@@ -126,7 +126,7 @@ const MainView = () => {
 };
 
 @SubApp({
-  routing: [createRoute('/:id', MainView)],
+  routing: [createRoute('/:id', MainView), createRedirection('/', '/1')],
   providers: [
     MyHookService,
     { useFactory: async () => 'hello', provide: 'TOKEN' },

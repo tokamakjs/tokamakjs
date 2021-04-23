@@ -1,5 +1,5 @@
-import { RouterService } from '@tokamakjs/common';
 import { Class } from '@tokamakjs/injection';
+import { useNavigate } from 'react-router';
 import urljoin from 'url-join';
 
 import { Controller, onDidMount } from '../decorators';
@@ -29,11 +29,11 @@ export function includeRoutes(basepath: string, SubApp: Class): Array<RouteDefin
 export function createRedirection(from: string, to: string): RouteDefinition {
   @Controller()
   class RedirectionController {
-    constructor(private readonly _router: RouterService) {}
+    private readonly _navigate = useNavigate();
 
     @onDidMount()
     onDidMount() {
-      this._router.replace(to);
+      this._navigate(to, { replace: true });
     }
   }
 
