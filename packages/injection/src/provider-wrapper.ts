@@ -1,4 +1,4 @@
-import { CircularDependencyError } from './errors';
+import { CircularDependencyError, InvalidResolveSyncError } from './errors';
 import { DEFAULT_INJECTION_CONTEXT, Scope } from './injection-context';
 import { Module } from './module';
 import { Reflector } from './reflection';
@@ -57,6 +57,20 @@ export class ProviderWrapper<T = unknown> {
     return this._provider.provide;
   }
 
+  public isAsync(context: InjectionContext, inquirer: Inquirer): boolean {
+    if (this._hasInstance(context, inquirer)) {
+      return false;
+    }
+
+    if (isFactoryProvider(this._provider)) {
+      return true;
+    }
+
+    return this.dependencies.some((dep) =>
+      this._resolveDependency(dep, context).isAsync(context, inquirer),
+    );
+  }
+
   public async callOnInit(): Promise<void> {
     if (this.isSingleton) {
       const inst = this._getSingleton(DEFAULT_INJECTION_CONTEXT);
@@ -87,8 +101,11 @@ export class ProviderWrapper<T = unknown> {
     }
   }
 
-  public async createInstance(): Promise<T> {
-    return await this.resolveInstance(DEFAULT_INJECTION_CONTEXT);
+  public async createInstance(): Promise<T | undefined> {
+    // Only create instances at init for the singletons
+    if (this.isSingleton) {
+      return await this.resolveInstance(DEFAULT_INJECTION_CONTEXT);
+    }
   }
 
   public async resolveInstance(context: InjectionContext, inquirer: Inquirer = this): Promise<T> {
@@ -97,6 +114,18 @@ export class ProviderWrapper<T = unknown> {
     }
 
     return await this._createInstance(context, inquirer);
+  }
+
+  public resolveInstanceSync(context: InjectionContext, inquirer: Inquirer = this): T {
+    if (this._hasInstance(context, inquirer)) {
+      return this.getInstance(context, inquirer);
+    }
+
+    if (this.isAsync(context, inquirer)) {
+      throw new InvalidResolveSyncError(this.name);
+    }
+
+    return this._createInstanceSync(context, inquirer);
   }
 
   public getInstance(context: InjectionContext, inquirer: Inquirer = this): T {
@@ -187,6 +216,58 @@ export class ProviderWrapper<T = unknown> {
     return inst;
   }
 
+  private _createInstanceSync(context: InjectionContext, inquirer: Inquirer): T {
+    if (this._hasInstance(context, inquirer)) {
+      return this.getInstance(context, inquirer);
+    }
+
+    const deps = this._resolveDependenciesSync(context, inquirer);
+
+    const inst: T = run(() => {
+      // Do this again in case we created the instance when
+      // resolving dependencies
+      if (this._hasInstance(context, inquirer)) {
+        return this.getInstance(context, inquirer);
+      }
+
+      if (isClassProvider(this._provider)) {
+        const { useClass: Class } = this._provider;
+        return new Class(...deps);
+      } else if (isValueProvider(this._provider)) {
+        return this._provider.useValue;
+      } else if (isFactoryProvider(this._provider)) {
+        const { inject, useFactory: fn } = this._provider;
+
+        if (fn instanceof Promise) {
+          throw new InvalidResolveSyncError(this.name);
+        }
+
+        return fn(...(inject ?? []));
+      }
+    });
+
+    if (this.isSingleton) {
+      this._setSingleton(context, inst);
+    }
+
+    let inquirerInstances = this._instances.get(context);
+
+    if (inquirerInstances == null) {
+      inquirerInstances = new Map();
+    }
+
+    inquirerInstances.set(inquirer, inst);
+    this._instances.set(context, inquirerInstances);
+
+    if (this._hostModule.container?.isInitialized) {
+      // We already initialized the container, call life-cycle methods manually.
+      runHooks(inst, 'onModuleInit');
+      runHooks(inst, 'onModuleDidInit');
+    }
+
+    return inst;
+  }
+
   private async _resolveDependencies(
     context: InjectionContext,
     inquirer: Inquirer,
@@ -204,6 +285,28 @@ export class ProviderWrapper<T = unknown> {
         depValue = depWrapper.getInstance(context, inquirer);
       } else {
         depValue = await depWrapper.resolveInstance(context, inquirer);
+      }
+
+      resolvedDependencies.push(depValue);
+    }
+
+    return resolvedDependencies;
+  }
+
+  private _resolveDependenciesSync(context: InjectionContext, inquirer: Inquirer): Array<unknown> {
+    // TODO: Add support for optional dependencies marked with @optional
+    const optionalDependencies = [] as Array<Token>;
+
+    const resolvedDependencies = [] as Array<unknown>;
+
+    for (const dep of [...this.dependencies, ...optionalDependencies]) {
+      const depWrapper = this._resolveDependency(dep, context);
+
+      let depValue: unknown;
+      if (depWrapper._hasInstance(context, inquirer)) {
+        depValue = depWrapper.getInstance(context, inquirer);
+      } else {
+        depValue = depWrapper.resolveInstanceSync(context, inquirer);
       }
 
       resolvedDependencies.push(depValue);

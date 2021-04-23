@@ -10,6 +10,7 @@ import { Configuration, EnvironmentPlugin } from 'webpack';
 
 const config: Configuration = {
   mode: 'development',
+  devtool: '#source-map',
   resolve: {
     extensions: ['.mjs', '.js', '.ts', '.tsx'],
     symlinks: false,

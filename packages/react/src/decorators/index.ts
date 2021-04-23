@@ -4,3 +4,4 @@ export * from './effect.decorator';
 export * from './state.decorator';
 export * from './ref.decorator';
 export * from './hook-service.decorator';
+export * from './injectable.decorator';

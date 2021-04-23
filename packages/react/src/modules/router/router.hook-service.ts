@@ -3,13 +3,12 @@ import { Location, To } from 'history';
 
 import { HookService } from '../../decorators/hook-service.decorator';
 import { useLocation, useNavigate, useParams } from '../../routing';
-import { hook } from '../../utils';
 
 @HookService()
 export class RouterHookService extends RouterService {
-  private readonly _params = hook(() => useParams());
-  private readonly _location = hook(() => useLocation());
-  private readonly _navigate = hook(() => useNavigate());
+  private readonly _params = useParams();
+  private readonly _location = useLocation();
+  private readonly _navigate = useNavigate();
 
   get location(): Location {
     return this._location;

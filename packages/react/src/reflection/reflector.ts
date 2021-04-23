@@ -87,4 +87,12 @@ export class Reflector {
     const keys = Reflect.getMetadataKeys(Source);
     keys.forEach((key) => Reflect.defineMetadata(key, Reflect.getMetadata(key, Source), Target));
   }
+
+  static addHookServiceMetadata(Target: Function): void {
+    Reflect.defineMetadata('self:hookservice', {}, Target);
+  }
+
+  static getHookServiceMetadata(Target: Function): {} | undefined {
+    return Reflect.getMetadata('self:hookservice', Target);
+  }
 }

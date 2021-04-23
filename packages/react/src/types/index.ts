@@ -32,20 +32,12 @@ export type DepsFn = (instance: any) => Array<any> | undefined;
  */
 export type DecoratedController<T = any> = T & {
   __controller__: {
-    callHooks: () => void;
+    stateKeys: Array<PropertyKey>;
+    refKeys: Array<PropertyKey>;
+    effectKeysMap: Map<PropertyKey, DepsFn>;
   };
 };
 
 export function isDecoratedController<T>(controller: T): controller is DecoratedController<T> {
   return (controller as any)?.__controller__ != null;
-}
-
-export type DecoratedHookService<T = any> = T & {
-  __hookService__: {
-    callHooks: () => void;
-  };
-};
-
-export function isDecoratedHookService<T>(service: T): service is DecoratedHookService<T> {
-  return (service as any)?.__hookService__ != null;
 }
