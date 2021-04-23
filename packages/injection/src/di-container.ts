@@ -107,6 +107,23 @@ export class DiContainer {
     return await provider.resolveInstance(context, inquirer);
   }
 
+  /**
+   * Used to resolve providers if they don't have any asynchronous dependencies
+   */
+  public resolveSync<T = unknown, R = T>(
+    token: Token<T>,
+    context: InjectionContext = DEFAULT_INJECTION_CONTEXT,
+    inquirer: any = { id: Math.random() },
+  ): R {
+    const provider = this.providers.get(token) as ProviderWrapper<R>;
+
+    if (provider == null) {
+      throw new UnknownElementError(token);
+    }
+
+    return provider.resolveInstanceSync(context, inquirer);
+  }
+
   public async resolveDependencies<T>(Class: Class<T>): Promise<T> {
     const deps = Reflector.getConstructorDependencies(Class);
     const resolvedDependencies = await Promise.all(
@@ -117,7 +134,7 @@ export class DiContainer {
 
   public resolveDependenciesSync<T>(Class: Class<T>): T {
     const deps = Reflector.getConstructorDependencies(Class);
-    const resolvedDependencies = deps.map((token) => this.get(token));
+    const resolvedDependencies = deps.map((token) => this.resolveSync(token));
     return new Class(...resolvedDependencies);
   }
 
