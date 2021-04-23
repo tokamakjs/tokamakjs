@@ -1,6 +1,9 @@
+import { RouterService } from '@tokamakjs/common';
 import {
   Controller,
   HookService,
+  Link,
+  RouterModule,
   SubApp,
   TokamakApp,
   createRedirection,
@@ -74,6 +77,7 @@ class MainController {
     @inject('ANOTHER') private readonly _another: string,
     @inject('TOKEN') private readonly _token: string,
     private readonly _myService: MyHookService,
+    private readonly _router: RouterService,
   ) {}
 
   @onDidMount()
@@ -82,6 +86,7 @@ class MainController {
     console.log(this._another);
     console.log(this._token);
     console.log(this._service);
+    console.log(this._router);
   }
 
   @onDidRender()
@@ -131,18 +136,34 @@ const MainView = () => {
       <button onClick={() => ctrl.increase()}>Increase</button>
       <br /> <br />
       <button onClick={() => ctrl.changeName()}>Change Name</button>
+      <br /> <br />
+      <Link href="/secondary">Go to secondary</Link>
+    </div>
+  );
+};
+
+const SecondaryView = () => {
+  return (
+    <div>
+      <h1>Secondary View</h1>
+      <Link href="/">Back to main</Link>
     </div>
   );
 };
 
 @SubApp({
-  routing: [createRoute('/:id', MainView), createRedirection('/', '/1')],
+  routing: [
+    createRoute('/:id', MainView),
+    createRedirection('/', '/1'),
+    createRoute('/secondary', SecondaryView),
+  ],
   providers: [
     MyHookService,
     { useFactory: async () => 'hello', provide: 'TOKEN' },
     { useValue: 'another', provide: 'ANOTHER' },
     TransitiveHookService,
   ],
+  imports: [RouterModule],
 })
 class App {}
 

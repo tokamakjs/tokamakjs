@@ -18,12 +18,12 @@
     "build:watch": "gulp watch"
   },
   "peerDependencies": {
+    "@tokamakjs/common": ">0.2.0-alpha",
     "react": ">=16",
     "react-dom": ">=16"
   },
   "dependencies": {
     "@babel/runtime": "^7.13.17",
-    "@tokamakjs/common": "^0.2.0-alpha.8",
     "@tokamakjs/injection": "^0.2.0-alpha.8",
     "history": "^5.0.0",
     "query-string": "^6.13.8",
@@ -37,6 +37,7 @@
     "@babel/plugin-transform-runtime": "^7.12.1",
     "@babel/preset-env": "^7.10.2",
     "@babel/preset-react": "^7.13.13",
+    "@tokamakjs/common": "^0.2.0-alpha.8",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
     "@types/url-join": "^4.0.0",

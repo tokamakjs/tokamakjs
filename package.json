@@ -9,7 +9,7 @@
     "url": "https://github.com/tokamakjs/tokamakjs"
   },
   "scripts": {
-    "examples:test": "cd examples/tests && npm start",
+    "examples:tests": "cd examples/tests && npm start",
     "examples:real-world": "cd examples/real-world && npm start",
     "clean": "rimraf packages/*/lib",
     "clean:full": "npm run clean && rimraf packages/*/node_modules && rimraf examples/*/node_modules",
