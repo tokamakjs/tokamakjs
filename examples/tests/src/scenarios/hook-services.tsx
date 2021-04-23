@@ -103,7 +103,17 @@ class MainController {
   }
 
   public changeName(): void {
+    this.increase();
     this._name = this._name + '-';
+    this.decrease();
+  }
+
+  public decrease(): void {
+    if (this._value === 0) {
+      console.warn('Not below zero');
+    }
+
+    this._value -= 1;
   }
 }
 

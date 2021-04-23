@@ -17,12 +17,17 @@
     "build": "gulp",
     "build:watch": "gulp watch"
   },
+  "peerDependencies": {
+    "class-transformer": ">=0.4.0",
+    "graphql": "^15.x",
+    "react": ">=16",
+    "zod": ">3.0.0-alpha"
+  },
   "dependencies": {
     "@babel/runtime": "^7.13.17",
     "history": "^5.0.0-beta.9",
     "lodash": "^4.17.15",
-    "query-string": "^6.13.1",
-    "react": "^16.13.1"
+    "query-string": "^6.13.1"
   },
   "devDependencies": {
     "@babel/core": "^7.10.2",
@@ -35,13 +40,8 @@
     "gulp-babel": "^8.0.0",
     "gulp-typescript": "^6.0.0-alpha.1",
     "merge-stream": "^2.0.0",
+    "react": "^17.0.1",
     "zod": "^3.0.0-alpha.33"
-  },
-  "peerDependencies": {
-    "@babel/runtime": "*",
-    "class-transformer": ">=0.4.0",
-    "graphql": "^15.x",
-    "zod": ">3.0.0-alpha"
   },
   "gitHead": "1ef81c290ab7981c48a2022de5eedb6efa84fc42"
 }

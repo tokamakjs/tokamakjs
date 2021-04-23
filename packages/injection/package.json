@@ -17,9 +17,7 @@
     "build": "gulp",
     "build:watch": "gulp watch"
   },
-  "peerDependencies": {
-    "@babel/runtime": "*"
-  },
+  "peerDependencies": {},
   "dependencies": {
     "@babel/runtime": "^7.13.17",
     "reflect-metadata": "^0.1.13"

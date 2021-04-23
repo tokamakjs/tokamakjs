@@ -18,7 +18,6 @@
     "build:watch": "gulp watch"
   },
   "peerDependencies": {
-    "@babel/runtime": "*",
     "react": ">=16",
     "react-dom": ">=16"
   },

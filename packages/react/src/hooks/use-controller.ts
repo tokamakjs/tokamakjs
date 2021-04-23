@@ -1,18 +1,28 @@
 import { Class, InvalidScopeError } from '@tokamakjs/injection';
 import { useEffect, useRef, useState } from 'react';
+import { useCallback } from 'react';
 
 import { InvalidControllerDependencyError, NoDecoratedControllerError } from '../errors';
 import { DecoratedController, isDecoratedController } from '../types';
 import { useDiContainer } from './use-di-container';
 
+export function _useForceUpdate(): () => void {
+  const [, dispatch] = useState({});
+  return useCallback(() => dispatch({}), [dispatch]);
+}
+
 function _useControllerHooks<T>(ctrl: DecoratedController<T>): T {
   const { stateKeys, refKeys, effectKeysMap } = ctrl.__controller__;
+  const forceUpdate = _useForceUpdate();
 
   stateKeys.forEach((key) => {
-    const state = useState((ctrl as any)[key]);
+    const ref = useRef((ctrl as any)[key]);
     Object.defineProperty(ctrl, key, {
-      get: () => state[0],
-      set: (v) => state[1](v),
+      get: () => ref.current,
+      set: (v) => {
+        ref.current = v;
+        forceUpdate();
+      },
     });
   });
 
