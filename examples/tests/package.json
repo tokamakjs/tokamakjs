@@ -1,6 +1,6 @@
 {
   "name": "tokamak-tests",
-  "version": "0.2.0-alpha.4",
+  "version": "0.2.0-alpha.5",
   "description": "Tokamak tests.",
   "author": "Lars <lars.bs@hotmail.com>",
   "license": "MIT",
@@ -17,8 +17,8 @@
   },
   "dependencies": {
     "@tokamakjs/common": "^0.2.0-alpha.3",
-    "@tokamakjs/injection": "^0.2.0-alpha.3",
-    "@tokamakjs/react": "^0.2.0-alpha.4",
+    "@tokamakjs/injection": "^0.2.0-alpha.5",
+    "@tokamakjs/react": "^0.2.0-alpha.5",
     "history": "^5.0.0",
     "modern-normalize": "^0.6.0",
     "query-string": "^6.13.8",
