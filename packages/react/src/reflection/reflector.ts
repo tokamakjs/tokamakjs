@@ -22,13 +22,13 @@ export class Reflector {
   }
 
   static addSubAppMetadata(target: Function, metadata: SubAppMetadata): void {
-    const { routing, ...moduleMetadata } = metadata;
+    const { routing = [], ...moduleMetadata } = metadata;
 
     Module(moduleMetadata)(target);
-    Reflect.defineMetadata('self:subapp', metadata, target);
+    Reflect.defineMetadata('self:subapp', { ...moduleMetadata, routing }, target);
   }
 
-  static getSubAppMetadata(target: Function): SubAppMetadata {
+  static getSubAppMetadata(target: Function): Required<SubAppMetadata> {
     const metadata = Reflect.getMetadata('self:subapp', target);
 
     if (metadata == null) {
