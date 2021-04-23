@@ -2,7 +2,6 @@ import { RouterService } from '@tokamakjs/common';
 import {
   Controller,
   effect,
-  hook,
   onDidMount,
   onDidRender,
   ref,
@@ -19,7 +18,7 @@ export class RootController {
 
   @ref public counterRef = 0;
 
-  private readonly _serviceB = hook(() => useResolve(ServiceB));
+  private readonly _serviceB = useResolve(ServiceB);
 
   constructor(private readonly _serviceA: ServiceA, private readonly _router: RouterService) {
     console.log('how many times');
@@ -48,6 +47,6 @@ export class RootController {
   public doStuff() {
     console.log('FROM A', this._serviceA.hello());
     console.log('FROM B', this._serviceB?.bye());
-    this._router.push('/child/12');
+    this._router.push('/root/12');
   }
 }
