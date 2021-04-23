@@ -12,7 +12,7 @@ export interface RouteDefinition {
 }
 
 export interface SubAppMetadata extends ModuleMetadata {
-  routing?: Array<RouteDefinition>;
+  routing: Array<RouteDefinition>;
 }
 
 export interface TokamakAppConfig {
