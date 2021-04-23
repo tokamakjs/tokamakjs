@@ -1,6 +1,6 @@
 {
   "name": "@tokamakjs/injection",
-  "version": "0.2.0-alpha.5",
+  "version": "0.2.0-alpha.8",
   "description": "Tokamak dependency injection system.",
   "author": "Lars <lars.bs@hotmail.com>",
   "license": "MIT",
@@ -17,7 +17,6 @@
     "build": "gulp",
     "build:watch": "gulp watch"
   },
-  "peerDependencies": {},
   "dependencies": {
     "@babel/runtime": "^7.13.17",
     "reflect-metadata": "^0.1.13"
