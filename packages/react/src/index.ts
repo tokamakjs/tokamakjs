@@ -1,6 +1,16 @@
-export { Injectable, onModuleInit, onModuleDidInit, ModuleRef } from '@tokamakjs/injection';
+export { onModuleInit, onModuleDidInit, ModuleRef, inject } from '@tokamakjs/injection';
 
-export * from './decorators';
+export {
+  Controller,
+  effect,
+  HookService,
+  Injectable,
+  ref,
+  state,
+  SubApp,
+  onDidMount,
+  onDidRender,
+} from './decorators';
 export { TokamakApp } from './tokamak-app';
 export {
   Link,
