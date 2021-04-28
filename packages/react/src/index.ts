@@ -1,4 +1,11 @@
-export { onModuleInit, onModuleDidInit, ModuleRef, inject, Module } from '@tokamakjs/injection';
+export {
+  onModuleInit,
+  onModuleDidInit,
+  ModuleRef,
+  inject,
+  Module,
+  Token,
+} from '@tokamakjs/injection';
 
 export {
   Controller,
@@ -11,7 +18,9 @@ export {
   onDidMount,
   onDidRender,
 } from './decorators';
+
 export { TokamakApp } from './tokamak-app';
+
 export {
   Link,
   createRoute,
@@ -22,5 +31,7 @@ export {
   useLocation,
   useParams,
 } from './routing';
-export { useController, useAppContext, useResolve } from './hooks';
+
+export { useController, useAppContext, useResolve, useResolveSync } from './hooks';
+
 export { RouterModule } from './modules';
