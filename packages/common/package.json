@@ -1,6 +1,6 @@
 {
   "name": "@tokamakjs/common",
-  "version": "0.2.0-alpha.11",
+  "version": "0.2.0-alpha.12",
   "description": "Tokamak app framework common utils.",
   "author": "Lars <lars.bs@hotmail.com>",
   "license": "MIT",
