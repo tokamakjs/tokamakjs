@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import { RouterService } from '@tokamakjs/common';
 import {
   Controller,
@@ -23,10 +25,20 @@ import React from 'react';
 
 @HookService()
 class TransitiveHookService {
+  @state private _counter = 0;
+
   private readonly _location = useLocation();
 
   get location() {
     return this._location;
+  }
+
+  get counter() {
+    return this._counter;
+  }
+
+  public increase() {
+    this._counter += 1;
   }
 }
 
@@ -54,11 +66,11 @@ class MainController {
   private readonly _service = useResolve(MyHookService);
 
   get params() {
-    return this._myService?.params ?? {};
+    return this.myService?.params ?? {};
   }
 
   get location() {
-    return this._myService.trans.location;
+    return this.myService.trans.location;
   }
 
   get value() {
@@ -76,7 +88,7 @@ class MainController {
   constructor(
     @inject('ANOTHER') private readonly _another: string,
     @inject('TOKEN') private readonly _token: string,
-    private readonly _myService: MyHookService,
+    public readonly myService: MyHookService,
     private readonly _router: RouterService,
   ) {}
 
@@ -132,10 +144,13 @@ const MainView = () => {
       <h2>Name: {ctrl.name}</h2>
       <h2>Param id: {ctrl.params.id}</h2>
       <h2>Location: {ctrl.location.pathname}</h2>
+      <h2>Transitive counter: {ctrl.myService.trans.counter}</h2>
       <br />
       <button onClick={() => ctrl.increase()}>Increase</button>
       <br /> <br />
       <button onClick={() => ctrl.changeName()}>Change Name</button>
+      <br /> <br />
+      <button onClick={() => ctrl.myService.trans.increase()}>Increase transitive counter</button>
       <br /> <br />
       <Link href="/secondary">Go to secondary</Link>
     </div>
