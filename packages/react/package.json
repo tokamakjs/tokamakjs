@@ -45,8 +45,6 @@
     "gulp-babel": "^8.0.0",
     "gulp-typescript": "^6.0.0-alpha.1",
     "merge-stream": "^2.0.0",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
     "react-test-renderer": "^17.0.1"
   },
   "gitHead": "1ef81c290ab7981c48a2022de5eedb6efa84fc42"
