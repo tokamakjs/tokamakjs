@@ -4,4 +4,5 @@
 // import './scenarios/complete';
 // import './scenarios/transient';
 // import './scenarios/react';
-import './scenarios/hook-services';
+// import './scenarios/hook-services';
+import './scenarios/guards';

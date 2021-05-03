@@ -5,7 +5,7 @@ import urljoin from 'url-join';
 import { Controller, onDidMount } from '../decorators';
 import { useController } from '../hooks';
 import { Reflector } from '../reflection';
-import { RouteDefinition, RouteHandler } from '../types';
+import { DecoratedController, RouteDefinition } from '../types';
 
 function _isArrayOfArrays<T>(value: Array<any>): value is Array<Array<T>> {
   return value.length > 0 && Array.isArray(value[0]);
@@ -13,12 +13,12 @@ function _isArrayOfArrays<T>(value: Array<any>): value is Array<Array<T>> {
 
 export function createRoute(
   path: string,
-  Component: RouteHandler,
+  Controller: Class<DecoratedController>,
   children: Array<RouteDefinition> | Array<Array<RouteDefinition>> = [],
 ): RouteDefinition {
   return _isArrayOfArrays(children)
-    ? { path, Component, children: children.flat() }
-    : { path, Component, children };
+    ? { path, Controller, children: children.flat() }
+    : { path, Controller, children };
 }
 
 export function includeRoutes(basepath: string, SubApp: Class): Array<RouteDefinition> {
@@ -27,7 +27,12 @@ export function includeRoutes(basepath: string, SubApp: Class): Array<RouteDefin
 }
 
 export function createRedirection(from: string, to: string): RouteDefinition {
-  @Controller()
+  const RedirectionView = () => {
+    useController<RedirectionController>();
+    return null;
+  };
+
+  @Controller({ view: RedirectionView })
   class RedirectionController {
     private readonly _navigate = useNavigate();
 
@@ -37,10 +42,5 @@ export function createRedirection(from: string, to: string): RouteDefinition {
     }
   }
 
-  const RedirectionView = () => {
-    useController(RedirectionController);
-    return null;
-  };
-
-  return { path: from, Component: RedirectionView, children: [] };
+  return { path: from, Controller: RedirectionController, children: [] };
 }

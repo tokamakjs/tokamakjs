@@ -4,6 +4,11 @@ import React from 'react';
 import { Reflector } from '../reflection';
 import { RouteObject } from '../routing';
 import { RouteDefinition } from '../types';
+import { ControllerWrapper } from './components';
+
+function _getId(): number {
+  return Math.random();
+}
 
 function _transformRoutes(
   routing: Array<RouteDefinition>,
@@ -12,10 +17,12 @@ function _transformRoutes(
   const finalRoutes: Array<RouteObject> = [];
 
   for (const routeDefinition of routing) {
-    const { path, Component, children } = routeDefinition;
+    const { path, Controller, children } = routeDefinition;
+
     finalRoutes.push({
       path,
-      element: <Component />,
+      // each controller needs a unique key so they're correctly mounted/unmounted
+      element: <ControllerWrapper Controller={Controller} key={_getId()} />,
       children: _transformRoutes(children, context),
       caseSensitive: false,
     });

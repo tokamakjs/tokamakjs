@@ -1,7 +1,7 @@
 import { Reflector } from '../reflection';
 import { ControllerMetadata } from '../types';
 
-export function Controller(metadata: ControllerMetadata = {}): ClassDecorator {
+export function Controller(metadata: ControllerMetadata): ClassDecorator {
   return (Target: Function) => {
     Reflector.addControllerMetadata(Target, metadata);
 
