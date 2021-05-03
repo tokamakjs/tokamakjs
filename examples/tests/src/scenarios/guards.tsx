@@ -7,6 +7,7 @@ import {
   SubApp,
   TokamakApp,
   createRoute,
+  state,
   useController,
 } from '@tokamakjs/react';
 import React from 'react';
@@ -75,6 +76,7 @@ class AsyncGuard implements Guard {
 
   public async canActivate(): Promise<boolean> {
     await delay(1000);
+    console.log(this._service.token);
     return this._service.token != null;
   }
 
@@ -88,6 +90,8 @@ const MainView = () => {
   return (
     <div>
       <h1>Main View</h1>
+      <h2>Counter: {ctrl.counter}</h2>
+      <button onClick={() => ctrl.increase()}>Increase</button>
     </div>
   );
 };
@@ -109,7 +113,17 @@ const MainView = () => {
 @Controller({ view: MainView, guards: [AsyncGuard] })
 //@UseFilters(AuthErrorFilter)
 class MainController {
+  @state private _counter = 0;
+
+  get counter() {
+    return this._counter;
+  }
+
   constructor(private readonly _service: AuthService, private readonly _router: RouterService) {}
+
+  public increase() {
+    this._counter += 1;
+  }
 
   public logout(): void {
     this._service.logout();

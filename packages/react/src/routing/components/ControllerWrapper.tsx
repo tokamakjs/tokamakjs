@@ -41,7 +41,7 @@ function _useGuards(Guards: Array<Class<Guard>>): { isLoading: boolean; shouldAc
       }
 
       setState({ isLoading: false, shouldActivate });
-      guards.forEach((g) => (state.shouldActivate ? g.didActivate?.() : g.didNotActivate?.()));
+      guards.forEach((g) => (shouldActivate ? g.didActivate?.() : g.didNotActivate?.()));
     };
 
     _checkGuards();
