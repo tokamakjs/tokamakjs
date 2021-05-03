@@ -1,12 +1,16 @@
-import { ModuleMetadata } from '@tokamakjs/injection';
+import { Guard } from '@tokamakjs/common';
+import { Class, ModuleMetadata } from '@tokamakjs/injection';
 import { ElementType } from 'react';
 
-export interface ControllerMetadata {}
+export interface ControllerMetadata {
+  view: ElementType;
+  guards?: Array<Class<Guard>>;
+}
 
 export type RouteHandler = ElementType;
 
 export interface RouteDefinition {
-  Component: ElementType;
+  Controller: Class<DecoratedController>;
   path: string;
   children: Array<RouteDefinition>;
 }
@@ -45,7 +49,8 @@ export function isHooksContainer<T>(inst: T): inst is HooksContainer<T> {
  * The final type of a class after being decorated with
  * the @Controller() decorator.
  */
-export type DecoratedController<T = any> = T & HooksContainer<T> & { __controller__: {} };
+export type DecoratedController<T = any> = T &
+  HooksContainer<T> & { __controller__: ControllerMetadata };
 
 export function isDecoratedController<T>(controller: T): controller is DecoratedController<T> {
   return (controller as any)?.__controller__ != null && (controller as any)?.__reactHooks__ != null;

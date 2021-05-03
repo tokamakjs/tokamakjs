@@ -3,5 +3,6 @@
 // import './scenarios/global-module';
 // import './scenarios/complete';
 // import './scenarios/transient';
-// import './scenarios/react';
-import './scenarios/hook-services';
+import './scenarios/react';
+// import './scenarios/hook-services';
+// import './scenarios/guards';

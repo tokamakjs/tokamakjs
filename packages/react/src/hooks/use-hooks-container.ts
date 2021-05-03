@@ -7,7 +7,7 @@ export function _useForceUpdate(): () => void {
   return useCallback(() => dispatch({}), [dispatch]);
 }
 
-export function useHooksContainer<T>(inst: HooksContainer<T>): T {
+export function useHooksContainer<T>(inst: HooksContainer<T>): HooksContainer<T> {
   const { stateKeys, refKeys, effectKeysMap } = inst.__reactHooks__;
   const forceUpdate = _useForceUpdate();
 

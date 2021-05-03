@@ -12,6 +12,6 @@
       "@tokamakjs/common": ["../common"],
     }
   },
-  "exclude": ["node_modules", "lib"],
+  "exclude": ["node_modules", "lib", "**/*.test.ts", "**/*.test.tsx"],
   "references": [{ "path": "../injection" }, { "path": "../common" }]
 }

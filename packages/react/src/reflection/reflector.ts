@@ -119,8 +119,9 @@ export class Reflector {
     ...args: Array<any>
   ): DecoratedController<T> {
     const inst = Reflector.createHooksContainer(Target, ...args) as DecoratedController<T>;
+    const metadata = Reflector.getControllerMetadata(Target);
 
-    inst.__controller__ = {};
+    inst.__controller__ = metadata;
 
     return inst;
   }

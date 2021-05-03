@@ -50,7 +50,25 @@ export class ServiceA {
   }
 }
 
-@Controller()
+export const TestViewA = () => {
+  const ctrl = useController<TestControllerA>();
+  return (
+    <div>
+      <h1>TestViewA</h1>
+      <h2>ServiceA: {ctrl.serviceA.id}</h2>
+      <h2>Value: {ctrl.value}</h2>
+      <button onClick={() => ctrl.increase()}>Increase value</button>
+      <br />
+      <br />
+      <button onClick={() => ctrl.fetchData()}>Fetch data</button>
+      <br />
+      <br />
+      <Outlet />
+    </div>
+  );
+};
+
+@Controller({ view: TestViewA })
 export class TestControllerA {
   @state private _value: number = 0;
 
@@ -79,25 +97,26 @@ export class TestControllerA {
   }
 }
 
-export const TestViewA = () => {
-  const ctrl = useController(TestControllerA);
+export const TestViewB = () => {
+  const appContext = useAppContext() as { hello: string };
+  const ctrl = useController<TestControllerB>();
+
+  if (ctrl.isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div>
-      <h1>TestViewA</h1>
+      <h1>TestViewB</h1>
       <h2>ServiceA: {ctrl.serviceA.id}</h2>
-      <h2>Value: {ctrl.value}</h2>
-      <button onClick={() => ctrl.increase()}>Increase value</button>
-      <br />
-      <br />
-      <button onClick={() => ctrl.fetchData()}>Fetch data</button>
-      <br />
-      <br />
-      <Outlet />
+      <h3>App Context:</h3>
+      <pre>{JSON.stringify(appContext, null, 2)}</pre>
+      <button onClick={() => ctrl.doSomethingAsync()}>Do Something Async</button>
     </div>
   );
 };
 
-@Controller()
+@Controller({ view: TestViewB })
 export class TestControllerB {
   @state public isLoading = false;
 
@@ -119,31 +138,12 @@ export class TestControllerB {
   }
 }
 
-export const TestViewB = () => {
-  const appContext = useAppContext() as { hello: string };
-  const ctrl = useController(TestControllerB);
-
-  if (ctrl.isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  return (
-    <div>
-      <h1>TestViewB</h1>
-      <h2>ServiceA: {ctrl.serviceA.id}</h2>
-      <h3>App Context:</h3>
-      <pre>{JSON.stringify(appContext, null, 2)}</pre>
-      <button onClick={() => ctrl.doSomethingAsync()}>Do Something Async</button>
-    </div>
-  );
-};
-
 @SubApp({
   providers: [ServiceA, TestApi],
   routing: [
-    createRoute('/test-a', TestViewA, [createRoute('/test-b', TestViewB)]),
-    createRoute('/test-b', TestViewB),
-    createRedirection('/', '/my-basepath/test-a'),
+    createRoute('/test-a', TestControllerA, [createRoute('/test-b', TestControllerB)]),
+    createRoute('/test-b', TestControllerB),
+    createRedirection('/', '/test-a'),
   ],
   imports: [RouterModule],
 })
@@ -152,7 +152,6 @@ export class TestModule {}
 async function test() {
   const app = await TokamakApp.create(TestModule, {
     historyMode: 'hash',
-    basePath: '/my-basepath',
   });
 
   app.render('#root', { hello: 'world' });
