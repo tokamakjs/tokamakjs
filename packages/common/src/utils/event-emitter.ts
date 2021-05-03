@@ -1,28 +1,39 @@
-export type Listener<T> = (event: T) => void;
+import { EventListener } from '../types';
 
-export abstract class EventEmitter<T> {
-  private _listenersByKey: {
-    [K in keyof T]?: Array<Listener<T[K]>>;
-  } = {};
+export class EventEmitter<T extends Record<string, any>> {
+  private _listeners = {} as {
+    [K in keyof T]?: Array<EventListener<T[K]>>;
+  };
 
-  public addEventListener<K extends keyof T>(key: K, listener: Listener<T[K]>): void {
-    if (this._listenersByKey[key] == null) {
-      this._listenersByKey[key] = [listener];
+  public on<K extends keyof T>(key: K, listener: EventListener<T[K]>): VoidFunction {
+    if (this._listeners[key] == null) {
+      this._listeners[key] = [listener];
     } else {
-      this._listenersByKey[key]!.push(listener);
+      this._listeners[key]!.push(listener);
+    }
+
+    return () => {
+      this.off(key, listener);
+    };
+  }
+
+  public off<K extends keyof T>(key: K, listener: EventListener<T[K]>): void {
+    this._listeners[key] = this._listeners[key]?.filter((l) => l !== listener);
+  }
+
+  /**
+   * Clears all the listeners matching the provided key or, if no key
+   * is provided, all the listeners subscribed to this emitter.
+   */
+  public clear<K extends keyof T>(key?: K): void {
+    if (key == null) {
+      this._listeners = {};
+    } else {
+      this._listeners[key] = [];
     }
   }
 
-  public removeEventListener<K extends keyof T>(key: K, listener: Listener<T[K]>): void {
-    this._listenersByKey[key] = this._listenersByKey[key]?.filter((l) => l !== listener);
-  }
-
-  protected emit<K extends keyof T>(key: K, event: T[K]): void {
-    const eventListeners = this._listenersByKey[key] ?? [];
-    eventListeners.forEach((l) => l(event));
-  }
-
-  public removeEventListeners(): void {
-    this._listenersByKey = {};
+  public emit<K extends keyof T>(key: K, event: T[K]): void {
+    (this._listeners[key] ?? []).forEach((l) => l(event));
   }
 }

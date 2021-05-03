@@ -1,20 +1,22 @@
 import { useEffect } from 'react';
 
-import { EventEmitter, Listener } from '../utils';
+import { EventListener } from '../types';
+import { EventEmitter } from '../utils';
 
 /**
  * Automatically manages subbing and unsubbing from the
  * events emitted by an EventEmitter.
  */
-export function useEventListener<T>(
+export function useEventListener<T, K extends keyof T>(
   emitter: EventEmitter<T>,
-  eventKey: keyof T,
-  listener: Listener<T[keyof T]>,
+  eventKey: K,
+  listener: EventListener<T[K]>,
 ): void {
   useEffect(() => {
-    emitter.addEventListener(eventKey, listener);
+    const cancelSub = emitter.on(eventKey, listener);
+
     return () => {
-      emitter.removeEventListener(eventKey, listener);
+      cancelSub();
     };
   });
 }

@@ -12,3 +12,5 @@ export interface SchemaClass<T> {
 export function isSchemaClass<T = any>(Class: any): Class is SchemaClass<T> {
   return Class?.__schema__ != null;
 }
+
+export type EventListener<T> = (e: T) => void;
