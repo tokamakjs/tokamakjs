@@ -1,6 +1,6 @@
 {
   "name": "@tokamakjs/react",
-  "version": "0.2.0-alpha.13",
+  "version": "0.2.0-alpha.14",
   "description": "React flavor of Tokamak.",
   "author": "Lars <lars.bs@hotmail.com>",
   "license": "MIT",
@@ -37,7 +37,7 @@
     "@babel/plugin-transform-runtime": "^7.12.1",
     "@babel/preset-env": "^7.10.2",
     "@babel/preset-react": "^7.13.13",
-    "@tokamakjs/common": "^0.2.0-alpha.13",
+    "@tokamakjs/common": "^0.2.0-alpha.14",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
     "@types/url-join": "^4.0.0",
