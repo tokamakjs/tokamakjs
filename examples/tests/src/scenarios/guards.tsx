@@ -1,4 +1,5 @@
-import { Guard, RouterService, delay } from '@tokamakjs/common';
+import { ErrorHandler, Guard, RouterService, UseErrorHandlers, delay } from '@tokamakjs/common';
+import { Class } from '@tokamakjs/injection';
 import {
   Controller,
   HookService,
@@ -10,7 +11,7 @@ import {
   state,
   useController,
 } from '@tokamakjs/react';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import * as RX from 'rxjs';
 
 class AuthError extends Error {}
@@ -87,6 +88,7 @@ class AsyncGuard implements Guard {
 
 const MainView = () => {
   const ctrl = useController<MainController>();
+
   return (
     <div>
       <h1>Main View</h1>
@@ -96,22 +98,42 @@ const MainView = () => {
   );
 };
 
+function Catch<E extends Error>(e: Class<E>) {
+  return <T extends ErrorHandler<E>>(Target: Class<T>) => {};
+}
+
+@Catch(AuthError)
+class AuthErrorHandler implements ErrorHandler {
+  constructor(private readonly _router: RouterService) {}
+
+  public catch(error: AuthError): void {
+    this._router.push('/login');
+  }
+
+  public render(): ReactNode {
+    return (
+      <div>
+        <h1>Unauthorized</h1>
+      </div>
+    );
+  }
+}
+
 // @Catch(AuthError)
 // class AuthErrorFilter {
-//   constructor(private readonly _router: RouterService) {}
+//   private readonly _alerts = useAlerts();
 
 //   public catch(error: Error): void {
-//     this._router.push('/login');
+//     this._alerts.show('Oh oh');
 //   }
 
-//   // this is not required
 //   public render() {
 //     return <div>Unauthorized</div>;
 //   }
 // }
 
 @Controller({ view: MainView, guards: [AsyncGuard] })
-//@UseFilters(AuthErrorFilter)
+@UseErrorHandlers(AuthErrorHandler)
 class MainController {
   @state private _counter = 0;
 
@@ -160,6 +182,9 @@ class AppModule {}
 
 async function test() {
   const app = await TokamakApp.create(AppModule);
+
+  // app.addGlobalErrorHandler(AuthErrorHandler);
+
   app.render('#root');
 }
 
