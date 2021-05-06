@@ -1,17 +1,11 @@
 import 'reflect-metadata';
 
-import {
-  Catch,
-  ErrorHandler,
-  Guard,
-  RouterService,
-  UseErrorHandlers,
-  delay,
-} from '@tokamakjs/common';
+import { Catch, ErrorHandler, Guard, RouterService, delay } from '@tokamakjs/common';
 import {
   Controller,
   HookService,
   Injectable,
+  Link,
   Outlet,
   RouterModule,
   SubApp,
@@ -103,8 +97,6 @@ class AsyncGuard implements Guard {
 const MainView = () => {
   const ctrl = useController<MainController>();
 
-  // throw new NotFoundError();
-
   return (
     <div>
       <h1>Main View</h1>
@@ -118,6 +110,7 @@ const MainView = () => {
       <p>
         <button onClick={() => ctrl.triggerNotFound()}>Trigger Not Found</button>
       </p>
+      <Link href="/12">Go to child</Link>
       <Outlet />
     </div>
   );
@@ -221,11 +214,8 @@ class LoginController {
 }
 
 const ChildView = () => {
-  return (
-    <div>
-      <h1>Child View</h1>
-    </div>
-  );
+  // simulate a rendering error
+  throw new NotFoundError();
 };
 
 @Controller({ view: ChildView, handlers: [NotFoundErrorHandler3] })

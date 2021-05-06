@@ -20,10 +20,8 @@ export class GlobalErrorsManager {
       if (error == null) return false;
       if (Reflect.get(error, ALREADY_HANDLED)) return true;
 
-      console.log(this._listeners);
-
-      // FIFO
-      for (const l of this._listeners) {
+      // LIFO
+      for (const l of this._listeners.slice().reverse()) {
         if (error != null && l(error)) {
           Reflect.set(error, ALREADY_HANDLED, true);
           return true;
@@ -53,6 +51,6 @@ export class GlobalErrorsManager {
 
   public removeListener(listener: Function): void {
     const index = this._listeners.findIndex((l) => l === listener);
-    this._listeners.splice(index, 1);
+    if (index >= 0) this._listeners.splice(index, 1);
   }
 }

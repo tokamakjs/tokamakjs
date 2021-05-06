@@ -1,5 +1,5 @@
 import { Catch, ErrorHandler, GlobalErrorsManager } from '@tokamakjs/common';
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import React, { Component, ReactNode } from 'react';
 
 const ALREADY_HANDLED = Symbol('alreadyHandled');
 
@@ -14,29 +14,23 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, {}> {
 
   constructor(props: ErrorBoundaryProps) {
     super(props);
-    this.componentDidCatch = this.componentDidCatch.bind(this);
-    Reflect.set(this.componentDidCatch, 'ControllerName', this.props.children);
+    this.onError = this.onError.bind(this);
+    Reflect.set(this.onError, 'ControllerName', this.props.children);
   }
 
   public static getDerivedStateFromError(error: Error): { hasError: boolean } {
-    console.log('get derived');
-    // Update state so the next render will show the fallback UI.
     return { hasError: true };
-  }
-
-  public componentDidMount(): void {
-    const { globalErrorsManager } = this.props;
-    console.log('mount', this.props.children);
-    globalErrorsManager.addListener(this.componentDidCatch);
   }
 
   public componentWillUnmount(): void {
     const { globalErrorsManager } = this.props;
-    console.log('unmount', this.props.children);
-    globalErrorsManager.removeListener(this.componentDidCatch);
+    globalErrorsManager.removeListener(this.onError);
   }
 
-  public componentDidCatch(error: Error, errorInfo?: ErrorInfo): boolean {
+  // We cannot use componentDidCatch since errors catched with it also
+  // bubble to the top. There, they're captured by the global errors
+  // manager and that causes them to get handled twice.
+  public onError(error: Error): boolean {
     const { handlers } = this.props;
 
     // LIFO
@@ -54,8 +48,18 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, {}> {
   }
 
   public render(): ReactNode {
+    const { globalErrorsManager } = this.props;
+
+    // Manage listeners in the render method instead of
+    // something like componentDidMount to be able to
+    // register them in the correct order (children are rendered
+    // after parents but mounted before) and allows children
+    // to react to errors before parents.
+    globalErrorsManager.removeListener(this.onError);
+    globalErrorsManager.addListener(this.onError);
+
     if (this.state.hasError) {
-      return <h1>Something went wrong.</h1>;
+      return <h1>ERROR</h1>;
     }
 
     return this.props.children;
