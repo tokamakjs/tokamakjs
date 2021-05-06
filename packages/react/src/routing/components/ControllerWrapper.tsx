@@ -2,8 +2,9 @@ import { Guard } from '@tokamakjs/common';
 import { Class } from '@tokamakjs/injection';
 import React, { createContext, useEffect, useState } from 'react';
 
-import { useDiContainer, useResolveController } from '../../hooks';
+import { useDiContainer, useGlobalErrorsManager, useResolveController } from '../../hooks';
 import { DecoratedController } from '../../types';
+import { ErrorBoundary } from './ErrorBoundary';
 
 export const ControllerContext = createContext<DecoratedController | undefined>(undefined);
 
@@ -56,9 +57,15 @@ interface ControllerWrapperProps<T> {
 
 export const ControllerWrapper = <T extends any>({ Controller }: ControllerWrapperProps<T>) => {
   const ctrl = useResolveController(Controller);
-  const { view: View, guards } = ctrl.__controller__;
+  const container = useDiContainer();
+  const globalErrorsManager = useGlobalErrorsManager();
 
-  const { isLoading, shouldActivate } = _useGuards(guards ?? []);
+  const { view: View, guards = [], handlers = [] } = ctrl.__controller__;
+
+  const { isLoading, shouldActivate } = _useGuards(guards);
+  const errorHandlers = handlers.map((v) => {
+    return typeof v === 'function' ? container.resolveDependenciesSync(v) : v;
+  });
 
   if (isLoading) {
     return null; // return LoadingView?
@@ -70,8 +77,10 @@ export const ControllerWrapper = <T extends any>({ Controller }: ControllerWrapp
   }
 
   return (
-    <ControllerContext.Provider value={ctrl}>
-      <View />
-    </ControllerContext.Provider>
+    <ErrorBoundary globalErrorsManager={globalErrorsManager} handlers={errorHandlers}>
+      <ControllerContext.Provider value={ctrl}>
+        <View />
+      </ControllerContext.Provider>
+    </ErrorBoundary>
   );
 };

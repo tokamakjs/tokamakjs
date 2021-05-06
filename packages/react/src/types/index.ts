@@ -1,10 +1,11 @@
-import { Guard } from '@tokamakjs/common';
+import { ErrorHandler, Guard } from '@tokamakjs/common';
 import { Class, ModuleMetadata } from '@tokamakjs/injection';
 import { ElementType } from 'react';
 
 export interface ControllerMetadata {
   view: ElementType;
   guards?: Array<Class<Guard>>;
+  handlers?: Array<Class<ErrorHandler> | ErrorHandler>;
 }
 
 export type RouteHandler = ElementType;
