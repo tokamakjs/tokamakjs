@@ -49,6 +49,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
         h.catch?.(error);
         Reflect.set(error, ALREADY_HANDLED, true);
         Reflect.set(error, HANDLER_INDEX, i);
+        this.setState({ error, handlerIndex: i });
         return true;
       }
     }

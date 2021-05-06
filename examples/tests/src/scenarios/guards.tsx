@@ -148,6 +148,14 @@ class NotFoundErrorHandler2 implements ErrorHandler {
   public catch(error: Error): void {
     alert('Oh oh 2');
   }
+
+  public render() {
+    return (
+      <div>
+        <h1>Not Found</h1>
+      </div>
+    );
+  }
 }
 
 @Catch(NotFoundError)
