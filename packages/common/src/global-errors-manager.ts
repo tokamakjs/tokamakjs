@@ -5,7 +5,7 @@
  *
  * https://github.com/facebook/react/issues/11499
  */
-const ALREADY_HANDLED = Symbol('alreadyHandled');
+const ALREADY_HANDLED = Symbol('ALREADY_HANDLED');
 
 /**
  * Catches all errors that reach the top level of the
