@@ -1,7 +1,8 @@
 import { Catch, ErrorHandler, GlobalErrorsManager } from '@tokamakjs/common';
-import React, { Component, ReactNode } from 'react';
+import { Component, ReactNode } from 'react';
 
-const ALREADY_HANDLED = Symbol('alreadyHandled');
+const ALREADY_HANDLED = Symbol('ALREADY_HANDLED');
+const HANDLER_INDEX = Symbol('HANDLER_INDEX');
 
 interface ErrorBoundaryProps {
   handlers: Array<ErrorHandler>;
@@ -9,17 +10,21 @@ interface ErrorBoundaryProps {
   globalErrorsManager: GlobalErrorsManager;
 }
 
-export class ErrorBoundary extends Component<ErrorBoundaryProps, {}> {
-  public readonly state = { hasError: false };
+interface ErrorBoundaryState {
+  error?: Error;
+  handlerIndex?: number;
+}
+
+export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  public readonly state: ErrorBoundaryState = {};
 
   constructor(props: ErrorBoundaryProps) {
     super(props);
     this.onError = this.onError.bind(this);
-    Reflect.set(this.onError, 'ControllerName', this.props.children);
   }
 
-  public static getDerivedStateFromError(error: Error): { hasError: boolean } {
-    return { hasError: true };
+  public static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    return { error, handlerIndex: Reflect.get(error, HANDLER_INDEX) };
   }
 
   public componentWillUnmount(): void {
@@ -34,12 +39,16 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, {}> {
     const { handlers } = this.props;
 
     // LIFO
-    for (const h of handlers.slice().reverse()) {
+    for (let i = handlers.length - 1; i >= 0; i--) {
+      const h = handlers[i];
+
+      // If one of the handlers of this route already handled the error just return true
       if (Reflect.get(error, ALREADY_HANDLED)) return true;
 
       if (!Reflect.get(error, ALREADY_HANDLED) && Catch.catches(h, error)) {
         h.catch?.(error);
         Reflect.set(error, ALREADY_HANDLED, true);
+        Reflect.set(error, HANDLER_INDEX, i);
         return true;
       }
     }
@@ -48,7 +57,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, {}> {
   }
 
   public render(): ReactNode {
-    const { globalErrorsManager } = this.props;
+    const { globalErrorsManager, handlers } = this.props;
 
     // Manage listeners in the render method instead of
     // something like componentDidMount to be able to
@@ -58,8 +67,13 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, {}> {
     globalErrorsManager.removeListener(this.onError);
     globalErrorsManager.addListener(this.onError);
 
-    if (this.state.hasError) {
-      return <h1>ERROR</h1>;
+    if (this.state.error != null) {
+      const index = Reflect.get(this.state.error, HANDLER_INDEX);
+      const handler = handlers[index];
+
+      return typeof handler?.render === 'function'
+        ? handler.render(this.state.error)
+        : this.props.children;
     }
 
     return this.props.children;

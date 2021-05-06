@@ -141,14 +141,6 @@ class NotFoundErrorHandler implements ErrorHandler {
     alert('Oh oh');
     // this._alerts.show('Oh oh');
   }
-
-  public render() {
-    return (
-      <div>
-        <h1>Not Found</h1>
-      </div>
-    );
-  }
 }
 
 @Catch(NotFoundError)
@@ -162,6 +154,14 @@ class NotFoundErrorHandler2 implements ErrorHandler {
 class NotFoundErrorHandler3 implements ErrorHandler {
   public catch(error: Error): void {
     alert('Oh oh 3');
+  }
+
+  public render() {
+    return (
+      <div>
+        <h1>Not Found</h1>
+      </div>
+    );
   }
 }
 
