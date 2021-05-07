@@ -18,13 +18,11 @@ class AuthError extends Error {}
 @Injectable()
 class AuthGuard implements Guard {
   public async canActivate() {
-    console.log('AuthGuard::canActivate', '(returns true)');
     await delay(500);
     return false;
   }
 
   public didNotActivate(): void {
-    console.log('AuthGuard::didNotActivate', '(throws AuthError)');
     throw new AuthError();
   }
 }
@@ -34,13 +32,11 @@ class AuthErrorHandler implements ErrorHandler {
   constructor(private readonly _router: RouterService) {}
 
   public catch(): void {
-    console.log('AuthErrorHandler::catch', '(redirects to login)');
     this._router.push('/login');
   }
 }
 
 const MainView = () => {
-  console.log('MainView::render');
   return (
     <div>
       <h1>Main View</h1>
@@ -56,7 +52,6 @@ const MainView = () => {
 class MainController {}
 
 const LoginView = () => {
-  console.log('LoginView::render');
   return (
     <div>
       <h1>Login View</h1>
@@ -74,7 +69,6 @@ const LoginView = () => {
 class LoginController {}
 
 const ChildView = () => {
-  console.log('ChildView::render');
   return <h1>Child View</h1>;
 };
 

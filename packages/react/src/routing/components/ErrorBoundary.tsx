@@ -1,4 +1,4 @@
-import { Catch, ErrorHandler, GlobalErrorsManager, groupLog } from '@tokamakjs/common';
+import { Catch, ErrorHandler, GlobalErrorsManager } from '@tokamakjs/common';
 import { Component, ReactNode } from 'react';
 
 const ALREADY_HANDLED = Symbol('ALREADY_HANDLED');
@@ -37,9 +37,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
   // bubble to the top. There, they're captured by the global errors
   // manager and that causes them to get handled twice.
   public onError(error: Error): boolean {
-    const { handlers, name } = this.props;
-
-    console.log(`ErrorBoundary(${name})::onError`);
+    const { handlers } = this.props;
 
     // LIFO
     for (let i = handlers.length - 1; i >= 0; i--) {
@@ -53,11 +51,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
         // further state updates happen after this one (otherwise, we could
         // end up updating an unmounted element in case there's a transition to
         // another route)
-        console.log(`ErrorBoundary(${name})::onError`, '(set state)');
-        this.setState({ error, handlerIndex: i }, () => {
-          console.log(`ErrorBoundary(${name})::onError`, '(handler catch)');
-          h.catch?.(error);
-        });
+        this.setState({ error, handlerIndex: i }, () => h.catch?.(error));
 
         Reflect.set(error, ALREADY_HANDLED, true);
         Reflect.set(error, HANDLER_INDEX, i);
@@ -70,12 +64,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
   }
 
   public render(): ReactNode {
-    const { globalErrorsManager, name, handlers } = this.props;
-
-    console.log(
-      `ErrorBoundary(${name})::render`,
-      this.state.error != null ? '(has error)' : '(no error)',
-    );
+    const { globalErrorsManager, handlers } = this.props;
 
     // Manage listeners in the render method instead of
     // something like componentDidMount to be able to
@@ -85,20 +74,14 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     globalErrorsManager.removeListener(this.onError);
     globalErrorsManager.addListener(this.onError);
 
-    console.log(`ErrorBoundary(${name})::render`, '(register listeners)');
-
     if (this.state.error != null) {
       const index = Reflect.get(this.state.error, HANDLER_INDEX);
       const handler = handlers[index];
-
-      console.log(`ErrorBoundary(${name})::render`, '(render error (Handler::render))');
 
       return typeof handler?.render === 'function'
         ? handler.render(this.state.error)
         : this.props.children;
     }
-
-    console.log(`ErrorBoundary(${name})::render`, '(render normally (Guards::render))');
 
     return this.props.children;
   }

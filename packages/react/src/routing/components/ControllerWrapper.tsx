@@ -22,9 +22,6 @@ export const ControllerWrapper = <T extends any>({ Controller }: ControllerWrapp
   const eh = handlers.map((v) => (typeof v === 'function' ? container.resolveDepsSync(v) : v));
   const gs = guards.map((G) => container.resolveSync(G));
 
-  console.log('');
-  console.log(`${Controller.name}::render`, '(instantiates handlers and guards)');
-
   return (
     <ControllerContext.Provider value={ctrl}>
       <ErrorBoundary name={Controller.name} globalErrorsManager={globalErrorsManager} handlers={eh}>
