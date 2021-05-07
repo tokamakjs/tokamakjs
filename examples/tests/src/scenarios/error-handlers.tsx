@@ -36,6 +36,13 @@ class AuthErrorHandler implements ErrorHandler {
   }
 }
 
+@Catch(AuthError)
+class AltAuthErrorHandler implements ErrorHandler {
+  public render() {
+    return <h1>Unauthorized</h1>;
+  }
+}
+
 const MainView = () => {
   return (
     <div>
@@ -48,7 +55,7 @@ const MainView = () => {
   );
 };
 
-@Controller({ view: MainView, guards: [], handlers: [AuthErrorHandler] })
+@Controller({ view: MainView, guards: [AuthGuard], handlers: [AuthErrorHandler] })
 class MainController {}
 
 const LoginView = () => {
@@ -72,7 +79,7 @@ const ChildView = () => {
   return <h1>Child View</h1>;
 };
 
-@Controller({ view: ChildView, guards: [AuthGuard], handlers: [] })
+@Controller({ view: ChildView, guards: [AuthGuard], handlers: [AltAuthErrorHandler] })
 class ChildController {}
 
 @SubApp({

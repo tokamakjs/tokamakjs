@@ -75,7 +75,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     globalErrorsManager.addListener(this.onError);
 
     if (this.state.error != null) {
-      const index = Reflect.get(this.state.error, HANDLER_INDEX);
+      const index = this.state.handlerIndex ?? -1;
       const handler = handlers[index];
 
       return typeof handler?.render === 'function'
