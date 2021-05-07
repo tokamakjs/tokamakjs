@@ -4,7 +4,7 @@ A semi-opinionated framework to build web applications using the latest tools in
 
 ## Getting Started
 
-The easiest way to get started with *TokamakJS* is to simply install it's CLI using:
+The easiest way to get started with *TokamakJS* is to simply install its CLI using:
 
 ```bash
 $ npm i -g @tokamakjs/cli
