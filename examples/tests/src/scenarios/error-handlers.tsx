@@ -1,10 +1,11 @@
 /* eslint-disable no-console, jest/no-disabled-tests, jest/expect-expect */
 
-import { Catch, ErrorHandler, Guard, RouterService } from '@tokamakjs/common';
+import { Catch, ErrorHandler, Guard, RouterService, delay } from '@tokamakjs/common';
 import {
   Controller,
   Injectable,
   Link,
+  Outlet,
   RouterModule,
   SubApp,
   TokamakApp,
@@ -16,8 +17,9 @@ class AuthError extends Error {}
 
 @Injectable()
 class AuthGuard implements Guard {
-  public canActivate(): boolean {
-    console.log('AuthGuard::canActivate', '(returns false)');
+  public async canActivate() {
+    await delay(2000);
+    console.log('AuthGuard::canActivate', '(returns true)');
     return false;
   }
 
@@ -39,10 +41,18 @@ class AuthErrorHandler implements ErrorHandler {
 
 const MainView = () => {
   console.log('MainView::render');
-  return <h1>Main View</h1>;
+  return (
+    <div>
+      <h1>Main View</h1>
+      <p>
+        <Link href="/12">To child</Link>
+      </p>
+      <Outlet />
+    </div>
+  );
 };
 
-@Controller({ view: MainView, guards: [AuthGuard], handlers: [AuthErrorHandler] })
+@Controller({ view: MainView, guards: [], handlers: [AuthErrorHandler] })
 class MainController {}
 
 const LoginView = () => {
@@ -53,6 +63,9 @@ const LoginView = () => {
       <p>
         <Link href="/">Back to main</Link>
       </p>
+      <p>
+        <Link href="/12">Back to child</Link>
+      </p>
     </div>
   );
 };
@@ -60,8 +73,19 @@ const LoginView = () => {
 @Controller({ view: LoginView })
 class LoginController {}
 
+const ChildView = () => {
+  console.log('ChildView::render');
+  return <h1>Child View</h1>;
+};
+
+@Controller({ view: ChildView, guards: [AuthGuard], handlers: [] })
+class ChildController {}
+
 @SubApp({
-  routing: [createRoute('/', MainController), createRoute('/login', LoginController)],
+  routing: [
+    createRoute('/', MainController, [createRoute('/:id', ChildController)]),
+    createRoute('/login', LoginController),
+  ],
   providers: [AuthGuard],
   imports: [RouterModule],
 })

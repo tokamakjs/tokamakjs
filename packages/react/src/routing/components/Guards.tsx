@@ -4,6 +4,7 @@ import { ReactNode, useEffect, useState } from 'react';
 import { useGlobalErrorsManager } from '../../hooks';
 
 function _useGuards(guards: Array<Guard>): { isLoading: boolean; shouldActivate: boolean } {
+  console.log('Guards::_useGuards');
   const [state, setState] = useState({ isLoading: true, shouldActivate: false });
   const globalErrorsManager = useGlobalErrorsManager();
 
@@ -18,19 +19,22 @@ function _useGuards(guards: Array<Guard>): { isLoading: boolean; shouldActivate:
 
   // No promises
   if (guardsActivations.every((g) => g === true || g === false)) {
+    console.log('Guards::_useGuards', '(check if can activate, no promises)');
+
     const shouldActivate = guardsActivations.reduce((m: boolean, v) => m && (v as boolean), true);
 
     useEffect(() => {
-      // delay the callback hooks so navigate() doesn't complain
-      setTimeout(() => {
-        try {
-          guards.forEach((g) => (shouldActivate ? g.didActivate?.() : g.didNotActivate?.()));
-        } catch (err) {
-          // manually re-throw these errors using the globalErrorsManager
-          // since they're not correctly picked up by window.onerror
-          globalErrorsManager.throw(err);
-        }
-      });
+      console.log('Guards::_useGuards', '(guards callbacks)');
+      // delay the callback hooks one tick so navigate() doesn't complain
+      // setTimeout(() => {
+      try {
+        guards.forEach((g) => (shouldActivate ? g.didActivate?.() : g.didNotActivate?.()));
+      } catch (err) {
+        // manually re-throw these errors using the globalErrorsManager
+        // since they're not correctly picked up by window.onerror
+        globalErrorsManager.throw(err);
+      }
+      // });
     }, [shouldActivate, ...guards]);
 
     return { isLoading: false, shouldActivate };
@@ -38,15 +42,18 @@ function _useGuards(guards: Array<Guard>): { isLoading: boolean; shouldActivate:
 
   useEffect(() => {
     const _checkGuards = async () => {
+      console.log('Guards::_useGuards', '(check if can activate, with promises)');
       let shouldActivate = true;
 
       for (const activation of guardsActivations) {
         shouldActivate = shouldActivate && (await activation);
       }
 
+      console.log('Guards::_useGuards', '(set state)');
       setState({ isLoading: false, shouldActivate });
 
       try {
+        console.log('Guards::_useGuards', '(guards callbacks)');
         guards.forEach((g) => (shouldActivate ? g.didActivate?.() : g.didNotActivate?.()));
       } catch (err) {
         // manually re-throw these errors using the globalErrorsManager
@@ -67,15 +74,20 @@ interface GuardsProps {
 }
 
 export const Guards = ({ guards, children }: GuardsProps): any => {
+  console.log('Guards::render');
   const { isLoading, shouldActivate } = _useGuards(guards);
 
   if (isLoading) {
+    console.log('Guards::render', '(is loading)');
     return null; // return LoadingView?
   }
 
   if (!shouldActivate) {
+    console.log('Guards::render', '(cannot activate, renders null (no view))');
     return null;
   }
+
+  console.log('Guards::render', '(render normally (View::render))');
 
   return children;
 };

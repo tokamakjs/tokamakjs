@@ -1,4 +1,3 @@
-import { Guard } from '@tokamakjs/common';
 import { Class } from '@tokamakjs/injection';
 import React, { createContext } from 'react';
 
@@ -20,19 +19,19 @@ export const ControllerWrapper = <T extends any>({ Controller }: ControllerWrapp
 
   const { view: View, guards = [], handlers = [] } = ctrl.__controller__;
 
-  const errorHandlers = handlers.map((v) => {
-    return typeof v === 'function' ? container.resolveDependenciesSync(v) : v;
-  });
+  const eh = handlers.map((v) => (typeof v === 'function' ? container.resolveDepsSync(v) : v));
+  const gs = guards.map((G) => container.resolveSync(G));
 
-  const guardsInstances = guards.map((G) => container.resolveSync<Guard>(G));
+  console.log('');
+  console.log(`${Controller.name}::render`, '(instantiates handlers and guards)');
 
   return (
-    <ErrorBoundary globalErrorsManager={globalErrorsManager} handlers={errorHandlers}>
-      <ControllerContext.Provider value={ctrl}>
-        <Guards guards={guardsInstances}>
+    <ControllerContext.Provider value={ctrl}>
+      <ErrorBoundary name={Controller.name} globalErrorsManager={globalErrorsManager} handlers={eh}>
+        <Guards guards={gs}>
           <View />
         </Guards>
-      </ControllerContext.Provider>
-    </ErrorBoundary>
+      </ErrorBoundary>
+    </ControllerContext.Provider>
   );
 };

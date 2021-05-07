@@ -132,7 +132,7 @@ export class DiContainer {
     return new Class(...resolvedDependencies);
   }
 
-  public resolveDependenciesSync<T>(Class: Class<T>): T {
+  public resolveDepsSync<T>(Class: Class<T>): T {
     const deps = Reflector.getConstructorDependencies(Class);
     const resolvedDependencies = deps.map((token) => this.resolveSync(token));
     return new Class(...resolvedDependencies);

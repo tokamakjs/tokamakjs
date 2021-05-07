@@ -21,7 +21,7 @@ export function useResolveController<T>(Controller: Class<T>): DecoratedControll
   const container = useDiContainer();
 
   try {
-    const instance = container.resolveDependenciesSync(Controller);
+    const instance = container.resolveDepsSync(Controller);
 
     if (!isDecoratedController(instance)) {
       throw new NoDecoratedControllerError(Controller.name);
