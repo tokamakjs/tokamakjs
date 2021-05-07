@@ -8,6 +8,7 @@ import {
   DecoratedController,
   DepsFn,
   HooksContainer,
+  RouteDefinition,
   SubAppMetadata,
 } from '../types';
 
@@ -27,11 +28,16 @@ export class Reflector {
     return metadata;
   }
 
-  static addSubAppMetadata(target: Function, metadata: SubAppMetadata): void {
+  static addSubAppMetadata(
+    target: Function,
+    metadata: Omit<SubAppMetadata, 'routing'> & {
+      routing: Array<RouteDefinition> | Array<Array<RouteDefinition> | RouteDefinition>;
+    },
+  ): void {
     const { routing, ...moduleMetadata } = metadata;
 
     Module(moduleMetadata)(target);
-    Reflect.defineMetadata('self:subapp', metadata, target);
+    Reflect.defineMetadata('self:subapp', { ...moduleMetadata, routing: routing.flat() }, target);
   }
 
   static getSubAppMetadata(target: Function): SubAppMetadata {

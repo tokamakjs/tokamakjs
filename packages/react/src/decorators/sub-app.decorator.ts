@@ -1,7 +1,11 @@
 import { Reflector } from '../reflection';
-import { SubAppMetadata } from '../types';
+import { RouteDefinition, SubAppMetadata } from '../types';
 
-export function SubApp(metadata: SubAppMetadata): ClassDecorator {
+export function SubApp(
+  metadata: Omit<SubAppMetadata, 'routing'> & {
+    routing: Array<RouteDefinition> | Array<Array<RouteDefinition> | RouteDefinition>;
+  },
+): ClassDecorator {
   return (target) => {
     Reflector.addSubAppMetadata(target, metadata);
   };

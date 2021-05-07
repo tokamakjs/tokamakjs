@@ -14,8 +14,24 @@ function _isArrayOfArrays<T>(value: Array<any>): value is Array<Array<T>> {
 export function createRoute(
   path: string,
   Controller: Class<DecoratedController>,
+  children?: Array<RouteDefinition> | Array<Array<RouteDefinition>>,
+): RouteDefinition;
+export function createRoute(
+  path: string,
+  children: Array<RouteDefinition> | Array<Array<RouteDefinition>>,
+): Array<RouteDefinition>;
+export function createRoute(
+  path: string,
+  Controller: Class<DecoratedController> | Array<RouteDefinition> | Array<Array<RouteDefinition>>,
   children: Array<RouteDefinition> | Array<Array<RouteDefinition>> = [],
-): RouteDefinition {
+): RouteDefinition | Array<RouteDefinition> {
+  if (Array.isArray(Controller)) {
+    children = Controller;
+
+    // just prefix children with path
+    return children.flat().map((c) => ({ ...c, path: urljoin(path, c.path) }));
+  }
+
   return _isArrayOfArrays(children)
     ? { path, Controller, children: children.flat() }
     : { path, Controller, children };
