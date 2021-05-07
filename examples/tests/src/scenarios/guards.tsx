@@ -1,6 +1,8 @@
+/* eslint-disable no-console, jest/no-disabled-tests, jest/expect-expect */
+
 import 'reflect-metadata';
 
-import { Catch, ErrorHandler, Guard, RouterService, delay } from '@tokamakjs/common';
+import { AuthError, Catch, ErrorHandler, Guard, RouterService, delay } from '@tokamakjs/common';
 import {
   Controller,
   HookService,
@@ -14,10 +16,10 @@ import {
   state,
   useController,
 } from '@tokamakjs/react';
-import React, { ReactNode } from 'react';
+import React from 'react';
 import * as RX from 'rxjs';
 
-class AuthError extends Error {}
+// class AuthError extends Error {}
 
 class NotFoundError extends Error {}
 
@@ -90,7 +92,7 @@ class AsyncGuard implements Guard {
   }
 
   public didNotActivate(): void {
-    this._router.push('/login');
+    throw new AuthError();
   }
 }
 
@@ -122,14 +124,6 @@ class AuthErrorHandler implements ErrorHandler {
 
   public catch(error: AuthError): void {
     this._router.push('/login');
-  }
-
-  public render(error: AuthError): ReactNode {
-    return (
-      <div>
-        <h1>Unauthorized</h1>
-      </div>
-    );
   }
 }
 
@@ -175,7 +169,7 @@ class NotFoundErrorHandler3 implements ErrorHandler {
 
 @Controller({
   view: MainView,
-  guards: [AsyncGuard],
+  guards: [AuthGuard],
   handlers: [AuthErrorHandler, NotFoundErrorHandler, NotFoundErrorHandler2],
 })
 class MainController {

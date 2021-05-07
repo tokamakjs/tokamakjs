@@ -5,5 +5,6 @@
 // import './scenarios/transient';
 // import './scenarios/react';
 // import './scenarios/hook-services';
-import './scenarios/guards';
+// import './scenarios/guards';
 // import './scenarios/event-emitter';
+import './scenarios/error-handlers';

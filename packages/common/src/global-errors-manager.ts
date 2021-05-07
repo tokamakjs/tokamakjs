@@ -16,33 +16,8 @@ export class GlobalErrorsManager {
   private readonly _listeners: Array<(err: Error) => boolean> = [];
 
   constructor() {
-    window.onerror = (_msg, _url, _line, _col, error): boolean => {
-      if (error == null) return false;
-      if (Reflect.get(error, ALREADY_HANDLED)) return true;
-
-      // LIFO
-      for (const l of this._listeners.slice().reverse()) {
-        if (error != null && l(error)) {
-          Reflect.set(error, ALREADY_HANDLED, true);
-          return true;
-        }
-      }
-
-      Reflect.set(error, ALREADY_HANDLED, true);
-      return false;
-    };
-
-    window.onunhandledrejection = (e: PromiseRejectionEvent): boolean => {
-      const error = new Error(e.reason);
-
-      for (const l of this._listeners) {
-        if (error != null && l(error)) {
-          return true;
-        }
-      }
-
-      return false;
-    };
+    window.addEventListener('error', (e) => this._handleError(e.error));
+    window.addEventListener('unhandledrejection', (e) => this._handleError(new Error(e.reason)));
   }
 
   public addListener(listener: (err: Error) => boolean): void {
@@ -52,5 +27,25 @@ export class GlobalErrorsManager {
   public removeListener(listener: Function): void {
     const index = this._listeners.findIndex((l) => l === listener);
     if (index >= 0) this._listeners.splice(index, 1);
+  }
+
+  public throw(error: Error): void {
+    this._handleError(error);
+  }
+
+  private _handleError(error: Error): boolean {
+    if (error == null) return false;
+    if (Reflect.get(error, ALREADY_HANDLED)) return true;
+
+    // LIFO
+    for (const l of this._listeners.slice().reverse()) {
+      if (error != null && l(error)) {
+        Reflect.set(error, ALREADY_HANDLED, true);
+        return true;
+      }
+    }
+
+    Reflect.set(error, ALREADY_HANDLED, true);
+    return false;
   }
 }

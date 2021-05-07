@@ -16,6 +16,7 @@
     "start": "NODE_ENV=development webpack-dev-server --config webpack.config.ts --hot --useLocalIp --host 0.0.0.0 --port 4200"
   },
   "dependencies": {
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
     "@tokamakjs/common": "^0.2.0-alpha.14",
     "@tokamakjs/injection": "^0.2.0-alpha.13",
     "@tokamakjs/react": "^0.2.0-alpha.14",

@@ -46,10 +46,14 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
       if (Reflect.get(error, ALREADY_HANDLED)) return true;
 
       if (!Reflect.get(error, ALREADY_HANDLED) && Catch.catches(h, error)) {
+        // it's important to update the state before handling the error so any
+        // further state updates happen after this one (otherwise, we could
+        // end up updating an unmounted element in case there's a transition to
+        // another route)
+        this.setState({ error, handlerIndex: i });
         h.catch?.(error);
         Reflect.set(error, ALREADY_HANDLED, true);
         Reflect.set(error, HANDLER_INDEX, i);
-        this.setState({ error, handlerIndex: i });
         return true;
       }
     }
