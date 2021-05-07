@@ -25,16 +25,7 @@ function _useGuards(guards: Array<Guard>): { isLoading: boolean; shouldActivate:
 
     useEffect(() => {
       console.log('Guards::_useGuards', '(guards callbacks)');
-      // delay the callback hooks one tick so navigate() doesn't complain
-      // setTimeout(() => {
-      try {
-        guards.forEach((g) => (shouldActivate ? g.didActivate?.() : g.didNotActivate?.()));
-      } catch (err) {
-        // manually re-throw these errors using the globalErrorsManager
-        // since they're not correctly picked up by window.onerror
-        globalErrorsManager.throw(err);
-      }
-      // });
+      guards.forEach((g) => (shouldActivate ? g.didActivate?.() : g.didNotActivate?.()));
     }, [shouldActivate, ...guards]);
 
     return { isLoading: false, shouldActivate };
@@ -52,14 +43,8 @@ function _useGuards(guards: Array<Guard>): { isLoading: boolean; shouldActivate:
       console.log('Guards::_useGuards', '(set state)');
       setState({ isLoading: false, shouldActivate });
 
-      try {
-        console.log('Guards::_useGuards', '(guards callbacks)');
-        guards.forEach((g) => (shouldActivate ? g.didActivate?.() : g.didNotActivate?.()));
-      } catch (err) {
-        // manually re-throw these errors using the globalErrorsManager
-        // since they're not correctly picked up by window.onerror
-        globalErrorsManager.throw(err);
-      }
+      console.log('Guards::_useGuards', '(guards callbacks)');
+      guards.forEach((g) => (shouldActivate ? g.didActivate?.() : g.didNotActivate?.()));
     };
 
     _checkGuards();

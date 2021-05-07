@@ -17,7 +17,10 @@ export class GlobalErrorsManager {
 
   constructor() {
     window.addEventListener('error', (e) => this._handleError(e.error));
-    window.addEventListener('unhandledrejection', (e) => this._handleError(new Error(e.reason)));
+    window.addEventListener('unhandledrejection', (e) => {
+      e.preventDefault();
+      return this._handleError(e.reason instanceof Error ? e.reason : new Error(e.reason));
+    });
   }
 
   public addListener(listener: (err: Error) => boolean): void {
