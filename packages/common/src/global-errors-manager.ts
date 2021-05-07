@@ -16,10 +16,15 @@ export class GlobalErrorsManager {
   private readonly _listeners: Array<(err: Error) => boolean> = [];
 
   constructor() {
-    window.addEventListener('error', (e) => this._handleError(e.error));
+    window.addEventListener('error', (e) => {
+      const shouldPreventDefault = this._handleError(e.error);
+      if (shouldPreventDefault) e.preventDefault();
+    });
+
     window.addEventListener('unhandledrejection', (e) => {
-      e.preventDefault();
-      return this._handleError(e.reason instanceof Error ? e.reason : new Error(e.reason));
+      const error = e.reason instanceof Error ? e.reason : new Error(e.reason);
+      const shouldPreventDefault = this._handleError(error);
+      if (shouldPreventDefault) e.preventDefault();
     });
   }
 

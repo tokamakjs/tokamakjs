@@ -18,8 +18,8 @@ class AuthError extends Error {}
 @Injectable()
 class AuthGuard implements Guard {
   public async canActivate() {
-    await delay(500);
     console.log('AuthGuard::canActivate', '(returns true)');
+    await delay(500);
     return false;
   }
 
