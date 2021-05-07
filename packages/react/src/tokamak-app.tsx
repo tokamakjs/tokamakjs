@@ -1,3 +1,4 @@
+import { GlobalErrorsManager } from '@tokamakjs/common';
 import { Class, DiContainer } from '@tokamakjs/injection';
 import React, { ElementType, createContext } from 'react';
 import ReactDom from 'react-dom';
@@ -25,6 +26,8 @@ export const DiContainerContext = createContext<DiContainer | undefined>(undefin
 
 export const PathsContext = createContext<Array<string>>([]);
 
+export const ErrorsContext = createContext<GlobalErrorsManager | undefined>(undefined);
+
 export class TokamakApp {
   public static async create(
     RootApp: Class,
@@ -42,6 +45,7 @@ export class TokamakApp {
   private readonly _Router: typeof HISTORY_MODE_MAP[keyof typeof HISTORY_MODE_MAP];
   private readonly _RootNode: ElementType;
   private readonly _paths: Array<string> = [];
+  private readonly _globalErrorsManager: GlobalErrorsManager;
 
   private constructor(
     private readonly _container: DiContainer,
@@ -52,21 +56,25 @@ export class TokamakApp {
     this._paths = this._extractPathsFromRoutes(routes);
     this._RootNode = () => useRoutes(routes, config.basePath);
     this._Router = HISTORY_MODE_MAP[config.historyMode];
+    this._globalErrorsManager = new GlobalErrorsManager();
   }
 
   public render(selector: string, appContext: unknown = {}): void {
     const RootNode = this._RootNode;
     const Router = this._Router;
+
     ReactDom.render(
-      <Router>
-        <DiContainerContext.Provider value={this._container}>
-          <AppContext.Provider value={appContext}>
-            <PathsContext.Provider value={this._paths}>
-              <RootNode />
-            </PathsContext.Provider>
-          </AppContext.Provider>
-        </DiContainerContext.Provider>
-      </Router>,
+      <ErrorsContext.Provider value={this._globalErrorsManager}>
+        <Router>
+          <DiContainerContext.Provider value={this._container}>
+            <AppContext.Provider value={appContext}>
+              <PathsContext.Provider value={this._paths}>
+                <RootNode />
+              </PathsContext.Provider>
+            </AppContext.Provider>
+          </DiContainerContext.Provider>
+        </Router>
+      </ErrorsContext.Provider>,
       document.querySelector(selector),
     );
   }

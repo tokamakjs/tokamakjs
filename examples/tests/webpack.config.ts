@@ -1,6 +1,5 @@
 import path from 'path';
 
-// @ts-ignore
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 // @ts-ignore
 import FriendlyErrorsWebpackPlugin from 'friendly-errors-webpack-plugin';
@@ -26,7 +25,7 @@ const config: Configuration = {
   plugins: [
     new HtmlPlugin({ filename: 'index.html', template: 'public/index.html' }),
     new EnvironmentPlugin(['NODE_ENV']),
-    new ReactRefreshWebpackPlugin({ disableRefreshCheck: true, overlay: false }),
+    new ReactRefreshWebpackPlugin({ overlay: false }),
     new FriendlyErrorsWebpackPlugin({ clearConsole: false }),
   ],
   module: {

@@ -1,54 +1,12 @@
-import { Guard } from '@tokamakjs/common';
 import { Class } from '@tokamakjs/injection';
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext } from 'react';
 
-import { useDiContainer, useResolveController } from '../../hooks';
+import { useDiContainer, useGlobalErrorsManager, useResolveController } from '../../hooks';
 import { DecoratedController } from '../../types';
+import { ErrorBoundary } from './ErrorBoundary';
+import { Guards } from './Guards';
 
 export const ControllerContext = createContext<DecoratedController | undefined>(undefined);
-
-function _useGuards(Guards: Array<Class<Guard>>): { isLoading: boolean; shouldActivate: boolean } {
-  const container = useDiContainer();
-  const guards = Guards.map((G) => container.resolveSync<Guard>(G));
-  const [state, setState] = useState({ isLoading: true, shouldActivate: false });
-
-  const guardsActivations = guards.map((g) => g.canActivate());
-
-  // We can have conditional hooks here because this deals with
-  // declarative code (in a decorator), so it's not something
-  // the developer can manipulate programatically.
-  //
-  // This means, any modification to the order of these hooks would
-  // come from a modification in the source code.
-
-  // No promises
-  if (guardsActivations.every((g) => g === true || g === false)) {
-    const shouldActivate = guardsActivations.reduce((m: boolean, v) => m && (v as boolean), true);
-
-    useEffect(() => {
-      guards.forEach((g) => (shouldActivate ? g.didActivate?.() : g.didNotActivate?.()));
-    }, [shouldActivate, ...guards]);
-
-    return { isLoading: false, shouldActivate };
-  }
-
-  useEffect(() => {
-    const _checkGuards = async () => {
-      let shouldActivate = true;
-
-      for (const activation of guardsActivations) {
-        shouldActivate = shouldActivate && (await activation);
-      }
-
-      setState({ isLoading: false, shouldActivate });
-      guards.forEach((g) => (shouldActivate ? g.didActivate?.() : g.didNotActivate?.()));
-    };
-
-    _checkGuards();
-  }, []);
-
-  return state;
-}
 
 interface ControllerWrapperProps<T> {
   Controller: Class<T>;
@@ -56,22 +14,21 @@ interface ControllerWrapperProps<T> {
 
 export const ControllerWrapper = <T extends any>({ Controller }: ControllerWrapperProps<T>) => {
   const ctrl = useResolveController(Controller);
-  const { view: View, guards } = ctrl.__controller__;
+  const container = useDiContainer();
+  const globalErrorsManager = useGlobalErrorsManager();
 
-  const { isLoading, shouldActivate } = _useGuards(guards ?? []);
+  const { view: View, guards = [], handlers = [] } = ctrl.__controller__;
 
-  if (isLoading) {
-    return null; // return LoadingView?
-  }
-
-  if (!shouldActivate) {
-    return null;
-    // throw new AuthError(); -> Support @Catch(AuthErrorFilter)
-  }
+  const eh = handlers.map((v) => (typeof v === 'function' ? container.resolveDepsSync(v) : v));
+  const gs = guards.map((G) => container.resolveSync(G));
 
   return (
     <ControllerContext.Provider value={ctrl}>
-      <View />
+      <ErrorBoundary name={Controller.name} globalErrorsManager={globalErrorsManager} handlers={eh}>
+        <Guards guards={gs}>
+          <View />
+        </Guards>
+      </ErrorBoundary>
     </ControllerContext.Provider>
   );
 };

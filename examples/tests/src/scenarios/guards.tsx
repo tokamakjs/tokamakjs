@@ -1,8 +1,14 @@
-import { Guard, RouterService, delay } from '@tokamakjs/common';
+/* eslint-disable no-console, jest/no-disabled-tests, jest/expect-expect */
+
+import 'reflect-metadata';
+
+import { AuthError, Catch, ErrorHandler, Guard, RouterService, delay } from '@tokamakjs/common';
 import {
   Controller,
   HookService,
   Injectable,
+  Link,
+  Outlet,
   RouterModule,
   SubApp,
   TokamakApp,
@@ -13,11 +19,15 @@ import {
 import React from 'react';
 import * as RX from 'rxjs';
 
-class AuthError extends Error {}
+// class AuthError extends Error {}
+
+class NotFoundError extends Error {}
 
 @Injectable()
 class AuthStore {
-  private readonly _token$ = new RX.BehaviorSubject<string | undefined>(undefined);
+  private readonly _token$ = new RX.BehaviorSubject<string | undefined>(
+    localStorage.getItem('token') ?? undefined,
+  );
 
   get token() {
     return this._token$.value;
@@ -29,10 +39,12 @@ class AuthStore {
 
   public login() {
     this._token$.next('token');
+    localStorage.setItem('token', 'token');
   }
 
   public logout() {
     this._token$.next(undefined);
+    localStorage.removeItem('token');
   }
 }
 
@@ -76,42 +88,90 @@ class AsyncGuard implements Guard {
 
   public async canActivate(): Promise<boolean> {
     await delay(1000);
-    console.log(this._service.token);
     return this._service.token != null;
   }
 
   public didNotActivate(): void {
-    this._router.push('/login');
+    throw new AuthError();
   }
 }
 
 const MainView = () => {
   const ctrl = useController<MainController>();
+
   return (
     <div>
       <h1>Main View</h1>
       <h2>Counter: {ctrl.counter}</h2>
-      <button onClick={() => ctrl.increase()}>Increase</button>
+      <p>
+        <button onClick={() => ctrl.increase()}>Increase</button>
+      </p>
+      <p>
+        <button onClick={() => ctrl.logout()}>Log out</button>
+      </p>
+      <p>
+        <button onClick={() => ctrl.triggerNotFound()}>Trigger Not Found</button>
+      </p>
+      <Link href="/12">Go to child</Link>
+      <Outlet />
     </div>
   );
 };
 
-// @Catch(AuthError)
-// class AuthErrorFilter {
-//   constructor(private readonly _router: RouterService) {}
+@Catch(AuthError)
+class AuthErrorHandler implements ErrorHandler {
+  constructor(private readonly _router: RouterService) {}
 
-//   public catch(error: Error): void {
-//     this._router.push('/login');
-//   }
+  public catch(error: AuthError): void {
+    this._router.push('/login');
+  }
+}
 
-//   // this is not required
-//   public render() {
-//     return <div>Unauthorized</div>;
-//   }
-// }
+@Catch(NotFoundError)
+class NotFoundErrorHandler implements ErrorHandler {
+  // private readonly _alerts = useAlerts();
 
-@Controller({ view: MainView, guards: [AsyncGuard] })
-//@UseFilters(AuthErrorFilter)
+  public catch(error: Error): void {
+    alert('Oh oh');
+    // this._alerts.show('Oh oh');
+  }
+}
+
+@Catch(NotFoundError)
+class NotFoundErrorHandler2 implements ErrorHandler {
+  public catch(error: Error): void {
+    alert('Oh oh 2');
+  }
+
+  public render() {
+    return (
+      <div>
+        <h1>Not Found</h1>
+      </div>
+    );
+  }
+}
+
+@Catch(NotFoundError)
+class NotFoundErrorHandler3 implements ErrorHandler {
+  public catch(error: Error): void {
+    alert('Oh oh 3');
+  }
+
+  public render() {
+    return (
+      <div>
+        <h1>Not Found</h1>
+      </div>
+    );
+  }
+}
+
+@Controller({
+  view: MainView,
+  guards: [AuthGuard],
+  handlers: [AuthErrorHandler, NotFoundErrorHandler, NotFoundErrorHandler2],
+})
 class MainController {
   @state private _counter = 0;
 
@@ -128,6 +188,10 @@ class MainController {
   public logout(): void {
     this._service.logout();
     this._router.push('/login');
+  }
+
+  public triggerNotFound(): void {
+    throw new NotFoundError('Not Found');
   }
 }
 
@@ -151,8 +215,19 @@ class LoginController {
   }
 }
 
+const ChildView = () => {
+  // simulate a rendering error
+  throw new NotFoundError();
+};
+
+@Controller({ view: ChildView, handlers: [NotFoundErrorHandler3] })
+class ChildController {}
+
 @SubApp({
-  routing: [createRoute('/', MainController, []), createRoute('/login', LoginController, [])],
+  routing: [
+    createRoute('/', MainController, [createRoute('/:id', ChildController)]),
+    createRoute('/login', LoginController, []),
+  ],
   providers: [AuthGuard, AsyncGuard, AuthStore, AuthService],
   imports: [RouterModule],
 })
@@ -160,6 +235,9 @@ class AppModule {}
 
 async function test() {
   const app = await TokamakApp.create(AppModule);
+
+  // app.addGlobalErrorHandler(AuthErrorHandler);
+
   app.render('#root');
 }
 
