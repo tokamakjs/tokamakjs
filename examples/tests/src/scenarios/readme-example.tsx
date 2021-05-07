@@ -1,28 +1,5 @@
-# TokamakJS
+/* eslint-disable no-console, jest/no-disabled-tests, jest/expect-expect */
 
-A semi-opinionated framework to build web applications using the latest tools in the React ecosystem. Heavily inspired by [NestJS](https://docs.nestjs.com/).
-
-## Getting Started
-
-The easiest way to get started with *TokamakJS* is to simply install it's CLI using:
-
-```bash
-$ npm i -g @tokamakjs/cli
-```
-
-And once that's done, run the following command:
-
-```bash
-$ tok new app-name
-```
-
-This will create a new *TokamakJS* app in the `app-name` dir.
-
-## Simple Example
-
-The following example goes briefly over some of the most important concepts in a *TokamakJS* app.
-
-```tsx
 import { Catch, ErrorHandler, Guard, RouterService, delay } from '@tokamakjs/common';
 import {
   Controller,
@@ -355,8 +332,3 @@ async function bootstrap() {
 
 // Finally, run the main function
 bootstrap();
-```
-
-## LICENSE
-
-[MIT](LICENSE)

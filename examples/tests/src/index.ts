@@ -8,4 +8,5 @@
 // import './scenarios/guards';
 // import './scenarios/event-emitter';
 // import './scenarios/error-handlers';
-import './scenarios/route-prefix';
+// import './scenarios/route-prefix';
+import './scenarios/readme-example';
