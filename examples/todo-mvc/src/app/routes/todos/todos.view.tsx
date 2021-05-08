@@ -1,12 +1,13 @@
-import { useLocation } from '@tokamakjs/core';
+import { useController, useLocation } from '@tokamakjs/react';
 import qs from 'query-string';
 import React, { Fragment, useMemo } from 'react';
 
-import { Footer, Header, Main } from '~/components';
+import { Footer, Header, Main } from '~/app/components';
 
 import { TodosController } from './todos.controller';
 
-export const TodosView = (ctrl: TodosController) => {
+export const TodosView = () => {
+  const ctrl = useController<TodosController>();
   const { search } = useLocation();
   const { filterBy } = qs.parse(search);
 

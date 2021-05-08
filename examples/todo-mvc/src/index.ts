@@ -1,11 +1,12 @@
 import 'todomvc-common/base.js';
 
-import { renderModule } from '@tokamakjs/core';
+import { TokamakApp } from '@tokamakjs/react';
 
 import { AppModule } from './app/app.module';
 
 async function bootstrap() {
-  renderModule(AppModule, '.todoapp');
+  const app = await TokamakApp.create(AppModule);
+  app.render('.todoapp');
 }
 
 bootstrap();

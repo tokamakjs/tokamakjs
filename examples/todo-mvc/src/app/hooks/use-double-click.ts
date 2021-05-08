@@ -1,4 +1,4 @@
-type DoubleClickHandler<T> = (context: T) => () => void;
+import { DoubleClickHandler } from '../types';
 
 export function useDoubleClick<T>(callback: (context: T) => void): DoubleClickHandler<T> {
   let timeout: NodeJS.Timeout;

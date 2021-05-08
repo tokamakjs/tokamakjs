@@ -1,16 +1,11 @@
-import { OnModuleInit, injectable } from '@tokamakjs/core';
+import { Injectable, onModuleInit } from '@tokamakjs/react';
 import { BehaviorSubject, Subject } from 'rxjs';
 
-import { TodosStorageService } from '~/services';
+import { TodosStorageService } from '~/app/services';
+import { Todo } from '~/app/types';
 
-export interface Todo {
-  id: number;
-  value: string;
-  isDone: boolean;
-}
-
-@injectable()
-export class TodosStore implements OnModuleInit {
+@Injectable()
+export class TodosStore {
   private _todos = [] as Array<Todo>;
   public todos$: Subject<Array<Todo>>;
 
@@ -18,7 +13,8 @@ export class TodosStore implements OnModuleInit {
     this.todos$ = new BehaviorSubject([] as Array<Todo>);
   }
 
-  onModuleInit() {
+  @onModuleInit()
+  public initStore(): void {
     this._todos = this._storageService.readTodos();
     this.todos$.subscribe((todos) => this._persistTodos(todos));
     this.todos$.next(this._todos.slice());

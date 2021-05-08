@@ -1,0 +1,10 @@
+{
+  "presets": ["@babel/preset-react", "@babel/preset-env"],
+  "plugins": [
+    ["@babel/plugin-transform-runtime"],
+    [
+      "@emotion/babel-plugin",
+      { "sourceMap": true, "autoLabel": "always", "labelFormat": "[filename]__[local]" }
+    ]
+  ]
+}

@@ -1,6 +1,7 @@
-import { controller, observable, onDidMount } from '@tokamakjs/core';
+import { Controller, onDidMount, state } from '@tokamakjs/react';
 
-import { Todo, TodosStore } from '~/stores';
+import { TodosStore } from '~/app/stores';
+import { Todo } from '~/app/types';
 
 import { TodosView } from './todos.view';
 
@@ -8,19 +9,19 @@ function _poorsManUuid(): number {
   return new Date().getTime();
 }
 
-@controller({ view: TodosView })
+@Controller({ view: TodosView })
 export class TodosController {
-  @observable private _todos = [] as Array<Todo>;
+  @state private _todos = [] as Array<Todo>;
 
-  constructor(private readonly todosStore: TodosStore) {}
+  constructor(private readonly _todosStore: TodosStore) {}
 
-  get todos() {
-    return this._todos;
+  get todos(): Array<Todo> {
+    return this._todos.slice();
   }
 
   @onDidMount()
-  public onDidMount() {
-    const subscription = this.todosStore.todos$.subscribe((todos) => (this._todos = todos));
+  public onDidMount(): VoidFunction {
+    const subscription = this._todosStore.todos$.subscribe((todos) => (this._todos = todos));
 
     return () => {
       subscription.unsubscribe();
@@ -28,26 +29,26 @@ export class TodosController {
   }
 
   public addTodo(todo: string): void {
-    this.todosStore.addTodo({ id: _poorsManUuid(), value: todo, isDone: false });
+    this._todosStore.addTodo({ id: _poorsManUuid(), value: todo, isDone: false });
   }
 
   public deleteTodo(todo: Todo): void {
-    this.todosStore.deleteTodo(todo);
+    this._todosStore.deleteTodo(todo);
   }
 
   public editTodoValue(id: number, newValue: string): void {
     if (newValue == null || newValue === '') {
-      this.todosStore.deleteTodo(id);
+      this._todosStore.deleteTodo(id);
     } else {
-      this.todosStore.editTodoValue(id, newValue);
+      this._todosStore.editTodoValue(id, newValue);
     }
   }
 
   public toggleTodo(id: number): void {
-    this.todosStore.toggleTodo(id);
+    this._todosStore.toggleTodo(id);
   }
 
   public clearCompleted(): void {
-    this.todosStore.clearCompleted();
+    this._todosStore.clearCompleted();
   }
 }

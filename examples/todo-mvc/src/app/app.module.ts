@@ -1,11 +1,10 @@
-import { createRoute, module } from '@tokamakjs/core';
+import { RouterModule, SubApp, createRoute } from '@tokamakjs/react';
 
-import { TodosController } from './routes/todos';
-import { TodosStorageService } from './services';
-import { TodosStore } from './stores';
+import TodosRoute from './routes/todos';
 
-@module({
-  routing: [createRoute('/', TodosController)],
-  providers: [TodosStore, TodosStorageService],
+@SubApp({
+  routing: [createRoute('/', TodosRoute, [])],
+  providers: [],
+  imports: [RouterModule],
 })
 export class AppModule {}

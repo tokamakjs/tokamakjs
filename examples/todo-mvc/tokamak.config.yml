@@ -1,0 +1,4 @@
+name: TODO MVC
+port: 4200
+env:
+  - NODE_ENV

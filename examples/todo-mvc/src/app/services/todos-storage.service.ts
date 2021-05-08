@@ -1,8 +1,8 @@
-import { injectable } from '@tokamakjs/core';
+import { Injectable } from '@tokamakjs/react';
 
-import { Todo } from '~/stores';
+import { Todo } from '~/app/types';
 
-@injectable()
+@Injectable()
 export class TodosStorageService {
   public persistTodos(todos: Array<Todo>): void {
     localStorage.setItem('todos-tokamak', JSON.stringify(todos));

@@ -1,9 +1,11 @@
 import cn from 'classnames';
 import React, { useState } from 'react';
 
-import { ENTER_KEY, ESC_KEY } from '~/constants';
-import { useDoubleClick, useOnClickOutside } from '~/hooks';
-import { Todo } from '~/stores';
+import { useDoubleClick, useOnClickOutside } from '~/app/hooks';
+import { Todo } from '~/app/types';
+
+const ENTER_KEY = 13;
+const ESC_KEY = 27;
 
 interface MainProps {
   todos: Array<Todo>;

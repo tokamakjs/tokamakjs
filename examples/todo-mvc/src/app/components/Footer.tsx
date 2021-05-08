@@ -1,4 +1,4 @@
-import { Link } from '@tokamakjs/core';
+import { Link } from '@tokamakjs/react';
 import React from 'react';
 
 interface FooterProps {

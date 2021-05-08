@@ -1,0 +1,11 @@
+# Dependencies
+node_modules
+
+# Compiled source
+dist
+lib
+
+# Misc
+.env
+*.log
+*.tsbuildinfo
