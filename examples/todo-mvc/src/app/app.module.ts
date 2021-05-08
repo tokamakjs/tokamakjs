@@ -1,12 +1,13 @@
 import { RouterModule, SubApp, createRoute } from '@tokamakjs/react';
 
+import { TodosApi } from './api';
 import TodosRoute from './routes/todos';
-import { TodosStorageService } from './services';
+import { TodosService } from './services';
 import { TodosStore } from './stores';
 
 @SubApp({
   routing: [createRoute('/', TodosRoute, [])],
-  providers: [TodosStorageService, TodosStore],
+  providers: [TodosApi, TodosStore, TodosService],
   imports: [RouterModule],
 })
 export class AppModule {}

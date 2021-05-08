@@ -14,8 +14,8 @@ export class RouterHookService extends RouterService {
     return this._location;
   }
 
-  get rawQuery() {
-    return '';
+  get rawQuery(): string {
+    return this._location.search;
   }
 
   public getParams(): Record<string, string | undefined> {

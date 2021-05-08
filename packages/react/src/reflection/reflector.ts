@@ -65,6 +65,21 @@ export class Reflector {
     effectKeysMap.set(key, deps ?? (() => undefined));
   }
 
+  static getMemoKeysMap(target: Object): Map<PropertyKey, DepsFn> | undefined {
+    return Reflect.getMetadata('self:hookscontainer:memokeysmap', target);
+  }
+
+  static setInMemoKeysMap(target: Object, key: PropertyKey, deps?: DepsFn): void {
+    let memoKeysMap = Reflector.getMemoKeysMap(target);
+
+    if (memoKeysMap == null) {
+      memoKeysMap = new Map<string | symbol, DepsFn>();
+      Reflect.defineMetadata('self:hookscontainer:memokeysmap', memoKeysMap, target);
+    }
+
+    memoKeysMap.set(key, deps ?? (() => undefined));
+  }
+
   static getStateKeys(target: Object): Array<PropertyKey> | undefined {
     return Reflect.getMetadata('self:hookscontainer:statekeys', target);
   }
@@ -114,8 +129,9 @@ export class Reflector {
     const stateKeys = Reflector.getStateKeys(inst) ?? [];
     const refKeys = Reflector.getRefKeys(inst) ?? [];
     const effectKeysMap = Reflector.getEffectKeysMap(inst) ?? new Map<PropertyKey, DepsFn>();
+    const memoKeysMap = Reflector.getMemoKeysMap(inst) ?? new Map<PropertyKey, DepsFn>();
 
-    inst.__reactHooks__ = { stateKeys, refKeys, effectKeysMap };
+    inst.__reactHooks__ = { stateKeys, refKeys, effectKeysMap, memoKeysMap };
 
     return inst;
   }

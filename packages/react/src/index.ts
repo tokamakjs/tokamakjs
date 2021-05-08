@@ -17,6 +17,7 @@ export {
   SubApp,
   onDidMount,
   onDidRender,
+  memo,
 } from './decorators';
 
 export { TokamakApp } from './tokamak-app';

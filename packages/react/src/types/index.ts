@@ -4,7 +4,7 @@ import { ElementType } from 'react';
 
 /**
  * Used to calculate the list of dependencies for
- * the @effect() decorator.
+ * some hooks decorators.
  */
 export type DepsFn = (instance: any) => Array<any> | undefined;
 
@@ -16,6 +16,7 @@ export type HooksContainer<T = any> = T & {
     stateKeys: Array<PropertyKey>;
     refKeys: Array<PropertyKey>;
     effectKeysMap: Map<PropertyKey, DepsFn>;
+    memoKeysMap: Map<PropertyKey, DepsFn>;
   };
 };
 

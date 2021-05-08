@@ -1,22 +1,16 @@
-import { Injectable, onModuleInit } from '@tokamakjs/react';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { Injectable } from '@tokamakjs/react';
+import { BehaviorSubject } from 'rxjs';
 
-import { TodosStorageService } from '~/services';
 import { Todo } from '~/types';
 
 @Injectable()
 export class TodosStore {
+  public readonly todos$ = new BehaviorSubject<Array<Todo>>([]);
+
   private _todos = [] as Array<Todo>;
-  public todos$: Subject<Array<Todo>>;
 
-  constructor(private readonly _storageService: TodosStorageService) {
-    this.todos$ = new BehaviorSubject([] as Array<Todo>);
-  }
-
-  @onModuleInit()
-  public initStore(): void {
-    this._todos = this._storageService.readTodos();
-    this.todos$.subscribe((todos) => this._persistTodos(todos));
+  public initStore(todos: Array<Todo>): void {
+    this._todos = todos;
     this.todos$.next(this._todos.slice());
   }
 
@@ -46,9 +40,5 @@ export class TodosStore {
   public clearCompleted(): void {
     this._todos = this._todos.filter((t) => !t.isDone);
     this.todos$.next(this._todos.slice());
-  }
-
-  private _persistTodos(todos: Array<Todo>) {
-    this._storageService.persistTodos(todos);
   }
 }

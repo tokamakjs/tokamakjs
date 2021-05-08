@@ -1,6 +1,5 @@
-import { useController, useLocation } from '@tokamakjs/react';
-import qs from 'query-string';
-import React, { Fragment, useMemo } from 'react';
+import { useController } from '@tokamakjs/react';
+import React, { Fragment } from 'react';
 
 import { Footer, Header, Main } from '~/components';
 
@@ -8,27 +7,14 @@ import { TodosController } from './todos.controller';
 
 export const TodosView = () => {
   const ctrl = useController<TodosController>();
-  const { search } = useLocation();
-  const { filterBy } = qs.parse(search);
-
-  const uncompletedTodos = useMemo(() => ctrl.todos.filter((t) => !t.isDone), [ctrl.todos]);
-  const filteredTodos = useMemo(() => {
-    if (filterBy === 'active') {
-      return ctrl.todos.filter((t) => !t.isDone);
-    } else if (filterBy === 'completed') {
-      return ctrl.todos.filter((t) => t.isDone);
-    } else {
-      return ctrl.todos;
-    }
-  }, [ctrl.todos, filterBy]);
 
   return (
     <Fragment>
       <Header onAddTodo={(todo) => ctrl.addTodo(todo)} />
-      {filteredTodos.length > 0 ? (
+      {ctrl.todos.length > 0 ? (
         <Fragment>
           <Main
-            todos={filteredTodos}
+            todos={ctrl.filteredTodos}
             onClickDeleteTodo={(todo) => ctrl.deleteTodo(todo)}
             onEditTodoValue={(id, newValue) => {
               ctrl.editTodoValue(id, newValue);
@@ -36,9 +22,9 @@ export const TodosView = () => {
             onClickDone={(todo) => ctrl.toggleTodo(todo.id)}
           />
           <Footer
-            activeFilter={filterBy as 'active' | 'completed' | undefined}
-            todoCount={uncompletedTodos.length}
-            displayClear={ctrl.todos.length !== uncompletedTodos.length}
+            activeFilter={ctrl.filterBy as 'active' | 'completed' | undefined}
+            todoCount={ctrl.uncompletedTodos.length}
+            displayClear={ctrl.todos.length !== ctrl.uncompletedTodos.length}
             onClickClear={() => ctrl.clearCompleted()}
           />
         </Fragment>

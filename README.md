@@ -20,7 +20,7 @@ This will create a new *TokamakJS* app in the `app-name` dir.
 
 ## Simple Example
 
-The following example goes briefly over some of the most important concepts in a *TokamakJS* app.
+The following example goes briefly over some of the most important concepts in a *TokamakJS* app. There's also a [TodoMVC](examples/todo-mvc) example available.
 
 ```tsx
 import { Catch, ErrorHandler, Guard, RouterService, delay } from '@tokamakjs/common';

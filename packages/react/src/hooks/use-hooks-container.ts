@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { HooksContainer } from '../types';
 
@@ -8,7 +8,7 @@ export function _useForceUpdate(): () => void {
 }
 
 export function useHooksContainer<T>(inst: HooksContainer<T>): HooksContainer<T> {
-  const { stateKeys, refKeys, effectKeysMap } = inst.__reactHooks__;
+  const { stateKeys, refKeys, effectKeysMap, memoKeysMap } = inst.__reactHooks__;
   const forceUpdate = _useForceUpdate();
 
   stateKeys.forEach((key) => {
@@ -45,6 +45,21 @@ export function useHooksContainer<T>(inst: HooksContainer<T>): HooksContainer<T>
         }
       };
     }, deps);
+  });
+
+  memoKeysMap.forEach((depsFn, key) => {
+    const desc = Object.getOwnPropertyDescriptor(Object.getPrototypeOf(inst), key);
+    const { get = () => {} } = desc ?? {};
+
+    const hookBody = get.bind(inst);
+    const deps = depsFn(inst);
+
+    const value = useMemo(() => hookBody(), deps);
+
+    Object.defineProperty(inst, key, {
+      get: () => value,
+      set: () => false,
+    });
   });
 
   return inst;

@@ -3,6 +3,10 @@ import { Link as _Link, LinkProps as _LinkProps, matchPath } from 'react-router-
 
 import { usePathsContext } from '../../hooks';
 
+function _trimSearch(href: string): string {
+  return href.slice(0, href.indexOf('?'));
+}
+
 interface LinkProps extends Omit<_LinkProps, 'to'> {
   href: string;
   noWarn?: boolean;
@@ -11,7 +15,7 @@ interface LinkProps extends Omit<_LinkProps, 'to'> {
 export const Link = ({ href, noWarn = false, ...rest }: LinkProps) => {
   const paths = usePathsContext();
 
-  if (!paths.some((path) => matchPath(path, href) != null) && !noWarn) {
+  if (!paths.some((path) => matchPath(path, _trimSearch(href)) != null) && !noWarn) {
     console.warn(`Link href "${href}" does not match any known paths.`);
   }
 
