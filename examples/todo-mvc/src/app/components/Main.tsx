@@ -1,8 +1,8 @@
 import cn from 'classnames';
 import React, { useState } from 'react';
 
-import { useDoubleClick, useOnClickOutside } from '~/app/hooks';
-import { Todo } from '~/app/types';
+import { useDoubleClick, useOnClickOutside } from '~/hooks';
+import { Todo } from '~/types';
 
 const ENTER_KEY = 13;
 const ESC_KEY = 27;

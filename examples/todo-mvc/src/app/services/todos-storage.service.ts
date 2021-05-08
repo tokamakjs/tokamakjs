@@ -1,6 +1,6 @@
 import { Injectable } from '@tokamakjs/react';
 
-import { Todo } from '~/app/types';
+import { Todo } from '~/types';
 
 @Injectable()
 export class TodosStorageService {

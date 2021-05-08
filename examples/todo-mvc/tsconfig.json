@@ -3,8 +3,12 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "~/*": ["./src/*"],
+      "~/*": ["./src/app/*"],
+      "@tokamakjs/common": ["../../packages/common"],
+      "@tokamakjs/injection": ["../../packages/injection"],
+      "@tokamakjs/react": ["../../packages/react"]
     }
   },
   "exclude": ["node_modules", "dist"],
+  "references": [{ "path": "../../packages/react" }, { "path": "../../packages/common" }]
 }

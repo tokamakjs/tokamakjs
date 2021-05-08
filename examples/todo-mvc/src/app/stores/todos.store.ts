@@ -1,8 +1,8 @@
 import { Injectable, onModuleInit } from '@tokamakjs/react';
 import { BehaviorSubject, Subject } from 'rxjs';
 
-import { TodosStorageService } from '~/app/services';
-import { Todo } from '~/app/types';
+import { TodosStorageService } from '~/services';
+import { Todo } from '~/types';
 
 @Injectable()
 export class TodosStore {

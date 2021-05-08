@@ -1,7 +1,7 @@
 import { Controller, onDidMount, state } from '@tokamakjs/react';
 
-import { TodosStore } from '~/app/stores';
-import { Todo } from '~/app/types';
+import { TodosStore } from '~/stores';
+import { Todo } from '~/types';
 
 import { TodosView } from './todos.view';
 
