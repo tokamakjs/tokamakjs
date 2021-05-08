@@ -1,6 +1,6 @@
 {
   "name": "@tokamakjs/injection",
-  "version": "0.2.0-alpha.15",
+  "version": "0.2.0",
   "description": "Tokamak dependency injection system.",
   "author": "Lars <lars.bs@hotmail.com>",
   "license": "MIT",
