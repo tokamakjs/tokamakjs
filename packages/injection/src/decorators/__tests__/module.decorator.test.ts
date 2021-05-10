@@ -4,17 +4,19 @@ import { Module } from '../module.decorator';
 
 jest.mock('../../reflection');
 
-describe('@Module', () => {
-  const moduleMetadata: ModuleMetadata = {
-    providers: [],
-    imports: [],
-    exports: [],
-  };
+describe('@tokamakjs/injection', () => {
+  describe('decorators/module', () => {
+    const moduleMetadata: ModuleMetadata = {
+      providers: [],
+      imports: [],
+      exports: [],
+    };
 
-  @Module(moduleMetadata)
-  class TestModule {}
+    @Module(moduleMetadata)
+    class TestModule {}
 
-  it('should add module metadata to the class using Reflector.', () => {
-    expect(Reflector.addModuleMetadata).toHaveBeenCalledWith(TestModule, moduleMetadata);
+    it('adds module metadata to the class using Reflector.', () => {
+      expect(Reflector.addModuleMetadata).toHaveBeenCalledWith(TestModule, moduleMetadata);
+    });
   });
 });

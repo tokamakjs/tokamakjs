@@ -1,4 +1,5 @@
 const { pathsToModuleNameMapper } = require('ts-jest/utils');
+
 const { compilerOptions } = require('./tsconfig.test.json');
 
 module.exports = {
@@ -6,7 +7,7 @@ module.exports = {
   testEnvironment: 'jsdom',
   globals: {
     'ts-jest': {
-      babelConfig: 'babel.config.json',
+      babelConfig: 'babel.config.test.json',
       tsconfig: 'tsconfig.test.json',
     },
   },

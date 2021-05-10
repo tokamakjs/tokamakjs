@@ -2,12 +2,12 @@ export interface WithHooks {
   __hooks__: Map<string, Array<Function>>;
 }
 
-export function containsHooks(target: any): target is WithHooks {
+function _containsHooks(target: any): target is WithHooks {
   return target?.__hooks__ != null;
 }
 
 export function addHook(target: any, hookName: string, hookFn: Function): void {
-  if (!containsHooks(target)) {
+  if (!_containsHooks(target)) {
     Object.defineProperty(target, '__hooks__', {
       enumerable: false,
       configurable: false,
@@ -21,7 +21,7 @@ export function addHook(target: any, hookName: string, hookFn: Function): void {
 }
 
 export async function runHooks(target: any, hookName: string): Promise<Array<any>> {
-  if (!containsHooks(target)) return [];
+  if (!_containsHooks(target)) return [];
 
   const hooks = target.__hooks__.get(hookName);
   if (hooks == null) return [];
@@ -36,7 +36,7 @@ export async function runHooks(target: any, hookName: string): Promise<Array<any
 }
 
 export function runHooksSync(target: any, hookName: string): Array<any> {
-  if (!containsHooks(target)) return [];
+  if (!_containsHooks(target)) return [];
 
   const hooks = target.__hooks__.get(hookName);
   if (hooks == null) return [];
@@ -45,7 +45,7 @@ export function runHooksSync(target: any, hookName: string): Array<any> {
 }
 
 export function hasHooks(target: any, hookName?: string): target is WithHooks {
-  if (hookName == null) return containsHooks(target);
-  if (!containsHooks(target)) return false;
+  if (!_containsHooks(target)) return false;
+  if (hookName == null) return _containsHooks(target);
   return target.__hooks__.has(hookName) && target.__hooks__.get(hookName)!.length > 0;
 }
