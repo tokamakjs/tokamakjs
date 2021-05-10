@@ -67,15 +67,15 @@ export class DiContainer {
     this._modules.forEach((module) => (module.container = this));
   }
 
-  get globalModule() {
+  get globalModule(): Module {
     return this._modules.find((g) => g.name === GLOBAL_MODULE_NAME)!;
   }
 
-  get providers() {
+  get providers(): Map<Token<unknown>, ProviderWrapper<unknown>> {
     return this._modules.reduce((memo, m) => new Map([...memo, ...m.providers]), new Map());
   }
 
-  get isInitialized() {
+  get isInitialized(): boolean {
     return this._isInitialized;
   }
 
@@ -108,7 +108,9 @@ export class DiContainer {
   }
 
   /**
-   * Used to resolve providers if they don't have any asynchronous dependencies
+   * Used to resolve providers if they don't have any asynchronous dependencies.
+   *
+   * Asynchronous dependencies are transient factory providers.
    */
   public resolveSync<T = unknown, R = T>(
     token: Token<T>,

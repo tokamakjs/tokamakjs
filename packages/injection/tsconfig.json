@@ -8,5 +8,5 @@
     "rootDir": "./src",
     "tsBuildInfoFile": "./lib/injection.tsbuildinfo"
   },
-  "exclude": ["node_modules", "lib", "**/*.test.ts", "**/*.test.tsx"]
+  "exclude": ["node_modules", "lib"]
 }
