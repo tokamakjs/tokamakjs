@@ -42,7 +42,6 @@ import {
   useAppContext,
   useController,
 } from '@tokamakjs/react';
-import React from 'react';
 
 interface AppContext {
   hello: string;
