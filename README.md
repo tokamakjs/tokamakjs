@@ -1,6 +1,6 @@
-# TokamakJS
+![logo](https://tokamakjs.github.io/tokamakjs/img/logo.svg)
 
-A semi-opinionated framework to build web applications using the latest tools in the React ecosystem. Heavily inspired by [NestJS](https://docs.nestjs.com/).
+A semi-opinionated framework to build web applications using the latest tools in the React ecosystem. Heavily inspired by [NestJS](https://docs.nestjs.com/) and [Angular](https://angular.io/).
 
 ## Getting Started
 
@@ -16,7 +16,12 @@ And once that's done, run the following command:
 $ tok new app-name
 ```
 
-This will create a new *TokamakJS* app in the `app-name` dir.
+This will create a new *TokamakJS* app in the `app-name` dir. You can see a list of all the available commands using:
+
+```bash
+$ tok --help
+tok <command> --help
+```
 
 ## Simple Example
 
