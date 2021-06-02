@@ -36,3 +36,5 @@ export {
 export { useController, useAppContext, useResolve, useResolveSync } from './hooks';
 
 export { RouterModule } from './modules';
+
+export { DiContainerProvider } from './components';

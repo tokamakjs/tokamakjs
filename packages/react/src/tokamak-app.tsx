@@ -4,6 +4,7 @@ import React, { ElementType, createContext } from 'react';
 import ReactDom from 'react-dom';
 import urljoin from 'url-join';
 
+import { DiContainerProvider } from './components';
 import {
   BrowserRouter,
   HashRouter,
@@ -21,8 +22,6 @@ const HISTORY_MODE_MAP = {
 };
 
 export const AppContext = createContext<unknown>({});
-
-export const DiContainerContext = createContext<DiContainer | undefined>(undefined);
 
 export const PathsContext = createContext<Array<string>>([]);
 
@@ -66,13 +65,13 @@ export class TokamakApp {
     ReactDom.render(
       <ErrorsContext.Provider value={this._globalErrorsManager}>
         <Router>
-          <DiContainerContext.Provider value={this._container}>
+          <DiContainerProvider value={this._container}>
             <AppContext.Provider value={appContext}>
               <PathsContext.Provider value={this._paths}>
                 <RootNode />
               </PathsContext.Provider>
             </AppContext.Provider>
-          </DiContainerContext.Provider>
+          </DiContainerProvider>
         </Router>
       </ErrorsContext.Provider>,
       document.querySelector(selector),
