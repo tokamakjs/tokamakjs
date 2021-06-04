@@ -9,4 +9,5 @@
 // import './scenarios/event-emitter';
 // import './scenarios/error-handlers';
 // import './scenarios/route-prefix';
-import './scenarios/readme-example';
+// import './scenarios/readme-example';
+import './scenarios/akita';

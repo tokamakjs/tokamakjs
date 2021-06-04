@@ -16,6 +16,7 @@
     "start": "NODE_ENV=development webpack-dev-server --config webpack.config.ts --hot --useLocalIp --host 0.0.0.0 --port 4200"
   },
   "dependencies": {
+    "@datorama/akita": "^6.1.3",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
     "@tokamakjs/common": "^0.3.1",
     "@tokamakjs/injection": "^0.3.1",
