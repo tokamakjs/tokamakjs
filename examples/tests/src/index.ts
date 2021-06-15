@@ -10,4 +10,5 @@
 // import './scenarios/error-handlers';
 // import './scenarios/route-prefix';
 // import './scenarios/readme-example';
-import './scenarios/akita';
+// import './scenarios/akita';
+import './scenarios/decorators-order';

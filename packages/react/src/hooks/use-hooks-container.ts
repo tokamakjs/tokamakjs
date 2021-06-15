@@ -41,7 +41,7 @@ export function useHooksContainer<T>(inst: HooksContainer<T>): HooksContainer<T>
         if (typeof returnValue === 'function') {
           return returnValue();
         } else if (returnValue instanceof Promise) {
-          return returnValue.then((cb) => cb());
+          return returnValue.then((cb) => (typeof cb === 'function' ? cb() : undefined));
         }
       };
     }, deps);
