@@ -1,6 +1,6 @@
 {
   "name": "tokamak-tests",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Tokamak tests.",
   "author": "Lars <lars.bs@hotmail.com>",
   "license": "MIT",
@@ -20,7 +20,7 @@
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
     "@tokamakjs/common": "^0.3.1",
     "@tokamakjs/injection": "^0.3.1",
-    "@tokamakjs/react": "^0.3.2",
+    "@tokamakjs/react": "^0.3.3",
     "history": "^5.0.0",
     "modern-normalize": "^0.6.0",
     "query-string": "^6.13.8",
