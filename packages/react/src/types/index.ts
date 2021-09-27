@@ -1,5 +1,5 @@
 import { ErrorHandler, Guard } from '@tokamakjs/common';
-import { Class, ModuleMetadata } from '@tokamakjs/injection';
+import { Class, ModuleMetadata, Provider } from '@tokamakjs/injection';
 import { ElementType } from 'react';
 
 /**
@@ -56,4 +56,8 @@ export interface SubAppMetadata extends ModuleMetadata {
 export interface TokamakAppConfig {
   historyMode: 'browser' | 'hash' | 'memory';
   basePath: string;
+}
+
+export interface TokamakCreateConfig extends Partial<TokamakAppConfig> {
+  globalProviders?: Array<Provider>;
 }

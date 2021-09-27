@@ -13,7 +13,7 @@ import {
   buildRoutes,
   useRoutes,
 } from './routing';
-import { TokamakAppConfig } from './types';
+import { TokamakAppConfig, TokamakCreateConfig } from './types';
 
 const HISTORY_MODE_MAP = {
   browser: BrowserRouter,
@@ -30,13 +30,16 @@ export const ErrorsContext = createContext<GlobalErrorsManager | undefined>(unde
 export class TokamakApp {
   public static async create(
     RootApp: Class,
-    partialConfig: Partial<TokamakAppConfig> = {},
+    partialConfig: TokamakCreateConfig = {},
   ): Promise<TokamakApp> {
-    const config: TokamakAppConfig = { historyMode: 'browser', basePath: '', ...partialConfig };
-
-    const container = await DiContainer.from(RootApp, {
+    const { globalProviders, ...config } = {
+      historyMode: 'browser' as const,
+      basePath: '',
       globalProviders: [],
-    });
+      ...partialConfig,
+    };
+
+    const container = await DiContainer.from(RootApp, { globalProviders });
 
     return new TokamakApp(container, RootApp, config);
   }
