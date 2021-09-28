@@ -1,0 +1,13 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "name": "TokamakJS API",
+  "includeVersion": false,
+  "readme": "none",
+  "categorizeByGroup": false,
+  "entryPointStrategy": "Packages",
+  "entryPoints": ["./packages/injection", "./packages/common", "./packages/react"],
+  "exclude": ["**/*+(.test).ts", "**/node_modules/**"],
+  "excludeExternals": true,
+  "excludePrivate": true,
+  "excludeInternal": true
+}

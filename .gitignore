@@ -6,3 +6,4 @@ lib
 !examples/real-world/.env
 *.tsbuildinfo
 coverage
+docs
