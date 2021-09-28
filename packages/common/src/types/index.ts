@@ -15,6 +15,9 @@ export function isSchemaClass<T = any>(Class: any): Class is SchemaClass<T> {
 
 export type EventListener<T> = (e: T) => void;
 
+/**
+ * Represents any kind of construct function.
+ */
 export type Class<T = unknown, Arguments extends any[] = any[]> = new (
   ...arguments_: Arguments
 ) => T;

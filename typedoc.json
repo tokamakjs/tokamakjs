@@ -3,11 +3,16 @@
   "name": "TokamakJS API",
   "includeVersion": false,
   "readme": "none",
-  "categorizeByGroup": false,
-  "entryPointStrategy": "Packages",
-  "entryPoints": ["./packages/injection", "./packages/common", "./packages/react"],
+  "categorizeByGroup": true,
+  "entryPointStrategy": "Resolve",
+  "entryPoints": [
+    "./packages/injection/src/index.ts",
+    "./packages/common/src/index.ts",
+    "./packages/react/src/index.ts"
+  ],
   "exclude": ["**/*+(.test).ts", "**/node_modules/**"],
   "excludeExternals": true,
   "excludePrivate": true,
-  "excludeInternal": true
+  "excludeInternal": true,
+  "excludeNotDocumented": false
 }
