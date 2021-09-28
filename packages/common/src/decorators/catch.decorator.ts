@@ -13,7 +13,7 @@ import { Class } from '../types';
  * export class FooErrorHandler extends ErrorHandler {}
  * ```
  *
- * @category Decorator
+ * @category Decorators
  *
  * @typeParam T - Type of the Error to capture.
  * @param error - Error class to capture.

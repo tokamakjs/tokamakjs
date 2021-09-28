@@ -4,8 +4,8 @@
   "includeVersion": false,
   "readme": "none",
   "categorizeByGroup": true,
-  "darkHighlightTheme": "dark-plus",
-  "lightHighlightTheme": "dark-plus",
+  "darkHighlightTheme": "solarized-light",
+  "lightHighlightTheme": "solarized-light",
   "entryPointStrategy": "Resolve",
   "entryPoints": [
     "./packages/injection/src/index.ts",

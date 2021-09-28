@@ -1,4 +1,4 @@
-/**
+/*
  * We need this to manually track if an error has already been
  * handled since React re-throws every error that happens in the
  * application if error boundaries are used:
@@ -7,7 +7,7 @@
  */
 const ALREADY_HANDLED = Symbol('ALREADY_HANDLED');
 
-/**
+/*
  * Catches all errors that reach the top level of the
  * app and distributes them among the subscribed
  * handlers (controllers)
