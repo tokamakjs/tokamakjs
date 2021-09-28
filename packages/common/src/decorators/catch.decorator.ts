@@ -1,11 +1,8 @@
-import { ErrorHandler } from '../interfaces';
 import { Reflector } from '../reflection';
 import { Class } from '../types';
 
 /**
  * Binds a specific error type to the decorated error handler.
- *
- * @example
  *
  * ```ts
  * import { Catch, ErrorHandler } from '@tokamakjs/common';
@@ -27,14 +24,3 @@ export function Catch<T extends Error = Error>(error: Class<T>): ClassDecorator 
     Reflector.addCatchDecoratorMetadata(Target, error);
   };
 }
-
-/** @internal */
-Catch.getMetadata = <T extends Error = Error>(Target: Function): Class<T> | undefined => {
-  return Reflector.getCatchDecoratorMetadata(Target);
-};
-
-/** @internal */
-Catch.catches = (handler: ErrorHandler, error: Error): boolean => {
-  const ErrorClass = Catch.getMetadata(handler.constructor);
-  return ErrorClass != null && error instanceof ErrorClass;
-};

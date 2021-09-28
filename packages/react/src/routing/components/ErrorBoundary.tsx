@@ -1,4 +1,4 @@
-import { Catch, ErrorHandler, GlobalErrorsManager } from '@tokamakjs/common';
+import { ErrorHandler, GlobalErrorsManager } from '@tokamakjs/common';
 import { Component, ReactNode } from 'react';
 
 const ALREADY_HANDLED = Symbol('ALREADY_HANDLED');
@@ -46,7 +46,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
       // If one of the handlers of this route already handled the error just return true
       if (Reflect.get(error, ALREADY_HANDLED)) return true;
 
-      if (!Reflect.get(error, ALREADY_HANDLED) && Catch.catches(h, error)) {
+      if (!Reflect.get(error, ALREADY_HANDLED) && ErrorHandler.catches(h, error)) {
         // it's important to update the state before handling the error so any
         // further state updates happen after this one (otherwise, we could
         // end up updating an unmounted element in case there's a transition to
