@@ -1,3 +1,5 @@
+/** @module @tokamakjs/common */
+
 export * from './hooks';
 export * from './utils';
 export * from './interfaces';

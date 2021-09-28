@@ -1,3 +1,5 @@
+/** @module @tokamakjs/injection */
+
 export { DiContainer } from './di-container';
 export * from './decorators';
 export * from './types';

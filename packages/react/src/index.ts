@@ -1,3 +1,5 @@
+/** @module @tokamakjs/react */
+
 export {
   onModuleInit,
   onModuleDidInit,
