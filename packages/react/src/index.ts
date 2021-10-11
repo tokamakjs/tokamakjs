@@ -33,7 +33,7 @@ export {
   useParams,
 } from './routing';
 
-export { useController, useAppContext, useResolve, useResolveSync } from './hooks';
+export { useController, useAppContext, useResolve, useResolveSync, useDiContainer } from './hooks';
 
 export { RouterModule } from './modules';
 
