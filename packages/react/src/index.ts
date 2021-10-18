@@ -5,6 +5,7 @@ export {
   inject,
   Module,
   Token,
+  DiContainer,
 } from '@tokamakjs/injection';
 
 export {
