@@ -55,9 +55,37 @@ class MyHookService {
   }
 
   constructor(private readonly _trans: TransitiveHookService) {}
+
+  @onDidMount()
+  protected onDidMount(): void {
+    console.log('MyHookService::onDidMount');
+  }
 }
 
-@Controller()
+const MainView = () => {
+  const ctrl = useController<MainController>();
+  return (
+    <div>
+      <h1>Main View</h1>
+      <h2>Value: {ctrl.value}</h2>
+      <h2>Ref Value: {ctrl.refValue}</h2>
+      <h2>Name: {ctrl.name}</h2>
+      <h2>Param id: {ctrl.params.id}</h2>
+      <h2>Location: {ctrl.location.pathname}</h2>
+      <h2>Transitive counter: {ctrl.myService.trans.counter}</h2>
+      <br />
+      <button onClick={() => ctrl.increase()}>Increase</button>
+      <br /> <br />
+      <button onClick={() => ctrl.changeName()}>Change Name</button>
+      <br /> <br />
+      <button onClick={() => ctrl.myService.trans.increase()}>Increase transitive counter</button>
+      <br /> <br />
+      <Link href="/secondary">Go to secondary</Link>
+    </div>
+  );
+};
+
+@Controller({ view: MainView })
 class MainController {
   @state private _value = 0;
   @ref private _refValue = 0;
@@ -134,29 +162,6 @@ class MainController {
   }
 }
 
-const MainView = () => {
-  const ctrl = useController(MainController);
-  return (
-    <div>
-      <h1>Main View</h1>
-      <h2>Value: {ctrl.value}</h2>
-      <h2>Ref Value: {ctrl.refValue}</h2>
-      <h2>Name: {ctrl.name}</h2>
-      <h2>Param id: {ctrl.params.id}</h2>
-      <h2>Location: {ctrl.location.pathname}</h2>
-      <h2>Transitive counter: {ctrl.myService.trans.counter}</h2>
-      <br />
-      <button onClick={() => ctrl.increase()}>Increase</button>
-      <br /> <br />
-      <button onClick={() => ctrl.changeName()}>Change Name</button>
-      <br /> <br />
-      <button onClick={() => ctrl.myService.trans.increase()}>Increase transitive counter</button>
-      <br /> <br />
-      <Link href="/secondary">Go to secondary</Link>
-    </div>
-  );
-};
-
 const SecondaryView = () => {
   return (
     <div>
@@ -166,11 +171,14 @@ const SecondaryView = () => {
   );
 };
 
+@Controller({ view: SecondaryView })
+class SecondaryController {}
+
 @SubApp({
   routing: [
-    createRoute('/:id', MainView),
+    createRoute('/:id', MainController),
     createRedirection('/', '/1'),
-    createRoute('/secondary', SecondaryView),
+    createRoute('/secondary', SecondaryController),
   ],
   providers: [
     MyHookService,
