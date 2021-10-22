@@ -5,6 +5,7 @@ import { ModuleRef } from './module-ref';
 import { ProviderWrapper } from './provider-wrapper';
 import { Reflector } from './reflection';
 import {
+  Class,
   ForwardReference,
   InjectionContext,
   ModuleDefinition,
@@ -12,6 +13,7 @@ import {
   Token,
   isDynamicModule,
 } from './types';
+import { runHooks } from './utils/hooks';
 
 export class Module {
   private readonly _providers: Map<Token, ProviderWrapper<unknown>> = new Map();
@@ -19,12 +21,22 @@ export class Module {
   private _imports: Array<Module> = [];
   private _container?: DiContainer;
 
+  /*
+   * This can be undefined because only modules defined as a Class
+   * can have an instance. And we need this instance in case there are
+   * hooks defined in it like @onModuleInit() or @onModuleDidInit().
+   */
+  private _instance?: unknown;
+
   constructor(
     private readonly _name: string,
     private readonly _metadata: Required<ModuleMetadata>,
+    _Metatype?: Class,
   ) {
     const { providers } = this._metadata;
     const useModuleRefProvider = { provide: ModuleRef, useValue: new ModuleRef(this) };
+
+    this._instance = _Metatype != null ? new _Metatype() : undefined;
 
     for (const provider of [...providers, useModuleRefProvider]) {
       const wrapper = new ProviderWrapper(this, provider);
@@ -81,12 +93,16 @@ export class Module {
   }
 
   public async callOnInit(): Promise<void> {
+    await runHooks(this._instance, 'onModuleInit');
+
     for (const [, provider] of this._providers) {
       await provider.callOnInit();
     }
   }
 
   public async callOnDidInit(): Promise<void> {
+    await runHooks(this._instance, 'onModuleDidInit');
+
     for (const [, provider] of this._providers) {
       await provider.callOnDidInit();
     }

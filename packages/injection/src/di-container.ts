@@ -30,7 +30,7 @@ export class DiContainer {
 
       const { name, ...metadata } = await Module.getMetadata(node);
 
-      const module = new Module(name, metadata);
+      const module = new Module(name, metadata, typeof node === 'function' ? node : undefined);
       modulesMap.set(node, module);
 
       const imports: Array<Module> = [];
