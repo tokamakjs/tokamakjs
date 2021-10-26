@@ -39,3 +39,21 @@ export { useController, useAppContext, useResolve, useResolveSync, useDiContaine
 export { RouterModule } from './modules';
 
 export { DiContainerProvider } from './components';
+
+// The app needs this re-export of React. Otherwise, it complaints about
+// this: https://reactjs.org/warnings/invalid-hook-call-warning.html
+import React from 'react';
+export { React };
+// Export hooks directly for convenience
+export {
+  useState,
+  useCallback,
+  useContext,
+  useDebugValue,
+  useEffect,
+  useImperativeHandle,
+  useLayoutEffect,
+  useMemo,
+  useReducer,
+  useRef,
+} from 'react';

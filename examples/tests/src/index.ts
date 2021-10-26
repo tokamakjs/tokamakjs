@@ -12,4 +12,5 @@
 // import './scenarios/readme-example';
 // import './scenarios/akita';
 // import './scenarios/decorators-order';
-import './scenarios/module-did-init';
+// import './scenarios/module-did-init';
+import './scenarios/nick';
