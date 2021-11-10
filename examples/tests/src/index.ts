@@ -13,4 +13,5 @@
 // import './scenarios/akita';
 // import './scenarios/decorators-order';
 // import './scenarios/module-did-init';
-import './scenarios/nick';
+// import './scenarios/nick';
+import './scenarios/basepath-routing';

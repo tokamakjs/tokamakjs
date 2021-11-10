@@ -52,12 +52,12 @@ export class TokamakApp {
   private constructor(
     private readonly _container: DiContainer,
     RootApp: Class,
-    config: TokamakAppConfig,
+    private readonly _config: TokamakAppConfig,
   ) {
     const routes = buildRoutes(RootApp, _container);
     this._paths = this._extractPathsFromRoutes(routes);
-    this._RootNode = () => useRoutes(routes, config.basePath);
-    this._Router = HISTORY_MODE_MAP[config.historyMode];
+    this._RootNode = () => useRoutes(routes);
+    this._Router = HISTORY_MODE_MAP[_config.historyMode];
     this._globalErrorsManager = new GlobalErrorsManager();
   }
 
@@ -67,7 +67,7 @@ export class TokamakApp {
 
     ReactDom.render(
       <ErrorsContext.Provider value={this._globalErrorsManager}>
-        <Router>
+        <Router basename={this._config.basePath}>
           <DiContainerProvider value={this._container}>
             <AppContext.Provider value={appContext}>
               <PathsContext.Provider value={this._paths}>
@@ -83,6 +83,8 @@ export class TokamakApp {
 
   private _extractPathsFromRoutes(routes: Array<RouteObject>, parentPath = ''): Array<string> {
     return routes.reduce((memo, route) => {
+      if (route.path == null) return memo;
+
       return [
         ...memo,
         urljoin(parentPath, route.path),

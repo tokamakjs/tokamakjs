@@ -21,7 +21,7 @@
     "class-transformer": ">=0.4.0",
     "graphql": "^15.x",
     "react": ">=16",
-    "zod": ">3.0.0-alpha"
+    "zod": ">=3"
   },
   "dependencies": {
     "@babel/runtime": "^7.13.17",
@@ -34,7 +34,7 @@
     "@babel/core": "^7.10.2",
     "@babel/plugin-transform-runtime": "^7.12.1",
     "@babel/preset-env": "^7.10.2",
-    "@types/react": "^17.0.3",
+    "@types/react": "^17.0.34",
     "class-transformer": "^0.4.0",
     "graphql": "^15.3.0",
     "gulp": "^4.0.2",
@@ -43,7 +43,7 @@
     "merge-stream": "^2.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "zod": "^3.0.0-alpha.33"
+    "zod": "^3.11.6"
   },
   "gitHead": "1ef81c290ab7981c48a2022de5eedb6efa84fc42"
 }
