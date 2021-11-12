@@ -14,4 +14,5 @@
 // import './scenarios/decorators-order';
 // import './scenarios/module-did-init';
 // import './scenarios/nick';
-import './scenarios/basepath-routing';
+// import './scenarios/basepath-routing';
+import './scenarios/app-context-with-global-providers';
