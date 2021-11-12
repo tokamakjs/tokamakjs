@@ -6,8 +6,10 @@
  * cannot use the regular useAppContext() hook.
  */
 
+import { Guard } from '@tokamakjs/common';
 import {
   Controller,
+  HookService,
   React,
   SubApp,
   TokamakApp,
@@ -19,26 +21,29 @@ import {
 const APP_CONTEXT = Symbol('APP_CONTEXT_INJECTION_TOKEN');
 
 interface AppContext {
-  foo: 'foo';
+  foo: 'foo' | 'bar';
+}
+
+@HookService()
+class AuthGuard implements Guard {
+  constructor(@inject(APP_CONTEXT) private readonly _appContext: AppContext) {}
+
+  public canActivate(): boolean {
+    return this._appContext.foo === 'bar';
+  }
 }
 
 const MainView = () => {
-  const ctrl = useController<MainController>();
-  return <div>{ctrl.foo}</div>;
+  useController<MainController>();
+  return <div>MAIN VIEW</div>;
 };
 
-@Controller({ view: MainView })
-class MainController {
-  get foo() {
-    return this._appContextProvider.foo;
-  }
-
-  constructor(@inject(APP_CONTEXT) private readonly _appContextProvider: AppContext) {}
-}
+@Controller({ view: MainView, guards: [AuthGuard] })
+class MainController {}
 
 @SubApp({
   routing: [createRoute('/', MainController)],
-  providers: [],
+  providers: [AuthGuard],
   imports: [],
 })
 class App {}
