@@ -1,5 +1,4 @@
-import { ErrorHandler } from 'src/interfaces';
-
+import { ErrorHandler } from '../interfaces';
 import { Reflector } from '../reflection';
 import { Class } from '../types';
 
