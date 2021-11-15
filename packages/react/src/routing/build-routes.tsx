@@ -4,7 +4,7 @@ import React from 'react';
 import { Reflector } from '../reflection';
 import { RouteObject } from '../routing';
 import { RouteDefinition } from '../types';
-import { ControllerWrapper } from './components';
+import { RouteWrapper } from './components';
 
 function _getId(): number {
   return Math.random();
@@ -22,7 +22,7 @@ function _transformRoutes(
     finalRoutes.push({
       path,
       // each controller needs a unique key so they're correctly mounted/unmounted
-      element: <ControllerWrapper Controller={Controller} key={_getId()} />,
+      element: <RouteWrapper Controller={Controller} key={_getId()} />,
       children: _transformRoutes(children, context),
       caseSensitive: false,
     });

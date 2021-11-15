@@ -13,12 +13,12 @@ import {
 } from '../types';
 
 export class Reflector {
-  static addControllerMetadata(target: Function, metadata: ControllerMetadata): void {
+  public static addControllerMetadata(target: Function, metadata: ControllerMetadata): void {
     Injectable({ scope: Scope.TRANSIENT })(target);
     Reflect.defineMetadata('self:controller', metadata, target);
   }
 
-  static getControllerMetadata(target: Function): ControllerMetadata {
+  public static getControllerMetadata(target: Function): ControllerMetadata {
     const metadata = Reflect.getMetadata('self:controller', target);
 
     if (metadata == null) {
@@ -28,7 +28,7 @@ export class Reflector {
     return metadata;
   }
 
-  static addSubAppMetadata(
+  public static addSubAppMetadata(
     target: Function,
     metadata: Omit<SubAppMetadata, 'routing'> & {
       routing: Array<RouteDefinition> | Array<Array<RouteDefinition> | RouteDefinition>;
@@ -40,7 +40,7 @@ export class Reflector {
     Reflect.defineMetadata('self:subapp', { ...moduleMetadata, routing: routing.flat() }, target);
   }
 
-  static getSubAppMetadata(target: Function): SubAppMetadata {
+  public static getSubAppMetadata(target: Function): SubAppMetadata {
     const metadata = Reflect.getMetadata('self:subapp', target);
 
     if (metadata == null) {
@@ -50,11 +50,11 @@ export class Reflector {
     return metadata;
   }
 
-  static getEffectKeysMap(target: Object): Map<PropertyKey, DepsFn> | undefined {
+  public static getEffectKeysMap(target: Object): Map<PropertyKey, DepsFn> | undefined {
     return Reflect.getMetadata('self:hookscontainer:effectkeysmap', target);
   }
 
-  static setInEffectKeysMap(target: Object, key: PropertyKey, deps?: DepsFn): void {
+  public static setInEffectKeysMap(target: Object, key: PropertyKey, deps?: DepsFn): void {
     let effectKeysMap = Reflector.getEffectKeysMap(target);
 
     if (effectKeysMap == null) {
@@ -65,11 +65,11 @@ export class Reflector {
     effectKeysMap.set(key, deps ?? (() => undefined));
   }
 
-  static getMemoKeysMap(target: Object): Map<PropertyKey, DepsFn> | undefined {
+  public static getMemoKeysMap(target: Object): Map<PropertyKey, DepsFn> | undefined {
     return Reflect.getMetadata('self:hookscontainer:memokeysmap', target);
   }
 
-  static setInMemoKeysMap(target: Object, key: PropertyKey, deps?: DepsFn): void {
+  public static setInMemoKeysMap(target: Object, key: PropertyKey, deps?: DepsFn): void {
     let memoKeysMap = Reflector.getMemoKeysMap(target);
 
     if (memoKeysMap == null) {
@@ -80,11 +80,11 @@ export class Reflector {
     memoKeysMap.set(key, deps ?? (() => undefined));
   }
 
-  static getStateKeys(target: Object): Array<PropertyKey> | undefined {
+  public static getStateKeys(target: Object): Array<PropertyKey> | undefined {
     return Reflect.getMetadata('self:hookscontainer:statekeys', target);
   }
 
-  static addToStateKeys(target: Object, key: PropertyKey): void {
+  public static addToStateKeys(target: Object, key: PropertyKey): void {
     let stateKeys = Reflector.getStateKeys(target);
 
     if (stateKeys == null) {
@@ -95,11 +95,11 @@ export class Reflector {
     stateKeys.push(key);
   }
 
-  static getRefKeys(target: Object): Array<PropertyKey> | undefined {
+  public static getRefKeys(target: Object): Array<PropertyKey> | undefined {
     return Reflect.getMetadata('self:hookscontainer:refkeys', target);
   }
 
-  static addToRefKeys(target: Object, key: PropertyKey): void {
+  public static addToRefKeys(target: Object, key: PropertyKey): void {
     let refKeys = Reflector.getRefKeys(target);
 
     if (refKeys == null) {
@@ -110,20 +110,20 @@ export class Reflector {
     refKeys.push(key);
   }
 
-  static copyMetadata(Source: Function, Target: Function): void {
+  public static copyMetadata(Source: Function, Target: Function): void {
     const keys = Reflect.getMetadataKeys(Source);
     keys.forEach((key) => Reflect.defineMetadata(key, Reflect.getMetadata(key, Source), Target));
   }
 
-  static addHookServiceMetadata(Target: Function): void {
+  public static addHookServiceMetadata(Target: Function): void {
     Reflect.defineMetadata('self:hookservice', {}, Target);
   }
 
-  static getHookServiceMetadata(Target: Function): {} | undefined {
+  public static getHookServiceMetadata(Target: Function): {} | undefined {
     return Reflect.getMetadata('self:hookservice', Target);
   }
 
-  static createHooksContainer<T>(Target: Class<T>, ...args: Array<any>): HooksContainer<T> {
+  public static createHooksContainer<T>(Target: Class<T>, ...args: Array<any>): HooksContainer<T> {
     const inst = new Target(...args) as HooksContainer<T>;
 
     const stateKeys = Reflector.getStateKeys(inst) ?? [];
@@ -136,7 +136,7 @@ export class Reflector {
     return inst;
   }
 
-  static createDecoratedController<T>(
+  public static createDecoratedController<T>(
     Target: Class<T>,
     ...args: Array<any>
   ): DecoratedController<T> {
