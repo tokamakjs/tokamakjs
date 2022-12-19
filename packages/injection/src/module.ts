@@ -19,7 +19,7 @@ export class Module {
   private readonly _providers: Map<Token, ProviderWrapper<unknown>> = new Map();
 
   private _imports: Array<Module> = [];
-  private _container?: DiContainer;
+  private _container: DiContainer | undefined;
 
   /*
    * This can be undefined because only modules defined as a Class

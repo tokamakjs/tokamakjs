@@ -17,7 +17,7 @@ interface ErrorBoundaryState {
 }
 
 export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
-  public readonly state: ErrorBoundaryState = {};
+  public override readonly state: ErrorBoundaryState = {};
 
   constructor(props: ErrorBoundaryProps) {
     super(props);
@@ -28,7 +28,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     return { error, handlerIndex: Reflect.get(error, HANDLER_INDEX) };
   }
 
-  public componentWillUnmount(): void {
+  public override componentWillUnmount(): void {
     const { globalErrorsManager } = this.props;
     globalErrorsManager.removeListener(this.onError);
   }
@@ -63,7 +63,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     return false;
   }
 
-  public render(): ReactNode {
+  public override render(): ReactNode {
     const { globalErrorsManager, handlers } = this.props;
 
     // Manage listeners in the render method instead of
