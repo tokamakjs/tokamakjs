@@ -1,31 +1,31 @@
-const { src, series, dest, watch } = require('gulp');
-const gulpBabel = require('gulp-babel');
-const rimraf = require('rimraf');
-const gulpTypescript = require('gulp-typescript');
-const merge = require('merge-stream');
+import gulp from 'gulp';
+import gulpBabel from 'gulp-babel';
+import gulpTypescript from 'gulp-typescript';
+import merge from 'merge-stream';
+import rimraf from 'rimraf';
 
 const ts = gulpTypescript.createProject('tsconfig.json', {
   noUnusedLocals: process.env.NODE_ENV !== 'development',
   noUnusedParameters: process.env.NODE_ENV !== 'development',
 });
 
-function clean() {
+function cleanPackages() {
   return new Promise((r) => rimraf('./lib', r));
 }
 
 function buildLib() {
-  const buildTs = src(['./src/**/*.{ts,tsx}', '!./src/**/*.test.*']).pipe(ts());
-  return merge(buildTs.js.pipe(gulpBabel()), buildTs.dts).pipe(dest('./lib'));
+  const buildTs = gulp.src(['./src/**/*.{ts,tsx}', '!./src/**/*.test.*']).pipe(ts());
+  return merge(buildTs.js.pipe(gulpBabel()), buildTs.dts).pipe(gulp.dest('./lib'));
 }
 
 function watchPackages() {
-  watch(
+  gulp.watch(
     ['./src/**/*.{ts,tsx}', '!./src/**/*.test.{ts,tsx}'],
     { ignoreInitial: false },
-    series(buildLib),
+    gulp.series(buildLib),
   );
 }
 
 // Tasks
-module.exports.default = series(clean, buildLib);
-module.exports.watch = series(watchPackages);
+export const watch = gulp.series(watchPackages);
+export default gulp.series(cleanPackages, buildLib);
