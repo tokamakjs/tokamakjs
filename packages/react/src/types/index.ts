@@ -43,8 +43,8 @@ export function isDecoratedController<T>(controller: T): controller is Decorated
 
 export type RouteHandler = ElementType;
 
-export interface RouteDefinition {
-  Controller: Class<DecoratedController>;
+export interface RouteDefinition<T = any> {
+  Controller: Class<DecoratedController<T>>;
   path: string;
   children: Array<RouteDefinition>;
 }

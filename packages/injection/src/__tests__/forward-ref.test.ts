@@ -1,3 +1,5 @@
+import { jest } from '@jest/globals';
+
 import { forwardRef } from '../forward-ref';
 
 describe('@tokamakjs/injection', () => {

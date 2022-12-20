@@ -1,106 +1,130 @@
+import { jest } from '@jest/globals';
+
 import { RouteDefinition } from '../../types';
-import { createRedirection, createRoute, includeRoutes } from '../routes';
 
-describe.skip('utils', () => {
-  describe('createRoute', () => {
-    const RootView = () => null;
-    const LoginView = () => null;
-    const SignUpView = () => null;
+describe('@tokamakjs/react', () => {
+  const useNavigateMock = jest.fn();
 
-    beforeAll(() => {
-      Reflect.defineMetadata('self:controller', {}, RootView);
-      Reflect.defineMetadata('self:controller', {}, LoginView);
-      Reflect.defineMetadata('self:controller', {}, SignUpView);
+  beforeAll(async () => {
+    jest.unstable_mockModule('react-router', () => {
+      return {
+        useNavigate: () => useNavigateMock,
+        // TODO: Is there a way to exclude unnecessary properties?
+        useLocation: jest.fn(),
+        useParams: jest.fn(),
+        useRoutes: jest.fn(),
+      };
+    });
+  });
+
+  describe('routing', () => {
+    describe('createRoute', () => {
+      class RootController {}
+      class LoginController {}
+      class SignUpController {}
+
+      beforeAll(() => {
+        Reflect.defineMetadata('self:controller', {}, RootController);
+        Reflect.defineMetadata('self:controller', {}, LoginController);
+        Reflect.defineMetadata('self:controller', {}, SignUpController);
+      });
+
+      it('creates a valid route definition', async () => {
+        const { createRoute } = await import('../routes');
+
+        const route = createRoute('/', RootController);
+
+        expect(route).toEqual<RouteDefinition>({
+          path: '/',
+          Controller: RootController,
+          children: [],
+        });
+      });
+
+      it('creates children routes', async () => {
+        const { createRoute } = await import('../routes');
+
+        const route = createRoute('/', RootController, [createRoute('/login', LoginController)]);
+
+        expect(route).toEqual<RouteDefinition>({
+          path: '/',
+          Controller: RootController,
+          children: [{ path: '/login', Controller: LoginController, children: [] }],
+        });
+      });
+
+      it('flattens an array of arrays as children', async () => {
+        const { createRoute } = await import('../routes');
+
+        const result = createRoute('/home', RootController, [
+          [createRoute('/login', LoginController)],
+          [createRoute('/sign-up', SignUpController)],
+        ]);
+
+        expect(result).toEqual({
+          path: '/home',
+          Controller: RootController,
+          children: [
+            { path: '/login', Controller: LoginController, children: [] },
+            { path: '/sign-up', Controller: SignUpController, children: [] },
+          ],
+        });
+      });
     });
 
-    it('creates a valid route definition', () => {
-      const route = createRoute('/', RootView);
-      expect(route).toEqual<RouteDefinition>({
-        path: '/',
-        Component: RootView,
+    describe('includeRoutes', () => {
+      class LoginController {}
+      class SignUpController {}
+      class TestModule {}
+
+      const loginRoute = {
+        path: '/login',
+        Controller: LoginController,
         children: [],
+      };
+
+      const signUpRoute = {
+        path: '/sign-up',
+        Controller: LoginController,
+        children: [],
+      };
+
+      beforeAll(() => {
+        Reflect.defineMetadata('self:controller', {}, LoginController);
+        Reflect.defineMetadata('self:controller', {}, SignUpController);
+        Reflect.defineMetadata('self:subapp', { routing: [loginRoute, signUpRoute] }, TestModule);
+      });
+
+      it('should generate a prefixed array of routes with isIncluded as true', async () => {
+        const { includeRoutes } = await import('../routes');
+
+        const result = includeRoutes('/test', TestModule);
+
+        expect(result).toHaveLength(2);
+        expect(result[0]).toEqual({ ...loginRoute, path: '/test/login' });
+        expect(result[1]).toEqual({ ...signUpRoute, path: '/test/sign-up' });
       });
     });
 
-    it('creates children routes', () => {
-      const route = createRoute('/', RootView, [createRoute('/login', LoginView)]);
-      expect(route).toEqual<RouteDefinition>({
-        path: '/',
-        Component: RootView,
-        children: [{ path: '/login', Component: LoginView, children: [] }],
+    describe('createRedirection', () => {
+      it('creates a valid route definition', async () => {
+        const { createRedirection } = await import('../routes');
+
+        const route = createRedirection('/from', '/to');
+        expect(route.path).toBe('/from');
+        expect(route.children).toEqual([]);
+        expect(route.Controller).toBeDefined();
       });
-    });
 
-    it('flattens an array of arrays as children', () => {
-      const result = createRoute('/home', RootView, [
-        [createRoute('/login', LoginView)],
-        [createRoute('/sign-up', SignUpView)],
-      ]);
+      it('creates a controller that will redirect when mounted', async () => {
+        const { createRedirection } = await import('../routes');
 
-      expect(result).toEqual({
-        path: '/home',
-        controller: RootView,
-        children: [
-          { path: '/login', controller: LoginView, children: [] },
-          { path: '/sign-up', controller: SignUpView, children: [] },
-        ],
+        const { Controller } = createRedirection('/from', '/to');
+        new Controller().onDidMount();
+
+        expect(useNavigateMock).toHaveBeenCalledTimes(1);
+        expect(useNavigateMock).toHaveBeenCalledWith('/to', { replace: true });
       });
-    });
-
-    it('creates an empty controller when a controller-less view is passed instead', () => {
-      const route = createRoute('/', () => null);
-      expect(route.Component).toBeDefined();
-      // @ts-expect-error
-      expect(route.Component.displayName).toBe('EmptyController');
-    });
-  });
-
-  describe('includeRoutes', () => {
-    class LoginView {}
-    class SignUpView {}
-    class TestModule {}
-
-    const loginRoute = {
-      path: '/login',
-      controller: LoginView,
-      children: [],
-    };
-
-    const signUpRoute = {
-      path: '/sign-up',
-      controller: LoginView,
-      children: [],
-    };
-
-    beforeAll(() => {
-      Reflect.defineMetadata('self:controller', {}, LoginView);
-      Reflect.defineMetadata('self:controller', {}, SignUpView);
-      Reflect.defineMetadata('self:subapp', { routing: [loginRoute, signUpRoute] }, TestModule);
-    });
-
-    it('should generate a prefixed array of routes with isIncluded as true', () => {
-      const result = includeRoutes('/test', TestModule);
-
-      expect(result).toHaveLength(2);
-      expect(result[0]).toEqual({ ...loginRoute, path: '/test/login' });
-      expect(result[1]).toEqual({ ...signUpRoute, path: '/test/sign-up' });
-    });
-  });
-
-  describe('createRedirection', () => {
-    it('creates a valid route definition', () => {
-      const route = createRedirection('/from', '/to');
-      expect(route.path).toEqual('/from');
-      expect(route.children).toEqual([]);
-      expect(route.Component).toBeDefined();
-    });
-
-    it('creates a controller that will redirect when mounted', () => {
-      const { Component } = createRedirection('/from', '/to');
-      const replaceMock = jest.fn();
-      const fakeHistory = { replace: replaceMock };
-      expect(fakeHistory.replace).toHaveBeenCalledTimes(1);
-      expect(fakeHistory.replace).toHaveBeenCalledWith('/to');
     });
   });
 });

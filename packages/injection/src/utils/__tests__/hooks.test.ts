@@ -1,3 +1,5 @@
+import { jest } from '@jest/globals';
+
 import { addHook, hasHooks, runHooks, runHooksSync } from '../hooks';
 
 describe('tokamakjs/injection', () => {

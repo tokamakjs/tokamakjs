@@ -1,8 +1,8 @@
+import { jest } from '@jest/globals';
+
 import { Scope } from '../../injection-context';
 import { Reflector } from '../../reflection';
 import { Injectable } from '../injectable.decorator';
-
-jest.mock('../../reflection');
 
 describe('@tokamakjs/injection', () => {
   describe('decorators/injectable', () => {
@@ -17,21 +17,24 @@ describe('@tokamakjs/injection', () => {
     });
 
     it('adds the provided metadata to the class using Reflector', () => {
+      const addMetadataMock = jest.spyOn(Reflector, 'addProviderMetadata');
+
       @Injectable({ scope: Scope.TRANSIENT })
       class TestProvider {}
 
-      expect(Reflector.addProviderMetadata).toHaveBeenCalledWith(TestProvider, {
-        scope: Scope.TRANSIENT,
-      });
+      expect(addMetadataMock).toHaveBeenCalledWith(TestProvider, { scope: Scope.TRANSIENT });
+      expect(Reflector.getProviderMetadata(TestProvider)).toEqual({ scope: Scope.TRANSIENT });
     });
 
     describe('getDependencies', () => {
       it('returns constructor dependencies using Reflector', () => {
+        const getConstructorDependenciesMock = jest.spyOn(Reflector, 'getConstructorDependencies');
+
         class TestProvider {}
 
         Injectable.getDependencies(TestProvider);
 
-        expect(Reflector.getConstructorDependencies).toHaveBeenCalledWith(TestProvider);
+        expect(getConstructorDependenciesMock).toHaveBeenCalledWith(TestProvider);
       });
     });
   });
