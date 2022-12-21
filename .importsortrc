@@ -1,5 +1,5 @@
 {
-  ".js, .jsx": {
+  ".js, .jsx, .mjs": {
     "style": "local"
   },
   ".ts, .tsx": {
