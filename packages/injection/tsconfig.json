@@ -1,11 +1,11 @@
 {
   "extends": "../../tsconfig.base.json",
+  "exclude": ["node_modules", "lib"],
   "compilerOptions": {
     "composite": true,
     "baseUrl": "./",
-    "outDir": "./lib",
     "rootDir": "./src",
+    "outDir": "./lib",
     "tsBuildInfoFile": "./lib/injection.tsbuildinfo"
-  },
-  "exclude": ["node_modules", "lib"]
+  }
 }
