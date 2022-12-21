@@ -1,5 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
+  "exclude": ["node_modules", "dist", "webpack.config.ts"],
+  "references": [{ "path": "../../packages/react" }, { "path": "../../packages/common" }],
   "compilerOptions": {
     "baseUrl": "./",
     "jsx": "react",
@@ -10,6 +12,9 @@
       "@tokamakjs/react": ["../../packages/react"]
     }
   },
-  "exclude": ["node_modules", "dist"],
-  "references": [{ "path": "../../packages/react" }, { "path": "../../packages/common" }]
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS" // for webpack config
+    }
+  }
 }

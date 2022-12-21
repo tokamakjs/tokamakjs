@@ -33,7 +33,7 @@ class UserDto extends ze.ClassFrom(UserSchema) {
 @Injectable()
 export class TestApi {
   public async fetchData(): Promise<UserDto> {
-    const data: unknown = { id: 1, firstName2: 'test', lastName: 'last' };
+    const data: unknown = { id: 1, firstName: 'test', lastName: 'last' };
     return ze.validate(data, UserDto);
   }
 }

@@ -4,7 +4,6 @@ import {
   SubApp,
   TokamakApp,
   createRoute,
-  onDidMount,
   ref,
   state,
   useController,
@@ -28,13 +27,16 @@ interface ControllerEmitter {
 const MainView = () => {
   const ctrl = useController<MainController>();
 
-  useEventListener(ctrl.emitter, 'error', (e) => {
-    console.log(`ERROR: code ${e.code} - message ${e.message}`);
-  });
+  // TODO: This fails because tokamak/common and tokamak/react both
+  // have their own version of react installed. Looks like a lerna limitation?
 
-  useEventListener(ctrl.emitter, 'success', (e) => {
-    console.log(`SUCCESS: message ${e.result}`);
-  });
+  // useEventListener(ctrl.emitter, 'error', (e) => {
+  //   console.log(`ERROR: code ${e.code} - message ${e.message}`);
+  // });
+
+  // useEventListener(ctrl.emitter, 'success', (e) => {
+  //   console.log(`SUCCESS: message ${e.result}`);
+  // });
 
   return (
     <div>
