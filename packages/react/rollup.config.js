@@ -1,8 +1,8 @@
-import babel from '@rollup/plugin-babel';
-import typescript from '@rollup/plugin-typescript';
-import { defineConfig } from 'rollup';
+const babel = require('@rollup/plugin-babel');
+const typescript = require('@rollup/plugin-typescript');
+const { defineConfig } = require('rollup');
 
-export default defineConfig({
+module.exports = defineConfig({
   external: [
     '@tokamakjs/common',
     '@tokamakjs/injection',
@@ -14,7 +14,7 @@ export default defineConfig({
     'url-join',
   ],
   input: './src/index.ts',
-  output: { dir: 'lib', format: 'esm', sourcemap: true },
+  output: [{ dir: 'lib', format: 'esm', sourcemap: true }],
   plugins: [
     typescript({
       noEmitOnError: true,
