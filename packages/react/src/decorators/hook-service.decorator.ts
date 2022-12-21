@@ -1,6 +1,6 @@
 import { Injectable, Scope } from '@tokamakjs/injection';
 
-import { useHooksContainer } from '../hooks';
+import { useHooksContainer } from '../hooks/use-hooks-container';
 import { Reflector } from '../reflection';
 
 export function HookService(): ClassDecorator {

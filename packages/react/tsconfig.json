@@ -2,10 +2,10 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "composite": true,
-    "module": "ESNext",
     "baseUrl": "./",
     "outDir": "./lib",
     "rootDir": "./src",
+    "jsx": "react",
     "tsBuildInfoFile": "./lib/react.tsbuildinfo",
     "paths": {
       "@tokamakjs/injection": ["../injection"],

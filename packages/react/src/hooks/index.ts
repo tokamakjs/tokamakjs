@@ -6,3 +6,4 @@ export * from './use-di-container';
 export * from './use-resolve-sync';
 export * from './use-hooks-container';
 export * from './use-global-errors-manager';
+export * from './use-resolve-controller';

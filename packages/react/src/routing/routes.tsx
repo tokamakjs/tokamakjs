@@ -2,8 +2,9 @@ import { Class } from '@tokamakjs/injection';
 import { useNavigate } from 'react-router';
 import urljoin from 'url-join';
 
-import { Controller, onDidMount } from '../decorators';
-import { useController } from '../hooks';
+import { Controller } from '../decorators/controller.decorator';
+import { onDidMount } from '../decorators/effect.decorator';
+import { useController } from '../hooks/use-controller';
 import { Reflector } from '../reflection';
 import { DecoratedController, RouteDefinition } from '../types';
 

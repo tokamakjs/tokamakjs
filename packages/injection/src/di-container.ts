@@ -19,9 +19,9 @@ export class DiContainer {
     kwargs = { globalProviders: [], ...kwargs };
     const modulesMap: Map<ModuleDefinition, Module> = new Map();
 
-    const transform = async (node: ModuleDefinition): Promise<Module> => {
+    const _transform = async (node: ModuleDefinition): Promise<Module> => {
       if (isForwardReference(node)) {
-        return await transform(node.forwardRef());
+        return await _transform(node.forwardRef());
       }
 
       if (modulesMap.has(node)) {
@@ -36,7 +36,7 @@ export class DiContainer {
       const imports: Array<Module> = [];
 
       for (const imported of metadata.imports) {
-        imports.push(await transform(imported));
+        imports.push(await _transform(imported));
       }
 
       module.imports = imports;
@@ -44,7 +44,7 @@ export class DiContainer {
       return module;
     };
 
-    await transform(RootModule);
+    await _transform(RootModule);
 
     const globalModuleMeta = { exports: [], imports: [], providers: kwargs.globalProviders };
     const globalModule = new Module(GLOBAL_MODULE_NAME, globalModuleMeta);

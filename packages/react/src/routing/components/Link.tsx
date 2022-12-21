@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link as _Link, LinkProps as _LinkProps, matchPath } from 'react-router-dom';
 
-import { usePathsContext } from '../../hooks';
+import { usePathsContext } from '../../hooks/use-paths-context';
 
 function _trimSearch(href: string): string {
   return href.slice(0, href.indexOf('?'));

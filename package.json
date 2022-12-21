@@ -4,7 +4,6 @@
   "private": true,
   "license": "MIT",
   "author": "Lars <lars.bs@hotmail.com>",
-  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/tokamakjs/tokamakjs"
@@ -12,7 +11,7 @@
   "scripts": {
     "examples:tests": "cd examples/tests && npm start",
     "examples:real-world": "cd examples/real-world && npm start",
-    "clean": "rimraf packages/*/lib",
+    "clean": "lerna run clean --scope @tokamakjs/*",
     "clean:full": "npm run clean && rimraf packages/*/node_modules && rimraf examples/*/node_modules",
     "build": "NODE_ENV=production lerna run build --scope @tokamakjs/*",
     "build:watch": "NODE_ENV=development tsc -b && NODE_ENV=development lerna run --parallel build:watch",

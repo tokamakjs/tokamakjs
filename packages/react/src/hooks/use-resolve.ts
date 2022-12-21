@@ -1,7 +1,7 @@
 import { Token } from '@tokamakjs/injection';
 import { useEffect, useState } from 'react';
 
-import { HookService } from '../decorators';
+import { HookService } from '../decorators/hook-service.decorator';
 import { useDiContainer } from './use-di-container';
 
 export function useResolve<T = unknown, R = T>(token: Token<T>): R | undefined {

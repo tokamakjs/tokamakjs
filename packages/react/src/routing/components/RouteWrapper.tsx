@@ -1,7 +1,8 @@
 import { Class } from '@tokamakjs/injection';
 import React from 'react';
 
-import { useDiContainer, useGlobalErrorsManager } from '../../hooks';
+import { useDiContainer } from '../../hooks/use-di-container';
+import { useGlobalErrorsManager } from '../../hooks/use-global-errors-manager';
 import { Reflector } from '../../reflection';
 import { ControllerWrapper } from './ControllerWrapper';
 import { ErrorBoundary } from './ErrorBoundary';

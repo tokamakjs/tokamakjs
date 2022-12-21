@@ -1,6 +1,6 @@
-import { useContext } from 'react';
+import { createContext, useContext } from 'react';
 
-import { PathsContext } from '../tokamak-app';
+export const PathsContext = createContext<Array<string>>([]);
 
 export function usePathsContext(): Array<string> {
   return useContext(PathsContext);

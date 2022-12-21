@@ -1,10 +1,10 @@
 import { Class, DiContainer } from '@tokamakjs/injection';
 import React from 'react';
+import { RouteObject } from 'react-router';
 
 import { Reflector } from '../reflection';
-import { RouteObject } from '../routing';
 import { RouteDefinition } from '../types';
-import { RouteWrapper } from './components';
+import { RouteWrapper } from './components/RouteWrapper';
 
 function _getId(): number {
   return Math.random();

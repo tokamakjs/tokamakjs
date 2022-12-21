@@ -1,7 +1,7 @@
 import { GlobalErrorsManager } from '@tokamakjs/common';
-import { useContext } from 'react';
+import { createContext, useContext } from 'react';
 
-import { ErrorsContext } from '../tokamak-app';
+export const ErrorsContext = createContext<GlobalErrorsManager | undefined>(undefined);
 
 export function useGlobalErrorsManager(): GlobalErrorsManager {
   const globalErrorsHandler = useContext(ErrorsContext);

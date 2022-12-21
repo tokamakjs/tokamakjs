@@ -1,10 +1,11 @@
 import { GlobalErrorsManager } from '@tokamakjs/common';
 import { Class, DiContainer } from '@tokamakjs/injection';
-import React, { ElementType, createContext } from 'react';
+import React, { ElementType } from 'react';
 import ReactDom from 'react-dom';
 import urljoin from 'url-join';
 
 import { DiContainerProvider } from './components';
+import { AppContext, ErrorsContext, PathsContext } from './hooks';
 import {
   BrowserRouter,
   HashRouter,
@@ -20,12 +21,6 @@ const HISTORY_MODE_MAP = {
   hash: HashRouter,
   memory: MemoryRouter,
 };
-
-export const AppContext = createContext<unknown>({});
-
-export const PathsContext = createContext<Array<string>>([]);
-
-export const ErrorsContext = createContext<GlobalErrorsManager | undefined>(undefined);
 
 export class TokamakApp {
   public static async create(

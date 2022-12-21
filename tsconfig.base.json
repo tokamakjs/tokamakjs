@@ -6,7 +6,8 @@
     "experimentalDecorators": true,
     "incremental": true,
     "jsx": "preserve",
-    "module": "CommonJS",
+    "module": "ESNext",
+    "target": "ESNext",
     "moduleResolution": "node",
     "noUnusedLocals": false,
     "noUnusedParameters": false,
@@ -15,7 +16,6 @@
     "removeComments": true,
     "resolveJsonModule": true,
     "sourceMap": true,
-    "strict": true,
-    "target": "ESNext"
+    "strict": true
   }
 }

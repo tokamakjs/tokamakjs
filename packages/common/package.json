@@ -7,22 +7,16 @@
   "publishConfig": {
     "access": "public"
   },
-  "type": "module",
-  "exports": "./lib/index.js",
-  "main": "lib/index.js",
+  "main": "./lib/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/tokamakjs/tokamakjs",
     "directory": "packages/common"
   },
   "scripts": {
-    "build": "gulp",
-    "build:watch": "gulp watch"
-  },
-  "overrides": {
-    "gulp-typescript": {
-      "source-map": "^0.7.4"
-    }
+    "clean": "rimraf lib && rimraf .rollup.cache",
+    "build": "rollup -c",
+    "build:watch": "rollup -c --watch"
   },
   "peerDependencies": {
     "class-transformer": ">=0.4.0",
@@ -34,23 +28,21 @@
     "@babel/runtime": "^7.20.6",
     "history": "^5.3.0",
     "lodash": "^4.17.21",
-    "query-string": "^8.0.3",
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
     "@babel/core": "^7.20.5",
     "@babel/plugin-transform-runtime": "^7.19.6",
     "@babel/preset-env": "^7.20.2",
+    "@rollup/plugin-babel": "^6.0.3",
+    "@rollup/plugin-terser": "^0.2.0",
+    "@rollup/plugin-typescript": "^10.0.1",
     "@types/react": "^17.0.34",
     "class-transformer": "^0.5.1",
     "graphql": "^15.3.0",
-    "gulp": "^4.0.2",
-    "gulp-babel": "^8.0.0",
-    "gulp-typescript": "^6.0.0-alpha.1",
-    "merge-stream": "^2.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "source-map": "^0.7.4",
+    "rollup": "^3.7.5",
     "zod": "^3.11.6"
   },
   "gitHead": "1ef81c290ab7981c48a2022de5eedb6efa84fc42"
