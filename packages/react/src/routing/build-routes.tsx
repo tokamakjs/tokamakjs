@@ -1,6 +1,7 @@
 import { Class, DiContainer } from '@tokamakjs/injection';
 import React from 'react';
 import { RouteObject } from 'react-router';
+import urljoin from 'url-join';
 
 import { Reflector } from '../reflection';
 import { RouteDefinition } from '../types';
@@ -13,17 +14,19 @@ function _getId(): number {
 function _transformRoutes(
   routing: Array<RouteDefinition>,
   context: DiContainer,
+  parentPath = '/',
 ): Array<RouteObject> {
   const finalRoutes: Array<RouteObject> = [];
 
   for (const routeDefinition of routing) {
     const { path, Controller, children } = routeDefinition;
+    const finalPath = urljoin(parentPath, path);
 
     finalRoutes.push({
-      path,
+      path: finalPath,
       // each controller needs a unique key so they're correctly mounted/unmounted
       element: <RouteWrapper Controller={Controller} key={_getId()} />,
-      children: _transformRoutes(children, context),
+      children: _transformRoutes(children, context, finalPath),
       caseSensitive: false,
     });
   }

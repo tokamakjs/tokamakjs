@@ -2,7 +2,6 @@ import { GlobalErrorsManager } from '@tokamakjs/common';
 import { Class, DiContainer } from '@tokamakjs/injection';
 import React, { ElementType } from 'react';
 import ReactDom from 'react-dom';
-import urljoin from 'url-join';
 
 import { DiContainerProvider } from './components';
 import { AppContext, ErrorsContext, PathsContext } from './hooks';
@@ -76,15 +75,10 @@ export class TokamakApp {
     );
   }
 
-  private _extractPathsFromRoutes(routes: Array<RouteObject>, parentPath = ''): Array<string> {
+  private _extractPathsFromRoutes(routes: Array<RouteObject>): Array<string> {
     return routes.reduce((memo, route) => {
       if (route.path == null) return memo;
-
-      return [
-        ...memo,
-        urljoin(parentPath, route.path),
-        ...this._extractPathsFromRoutes(route.children ?? [], route.path),
-      ];
+      return [...memo, route.path, ...this._extractPathsFromRoutes(route.children ?? [])];
     }, [] as Array<string>);
   }
 }
