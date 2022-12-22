@@ -1,6 +1,6 @@
 {
   "name": "todo-mvc",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "description": "A Tokamak app.",
   "license": "UNLICENSED",
   "private": true,
@@ -28,8 +28,8 @@
     "@babel/runtime": "7.14.0",
     "@emotion/css": "11.1.3",
     "@tokamakjs/cli": "0.2.0-alpha.10",
-    "@tokamakjs/common": "^0.4.1",
-    "@tokamakjs/react": "^0.4.2",
+    "@tokamakjs/common": "^0.5.0",
+    "@tokamakjs/react": "^0.5.0",
     "class-transformer": "0.4.0",
     "classnames": "^2.3.1",
     "graphql": "15.5.0",
