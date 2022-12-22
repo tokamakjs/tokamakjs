@@ -1,23 +1,27 @@
-import * as utils from '../../utils/hooks';
-import { onModuleDidInit, onModuleInit } from '../module-life-cycle.decorator';
-
-jest.mock('../../utils/hooks');
+import { jest } from '@jest/globals';
 
 describe('@tokamakjs/injection', () => {
   describe('decorators/module-life-cycle', () => {
-    class TestClass {
-      @onModuleInit()
-      public onModuleInit() {}
+    it('adds the decorated method to the correct life cycle hook.', async () => {
+      jest.unstable_mockModule('../../utils/hooks', () => {
+        return { addHook: jest.fn() };
+      });
 
-      @onModuleDidInit()
-      public onModuleDidInit() {}
-    }
+      const { addHook } = await import('../../utils/hooks');
+      const { onModuleDidInit, onModuleInit } = await import('../module-life-cycle.decorator');
 
-    it('adds the decorated method to the correct life cycle hook.', () => {
+      class TestClass {
+        @onModuleInit()
+        public onModuleInit() {}
+
+        @onModuleDidInit()
+        public onModuleDidInit() {}
+      }
+
       const t = new TestClass();
 
-      expect(utils.addHook).toHaveBeenNthCalledWith(1, t, 'onModuleInit', t.onModuleInit);
-      expect(utils.addHook).toHaveBeenNthCalledWith(2, t, 'onModuleDidInit', t.onModuleDidInit);
+      expect(addHook).toHaveBeenNthCalledWith(1, t, 'onModuleInit', t.onModuleInit);
+      expect(addHook).toHaveBeenNthCalledWith(2, t, 'onModuleDidInit', t.onModuleDidInit);
     });
   });
 });

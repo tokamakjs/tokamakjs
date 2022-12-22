@@ -1,18 +1,20 @@
-import { Reflector } from '../reflection';
-import { ControllerMetadata } from '../types';
+import { Class } from '@tokamakjs/injection';
 
-export function Controller(metadata: ControllerMetadata): ClassDecorator {
-  return (Target: Function) => {
+import { Reflector } from '../reflection';
+import { ControllerMetadata, DecoratedController } from '../types';
+
+export function Controller<T = any>(metadata: ControllerMetadata) {
+  return (Target: Class<T>): Class<DecoratedController<T>> => {
     Reflector.addControllerMetadata(Target, metadata);
 
-    const proxy = new Proxy(Target, {
+    const ProxyTarget = new Proxy(Target, {
       construct(Target: any, args: Array<any>) {
         return Reflector.createDecoratedController(Target, ...args);
       },
-    });
+    }) as Class<DecoratedController<T>>;
 
-    Reflector.copyMetadata(Target, proxy);
+    Reflector.copyMetadata(Target, ProxyTarget);
 
-    return proxy;
+    return ProxyTarget;
   };
 }

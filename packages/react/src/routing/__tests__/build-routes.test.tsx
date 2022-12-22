@@ -1,19 +1,12 @@
+import { Reflector } from '../../reflection';
 import { SubAppMetadata } from '../../types';
 import { buildRoutes } from '../build-routes';
 
-// jest.mock('../create-route-component', () => {
-//   return {
-//     createRouteComponent: () => ({
-//       Route: 'TEST_ROUTE_COMPONENT',
-//       controllerInstance: 'TEST_CONTROLLER_INSTANCE',
-//     }),
-//   };
-// });
+describe('buildRoutes', () => {
+  class RootController {}
+  class LoginController {}
+  class SignUpController {}
 
-describe.skip('buildRoutes', () => {
-  const RootView = () => null;
-  const LoginView = () => null;
-  const SignUpView = () => null;
   class TestModule {}
 
   beforeEach(() => {
@@ -21,14 +14,16 @@ describe.skip('buildRoutes', () => {
       routing: [
         {
           path: '/',
-          Component: RootView,
+          Controller: RootController,
           children: [
-            { path: '/login', Component: LoginView, children: [] },
-            { path: '/sign-up', Component: SignUpView, children: [] },
+            { path: '/login', Controller: LoginController, children: [] },
+            { path: '/sign-up', Controller: SignUpController, children: [] },
           ],
         },
       ],
     };
+
+    Reflector.addSubAppMetadata(TestModule, fakeSubAppMetadata);
 
     Reflect.defineMetadata('self:subapp', fakeSubAppMetadata, TestModule);
   });
@@ -37,25 +32,31 @@ describe.skip('buildRoutes', () => {
     const fakeAppContext = {} as any;
     const routes = buildRoutes(TestModule, fakeAppContext);
 
-    expect(routes).toMatchInlineSnapshot(`
-      Array [
-        Object {
-          "children": Array [
-            Object {
-              "children": Array [],
-              "controller": "TEST_CONTROLLER_INSTANCE",
-              "element": <TEST_ROUTE_COMPONENT />,
+    expect(routes).toMatchInlineSnapshot(/* json */ `
+      [
+        {
+          "caseSensitive": false,
+          "children": [
+            {
+              "caseSensitive": false,
+              "children": [],
+              "element": <RouteWrapper
+                Controller={[Function]}
+              />,
               "path": "/login",
             },
-            Object {
-              "children": Array [],
-              "controller": "TEST_CONTROLLER_INSTANCE",
-              "element": <TEST_ROUTE_COMPONENT />,
+            {
+              "caseSensitive": false,
+              "children": [],
+              "element": <RouteWrapper
+                Controller={[Function]}
+              />,
               "path": "/sign-up",
             },
           ],
-          "controller": "TEST_CONTROLLER_INSTANCE",
-          "element": <TEST_ROUTE_COMPONENT />,
+          "element": <RouteWrapper
+            Controller={[Function]}
+          />,
           "path": "/",
         },
       ]

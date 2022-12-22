@@ -1,15 +1,12 @@
 import path from 'path';
 
-import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
-// @ts-ignore
-import FriendlyErrorsWebpackPlugin from 'friendly-errors-webpack-plugin';
 import HtmlPlugin from 'html-webpack-plugin';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
-import { Configuration, EnvironmentPlugin } from 'webpack';
+import webpack from 'webpack';
 
-const config: Configuration = {
+const config: webpack.Configuration = {
   mode: 'development',
-  devtool: '#source-map',
+  devtool: 'source-map',
   resolve: {
     extensions: ['.mjs', '.js', '.ts', '.tsx'],
     symlinks: false,
@@ -24,9 +21,7 @@ const config: Configuration = {
   },
   plugins: [
     new HtmlPlugin({ filename: 'index.html', template: 'public/index.html' }),
-    new EnvironmentPlugin(['NODE_ENV']),
-    new ReactRefreshWebpackPlugin({ overlay: false }),
-    new FriendlyErrorsWebpackPlugin({ clearConsole: false }),
+    new webpack.EnvironmentPlugin(['NODE_ENV']),
   ],
   module: {
     rules: [
@@ -44,7 +39,6 @@ const config: Configuration = {
               compilerOptions: {
                 noUnusedLocals: false,
                 noUnusedParameters: false,
-                module: 'ESNext',
               },
             },
           },
@@ -55,7 +49,13 @@ const config: Configuration = {
         test: /\.js$/,
         loader: 'source-map-loader',
         // These packages don't provide their source
-        exclude: [/react-mapbox-wrapper/, /urql-computed-exchange/, /use-filters/, /react-router/],
+        exclude: [
+          /react-mapbox-wrapper/,
+          /urql-computed-exchange/,
+          /use-filters/,
+          /react-router/,
+          /zod/,
+        ],
       },
       {
         test: /\.css$/,
@@ -88,12 +88,9 @@ const config: Configuration = {
 // @ts-ignore
 config.devServer = {
   host: '0.0.0.0',
-  port: 8080,
+  port: 4200,
   historyApiFallback: true,
   hot: true,
-  inline: true,
-  // quiet: false, // odly enough, if quiet is enabled, logs will appear
-  // noInfo: true,
 };
 
 export default config;

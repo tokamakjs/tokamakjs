@@ -1,17 +1,17 @@
 {
   "extends": "../../tsconfig.base.json",
+  "references": [{ "path": "../injection" }, { "path": "../common" }],
+  "exclude": ["node_modules", "lib"],
   "compilerOptions": {
     "composite": true,
-    "module": "ESNext",
     "baseUrl": "./",
-    "outDir": "./lib",
     "rootDir": "./src",
+    "outDir": "./lib",
+    "jsx": "react",
     "tsBuildInfoFile": "./lib/react.tsbuildinfo",
     "paths": {
       "@tokamakjs/injection": ["../injection"],
-      "@tokamakjs/common": ["../common"],
+      "@tokamakjs/common": ["../common"]
     }
-  },
-  "exclude": ["node_modules", "lib", "**/*.test.ts", "**/*.test.tsx"],
-  "references": [{ "path": "../injection" }, { "path": "../common" }]
+  }
 }

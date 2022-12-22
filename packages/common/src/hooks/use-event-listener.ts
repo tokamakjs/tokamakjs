@@ -7,7 +7,7 @@ import { EventEmitter } from '../utils';
  * Automatically manages subbing and unsubbing from the
  * events emitted by an EventEmitter.
  */
-export function useEventListener<T, K extends keyof T>(
+export function useEventListener<T extends Record<string, any>, K extends keyof T>(
   emitter: EventEmitter<T>,
   eventKey: K,
   listener: EventListener<T[K]>,

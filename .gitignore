@@ -1,8 +1,14 @@
-node_modules
+# Build
+lib
+*.tsbuildinfo
 dist
+.rollup.cache
+
+# Testing
+coverage
+
+# Misc
+node_modules
 .env
 *.log
-lib
 !examples/real-world/.env
-*.tsbuildinfo
-coverage

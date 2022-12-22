@@ -2,8 +2,9 @@ import { Class } from '@tokamakjs/injection';
 import { useNavigate } from 'react-router';
 import urljoin from 'url-join';
 
-import { Controller, onDidMount } from '../decorators';
-import { useController } from '../hooks';
+import { Controller } from '../decorators/controller.decorator';
+import { onDidMount } from '../decorators/effect.decorator';
+import { useController } from '../hooks/use-controller';
 import { Reflector } from '../reflection';
 import { DecoratedController, RouteDefinition } from '../types';
 
@@ -42,21 +43,29 @@ export function includeRoutes(basepath: string, SubApp: Class): Array<RouteDefin
   return routing.map((route) => ({ ...route, path: urljoin(basepath, route.path) }));
 }
 
-export function createRedirection(from: string, to: string): RouteDefinition {
+export function createRedirection(
+  from: string,
+  to: string,
+): RouteDefinition<{ onDidMount: VoidFunction }> {
+  class RedirectionController {
+    private readonly _navigate = useNavigate();
+
+    @onDidMount()
+    public onDidMount(): void {
+      this._navigate(to, { replace: true });
+    }
+  }
+
   const RedirectionView = () => {
     useController<RedirectionController>();
     return null;
   };
 
-  @Controller({ view: RedirectionView })
-  class RedirectionController {
-    private readonly _navigate = useNavigate();
-
-    @onDidMount()
-    onDidMount() {
-      this._navigate(to, { replace: true });
-    }
-  }
-
-  return { path: from, Controller: RedirectionController, children: [] };
+  return {
+    path: from,
+    // Instead of using the decorator directly, do it this
+    // way to get the correct typings and remove the need for casting.
+    Controller: Controller({ view: RedirectionView })(RedirectionController),
+    children: [],
+  };
 }

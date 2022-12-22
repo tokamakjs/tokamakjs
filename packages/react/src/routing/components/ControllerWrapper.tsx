@@ -1,7 +1,7 @@
 import { Class } from '@tokamakjs/injection';
 import React, { createContext } from 'react';
 
-import { useResolveController } from '../../hooks';
+import { useResolveController } from '../../hooks/use-resolve-controller';
 import { DecoratedController } from '../../types';
 
 export const ControllerContext = createContext<DecoratedController | undefined>(undefined);

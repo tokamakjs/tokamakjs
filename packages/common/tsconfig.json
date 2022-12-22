@@ -1,16 +1,15 @@
 {
   "extends": "../../tsconfig.base.json",
+  "references": [{ "path": "../injection" }],
+  "exclude": ["node_modules", "lib", "**/*.test.ts", "**/*.test.tsx"],
   "compilerOptions": {
     "composite": true,
-    "module": "ESNext",
     "baseUrl": "./",
-    "outDir": "./lib",
     "rootDir": "./src",
+    "outDir": "./lib",
     "tsBuildInfoFile": "./lib/common.tsbuildinfo",
     "paths": {
       "@tokamakjs/injection": ["../injection"]
     }
-  },
-  "exclude": ["node_modules", "lib", "**/*.test.ts", "**/*.test.tsx"],
-  "references": [{ "path": "../injection" }]
+  }
 }
