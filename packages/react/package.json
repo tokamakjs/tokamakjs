@@ -27,8 +27,8 @@
     "@babel/runtime": "^7.20.6",
     "@tokamakjs/injection": "^0.4.0",
     "history": "^5.3.0",
-    "react-router": "^6.5.0",
-    "react-router-dom": "^6.5.0",
+    "react-router": "^6.6.0",
+    "react-router-dom": "^6.6.0",
     "reflect-metadata": "^0.1.13",
     "url-join": "^5.0.0"
   },
@@ -40,12 +40,12 @@
     "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-typescript": "^10.0.1",
     "@tokamakjs/common": "^0.4.1",
-    "@types/react": "^17.0.34",
-    "@types/react-dom": "^17.0.11",
+    "@types/react": "^18.0.26",
+    "@types/react-dom": "^18.0.9",
     "@types/url-join": "^4.0.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-test-renderer": "^17.0.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-test-renderer": "^18.2.0",
     "rollup": "^3.7.5"
   },
   "gitHead": "1ef81c290ab7981c48a2022de5eedb6efa84fc42"

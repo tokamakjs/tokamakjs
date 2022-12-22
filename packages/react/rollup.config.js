@@ -6,7 +6,7 @@ module.exports = defineConfig({
   external: [
     '@tokamakjs/common',
     '@tokamakjs/injection',
-    'react-dom',
+    'react-dom/client',
     'react-router-dom',
     'react-router',
     'react',

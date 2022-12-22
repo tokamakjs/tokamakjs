@@ -1,7 +1,7 @@
 import { GlobalErrorsManager } from '@tokamakjs/common';
 import { Class, DiContainer } from '@tokamakjs/injection';
 import React, { ElementType } from 'react';
-import ReactDom from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
 import { DiContainerProvider } from './components';
 import { AppContext, ErrorsContext, PathsContext } from './hooks';
@@ -59,7 +59,9 @@ export class TokamakApp {
     const RootNode = this._RootNode;
     const Router = this._Router;
 
-    ReactDom.render(
+    const root = createRoot(document.querySelector(selector)!);
+
+    root.render(
       <ErrorsContext.Provider value={this._globalErrorsManager}>
         <Router basename={this._config.basePath}>
           <DiContainerProvider value={this._container}>
@@ -71,7 +73,6 @@ export class TokamakApp {
           </DiContainerProvider>
         </Router>
       </ErrorsContext.Provider>,
-      document.querySelector(selector),
     );
   }
 
