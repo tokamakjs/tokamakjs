@@ -11,6 +11,8 @@ src
 tsconfig.json
 gulpfile.js
 babel.config.json
+.rollup.cache
+rollup.config.js
 
 # Misc
 .DS_Store
