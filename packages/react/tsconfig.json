@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "references": [{ "path": "../injection" }, { "path": "../common" }],
-  "exclude": ["node_modules", "lib", "**/*.test.ts", "**/*.test.tsx"],
+  "exclude": ["node_modules", "lib"],
   "compilerOptions": {
     "composite": true,
     "baseUrl": "./",

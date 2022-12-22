@@ -9,6 +9,7 @@ module.exports = defineConfig({
   plugins: [
     typescript({
       noEmitOnError: true,
+      exclude: ['**/__tests__', '**/*.test.ts'],
     }),
     babel({
       extensions: ['.ts', '.tsx', '.js', '.jsx'],
