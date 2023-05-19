@@ -12,7 +12,9 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noImplicitOverride": true,
-    "exactOptionalPropertyTypes": true,
+    // We cannot enable this until @types/jest fixes incompatibilities with
+    // @jest/environment types.
+    "exactOptionalPropertyTypes": false,
     "removeComments": true,
     "resolveJsonModule": true,
     "sourceMap": true,
