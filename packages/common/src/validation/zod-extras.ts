@@ -50,7 +50,7 @@ function ClassFrom<T extends z.ZodTypeAny>(schema: T): SchemaClass<T['_output']>
 /**
  * Validates and transforms a SchemaClass into a final class
  */
-function validate<T>(input: unknown, SchemaClass: Class<T>): T {
+function validate<T>(SchemaClass: Class<T>, input: unknown): T {
   if (!isSchemaClass(SchemaClass)) {
     throw new ValidationError(
       `Class "${SchemaClass.name}" used to validate the input data is not a valid SchemaClass`,
