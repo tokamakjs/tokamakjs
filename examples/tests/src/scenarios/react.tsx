@@ -34,7 +34,7 @@ class UserDto extends ze.ClassFrom(UserSchema) {
 export class TestApi {
   public async fetchData(): Promise<UserDto> {
     const data: unknown = { id: 1, firstName: 'test', lastName: 'last' };
-    return ze.validate(data, UserDto);
+    return ze.validate(UserDto, data);
   }
 }
 

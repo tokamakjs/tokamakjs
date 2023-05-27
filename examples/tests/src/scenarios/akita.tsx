@@ -39,7 +39,7 @@ export class TestApi {
   public async fetchData(): Promise<UserDto> {
     const data: unknown = { id: 1, firstName: 'test', lastName: 'last' };
     await delay(2000);
-    return ze.validate(data, UserDto);
+    return ze.validate(UserDto, data);
   }
 }
 

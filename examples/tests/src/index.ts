@@ -3,7 +3,7 @@
 // import './scenarios/global-module';
 // import './scenarios/complete';
 // import './scenarios/transient';
-import './scenarios/react';
+// import './scenarios/react';
 // import './scenarios/hook-services';
 // import './scenarios/guards';
 // import './scenarios/event-emitter';
@@ -17,3 +17,4 @@ import './scenarios/react';
 // import './scenarios/basepath-routing';
 // import './scenarios/app-context-with-global-providers';
 // import './scenarios/guards-and-controller-life-cycle';
+import './scenarios/use-form-example';
