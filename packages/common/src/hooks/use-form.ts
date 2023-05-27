@@ -67,13 +67,15 @@ class ManagedForm<
     private readonly _errorsTuple: UseStateTuple<E>,
   ) {}
 
-  public validate(): V {
+  public validate(): V | undefined {
     try {
       return this._schema.parse(this._state) as V;
     } catch (e) {
       if (e instanceof ZodError) {
         this._setErrors(e.formErrors.fieldErrors as E);
+        return undefined;
       }
+
       throw e;
     }
   }
