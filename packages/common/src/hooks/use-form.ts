@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useState } from 'react';
-import { ZodError, ZodString, z } from 'zod';
+import { ZodError, z } from 'zod';
 
 type NoUndefinedState<T> = T extends [
   infer S | undefined,
@@ -19,11 +19,7 @@ type ErrorsFor<T extends Record<string, any>> = Partial<{
   [key in keyof T]: string | Array<string>;
 }>;
 
-class ManagedForm<
-  T extends Zod.ZodObject<{ [key: string]: ZodString }, any, any>,
-  V extends z.infer<T>,
-  E extends ErrorsFor<V>,
-> {
+class ManagedForm<T extends Zod.Schema, V extends z.infer<T>, E extends ErrorsFor<V>> {
   private get _state() {
     return this._stateTuple[0];
   }
@@ -129,11 +125,10 @@ class ManagedForm<
   }
 }
 
-export function useForm<
-  T extends Zod.ZodObject<{ [key: string]: ZodString }, any, any>,
-  V extends z.infer<T>,
-  E extends ErrorsFor<V>,
->(schema: T, { defaults = {}, autoValidate }: UseFormOptions<V>): ManagedForm<T, V, E> {
+export function useForm<T extends Zod.Schema, V extends z.infer<T>, E extends ErrorsFor<V>>(
+  schema: T,
+  { defaults = {}, autoValidate }: UseFormOptions<V>,
+): ManagedForm<T, V, E> {
   const state = useState(defaults);
   const errors = useState<E>({} as E);
 
