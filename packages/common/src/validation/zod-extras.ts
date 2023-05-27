@@ -4,6 +4,11 @@ import { z } from 'zod';
 import { InstantiatedDtoError, ValidationError } from '../errors';
 import { SchemaClass, isSchemaClass } from '../types';
 
+// Sometimes, TypeScript gets confused if zod is imported from the library code
+// and from the application code. In those situations, import zod from common
+// import { z } from '@tokamakjs/common';
+export { z } from 'zod';
+
 interface Class<T> {
   new (...args: Array<any>): T;
 }

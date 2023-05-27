@@ -1,42 +1,139 @@
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
+import { ZodError, ZodString, z } from 'zod';
 
-export interface ManagedForm<T> {
-  get: (name?: keyof T) => T[keyof T] | '';
-  set: (value: T[keyof T], name?: keyof T) => void;
-  values: Partial<T>;
-  reset: () => void;
+type NoUndefinedState<T> = T extends [
+  infer S | undefined,
+  Dispatch<SetStateAction<infer S | undefined>>,
+]
+  ? [S, Dispatch<SetStateAction<S>>]
+  : never;
+
+type UseStateTuple<T> = NoUndefinedState<ReturnType<typeof useState<T>>>;
+
+interface UseFormOptions<V> {
+  defaults: Partial<V>;
+  autoValidate: boolean;
 }
 
-export function useForm<T extends object = Record<string, any>>(
-  defaultValues: Partial<T> = {},
-): ManagedForm<T> {
-  const [state, setState] = useState<Partial<T>>(defaultValues);
+type ErrorsFor<T extends Record<string, any>> = Partial<{
+  [key in keyof T]: string | Array<string>;
+}>;
 
-  const getter = <K extends keyof T>(name?: K): T[K] | '' => {
-    if (name == null) {
-      throw new Error(
-        'Undefined `name` prop found in component. Please, make sure every Input has a `name` field.',
-      );
+class ManagedForm<
+  T extends Zod.ZodObject<{ [key: string]: ZodString }, any, any>,
+  V extends z.infer<T>,
+  E extends ErrorsFor<V>,
+> {
+  private get _state() {
+    return this._stateTuple[0];
+  }
+
+  private get _setState() {
+    return this._stateTuple[1];
+  }
+
+  private get _errors() {
+    return this._errorsTuple[0];
+  }
+
+  private get _setErrors() {
+    return this._errorsTuple[1];
+  }
+
+  public get errors() {
+    return {
+      get: <K extends keyof V>(key: K): E[K] | undefined => {
+        return this._errors[key];
+      },
+      set: <K extends keyof V>(key: K, value: undefined | string | Array<string>): void => {
+        this._setErrors((errors) => {
+          return { ...errors, [key]: value };
+        });
+      },
+      clear: (): void => {
+        return this._setErrors({} as E);
+      },
+      all: (): E => {
+        return this._errors;
+      },
+    };
+  }
+
+  constructor(
+    private readonly _schema: T,
+    private readonly _defaults: Partial<V>,
+    private readonly _autoValidate: boolean,
+    private readonly _stateTuple: UseStateTuple<Partial<V>>,
+    private readonly _errorsTuple: UseStateTuple<E>,
+  ) {}
+
+  public validate(): V {
+    try {
+      return this._schema.parse(this._state) as V;
+    } catch (e) {
+      if (e instanceof ZodError) {
+        this._setErrors(e.formErrors.fieldErrors as E);
+      }
+      throw e;
+    }
+  }
+
+  public reset(): void {
+    this.errors.clear();
+    this._setState(() => this._defaults);
+  }
+
+  public clear(): void {
+    this._setState({});
+  }
+
+  public get<K extends keyof V>(key: K): V[K] | string {
+    if (key == null) {
+      throw new Error('Undefined `name`. Please, make sure every Input has a `name` field.');
     }
 
-    return state[name] ?? '';
-  };
+    return this._state[key] ?? '';
+  }
 
-  const setter = (value: T[keyof T], name?: keyof T): void => {
-    if (name == null) {
-      throw new Error(
-        'Undefined `name` prop found in component. Please, make sure every Input has a `name` field.',
-      );
+  public set<K extends keyof V>(key: K, value: V[K]): void {
+    if (key == null) {
+      throw new Error('Undefined `name`. Please, make sure every Input has a `name` field.');
     }
 
-    setState((state) => {
-      return { ...state, [name]: value };
+    this._setState((state) => {
+      const newState = { ...state, [key]: value };
+
+      if (this._autoValidate) {
+        this.check(key);
+      }
+
+      return newState;
     });
-  };
+  }
 
-  const resetter = () => {
-    setState(defaultValues);
-  };
+  public check<K extends keyof V>(key: K): boolean {
+    try {
+      this._schema.parse(this._state);
+      return true;
+    } catch (e) {
+      if (e instanceof ZodError) {
+        const fieldErrors = e.formErrors.fieldErrors[key];
+        this.errors.set(key, fieldErrors);
+        return false;
+      } else {
+        throw e;
+      }
+    }
+  }
+}
 
-  return { set: setter, get: getter, values: state, reset: resetter };
+export function useForm<
+  T extends Zod.ZodObject<{ [key: string]: ZodString }, any, any>,
+  V extends z.infer<T>,
+  E extends ErrorsFor<V>,
+>(schema: T, { defaults = {}, autoValidate }: UseFormOptions<V>): ManagedForm<T, V, E> {
+  const state = useState(defaults);
+  const errors = useState<E>({} as E);
+
+  return new ManagedForm(schema, defaults, autoValidate, state, errors);
 }
