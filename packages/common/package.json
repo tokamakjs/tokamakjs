@@ -1,6 +1,6 @@
 {
   "name": "@tokamakjs/common",
-  "version": "0.5.1",
+  "version": "0.6.1",
   "description": "Tokamak app framework common utils.",
   "author": "Lars <lars.bs@hotmail.com>",
   "license": "MIT",
@@ -45,5 +45,5 @@
     "rollup": "^3.22.0",
     "zod": "^3.21.4"
   },
-  "gitHead": "18c911fe443e8f1be7ada0bb1a9638a11111c715"
+  "gitHead": "abd9e36390aa9f7824b4c8adb715035fa16bcfd5"
 }
