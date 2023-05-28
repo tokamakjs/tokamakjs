@@ -63,7 +63,14 @@ class ManagedForm<T extends Zod.Schema, V extends z.infer<T>, E extends ErrorsFo
     private readonly _errorsTuple: UseStateTuple<E>,
   ) {}
 
-  public validate(): V | undefined {
+  /**
+   * Arrow functions are used in these methods to ensure
+   * that "this" is not accidentally reassigned. This is
+   * particularly important when these methods are directly
+   * passed down for calling, such as in the case
+   * of <Input onChange={form.set} />.
+   */
+  public readonly validate = (): V | undefined => {
     try {
       return this._schema.parse(this._state) as V;
     } catch (e) {
@@ -74,26 +81,26 @@ class ManagedForm<T extends Zod.Schema, V extends z.infer<T>, E extends ErrorsFo
 
       throw e;
     }
-  }
+  };
 
-  public reset(): void {
+  public readonly reset = (): void => {
     this.errors.clear();
     this._setState(() => this._defaults);
-  }
+  };
 
-  public clear(): void {
+  public readonly clear = (): void => {
     this._setState({});
-  }
+  };
 
-  public get<K extends keyof V>(key: K): V[K] | string {
+  public readonly get = <K extends keyof V>(key: K): V[K] | string => {
     if (key == null) {
       throw new Error('Undefined `name`. Please, make sure every Input has a `name` field.');
     }
 
     return this._state[key] ?? '';
-  }
+  };
 
-  public set<K extends keyof V>(key: K, value: V[K]): void {
+  public readonly set = <K extends keyof V>(key: K, value: V[K]): void => {
     if (key == null) {
       throw new Error('Undefined `name`. Please, make sure every Input has a `name` field.');
     }
@@ -107,9 +114,9 @@ class ManagedForm<T extends Zod.Schema, V extends z.infer<T>, E extends ErrorsFo
 
       return newState;
     });
-  }
+  };
 
-  public check<K extends keyof V>(key: K): boolean {
+  public readonly check = <K extends keyof V>(key: K): boolean => {
     try {
       this._schema.parse(this._state);
       return true;
@@ -122,7 +129,7 @@ class ManagedForm<T extends Zod.Schema, V extends z.infer<T>, E extends ErrorsFo
         throw e;
       }
     }
-  }
+  };
 }
 
 export function useForm<T extends Zod.Schema, V extends z.infer<T>, E extends ErrorsFor<V>>(
