@@ -92,7 +92,7 @@ class ManagedForm<T extends Zod.Schema, V extends z.infer<T>, E extends ErrorsFo
     this._setState({});
   };
 
-  public readonly get = <K extends keyof V>(key: K): V[K] | string => {
+  public readonly get = <K extends keyof V>(key: K): NonNullable<V[K]> | string => {
     if (key == null) {
       throw new Error('Undefined `name`. Please, make sure every Input has a `name` field.');
     }
