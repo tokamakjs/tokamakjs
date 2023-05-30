@@ -70,13 +70,16 @@ class ManagedForm<T extends Zod.Schema, V extends z.infer<T>, E extends ErrorsFo
    * passed down for calling, such as in the case
    * of <Input onChange={form.set} />.
    */
-  public readonly validate = (): V | undefined => {
+  public readonly validate = ():
+    | { values: V; errors: undefined }
+    | { values: undefined; errors: E } => {
     try {
       return this._schema.parse(this._state) as V;
     } catch (e) {
       if (e instanceof ZodError) {
-        this._setErrors(e.formErrors.fieldErrors as E);
-        return undefined;
+        const errors = e.formErrors.fieldErrors;
+        this._setErrors(() => errors as E);
+        return { errors: errors as E, values: undefined };
       }
 
       throw e;

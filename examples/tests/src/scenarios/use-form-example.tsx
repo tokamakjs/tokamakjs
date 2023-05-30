@@ -32,17 +32,17 @@ export const TestViewA = () => {
           onSubmit={async (e) => {
             e.preventDefault();
 
-            try {
-              const values = form.validate();
+            const { values, errors } = form.validate();
 
+            if (values != null) {
               if (values.password !== values.passwordConfirmation) {
                 form.errors.set('passwordConfirmation', 'Different password');
                 return;
               }
 
               ctrl.signUp(values);
-            } catch (e) {
-              console.log(form.errors.all());
+            } else {
+              console.log(errors);
             }
           }}>
           <p>
