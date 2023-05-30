@@ -74,14 +74,13 @@ class ManagedForm<T extends Zod.Schema, V extends z.infer<T>, E extends ErrorsFo
     | { values: V; errors: undefined }
     | { values: undefined; errors: E } => {
     try {
-      return this._schema.parse(this._state) as V;
+      return { values: this._schema.parse(this._state) as V, errors: undefined };
     } catch (e) {
       if (e instanceof ZodError) {
         const errors = e.formErrors.fieldErrors;
         this._setErrors(() => errors as E);
         return { errors: errors as E, values: undefined };
       }
-
       throw e;
     }
   };
