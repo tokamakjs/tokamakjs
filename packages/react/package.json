@@ -1,6 +1,6 @@
 {
   "name": "@tokamakjs/react",
-  "version": "0.7.6",
+  "version": "0.7.7",
   "description": "React flavor of Tokamak.",
   "author": "Lars <lars.bs@hotmail.com>",
   "license": "MIT",

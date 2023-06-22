@@ -1,6 +1,6 @@
 {
   "name": "tokamak-tests",
-  "version": "0.7.6",
+  "version": "0.7.7",
   "description": "Tokamak tests.",
   "author": "Lars <lars.bs@hotmail.com>",
   "license": "MIT",
@@ -19,7 +19,7 @@
     "@datorama/akita": "^7.1.1",
     "@tokamakjs/common": "^0.7.6",
     "@tokamakjs/injection": "^0.7.0",
-    "@tokamakjs/react": "^0.7.6",
+    "@tokamakjs/react": "^0.7.7",
     "history": "^5.3.0",
     "modern-normalize": "^1.1.0",
     "react": "^18.2.0",
